@@ -11,7 +11,7 @@ namespace Xunit.Abstractions
     /// A class containing extension methods for the <see cref="ITestOutputHelper"/> interface. This class cannot be inherited.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal static class ITestOutputHelperExtensions
+    public static class ITestOutputHelperExtensions
     {
         /// <summary>
         /// Returns an <see cref="ILoggerFactory"/> that logs to the output helper.
