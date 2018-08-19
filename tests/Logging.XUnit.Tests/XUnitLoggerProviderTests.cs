@@ -44,6 +44,7 @@ namespace MartinCostello.Logging.XUnit
                 var xunit = actual.ShouldBeOfType<XUnitLogger>();
                 xunit.Name.ShouldBe(categoryName);
                 xunit.Filter.ShouldBeSameAs(options.Filter);
+                xunit.IncludeScopes.ShouldBeFalse();
             }
         }
     }

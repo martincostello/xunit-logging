@@ -45,6 +45,7 @@ namespace MartinCostello.Logging.XUnit
             var options = new XUnitLoggerOptions()
             {
                 Filter = FilterTrue,
+                IncludeScopes = true,
             };
 
             // Act
@@ -52,6 +53,7 @@ namespace MartinCostello.Logging.XUnit
 
             // Assert
             actual.Filter.ShouldBeSameAs(options.Filter);
+            actual.IncludeScopes.ShouldBeTrue();
             actual.Name.ShouldBe(name);
 
             // Act
@@ -60,6 +62,7 @@ namespace MartinCostello.Logging.XUnit
             // Assert
             actual.Filter.ShouldNotBeNull();
             actual.Filter(null, LogLevel.None).ShouldBeTrue();
+            actual.IncludeScopes.ShouldBeFalse();
             actual.Name.ShouldBe(name);
         }
 
@@ -78,6 +81,19 @@ namespace MartinCostello.Logging.XUnit
                 // Assert
                 actual.ShouldNotBeNull();
             }
+        }
+
+        [Fact]
+        public static void XUnitLogger_BeginScope_Throws_If_State_Is_Null()
+        {
+            // Arrange
+            string name = "MyName";
+            var outputHelper = Mock.Of<ITestOutputHelper>();
+            var options = new XUnitLoggerOptions();
+            var logger = new XUnitLogger(name, outputHelper, options);
+
+            // Act
+            Assert.Throws<ArgumentNullException>("state", () => logger.BeginScope(null as string));
         }
 
         [Theory]
@@ -363,6 +379,80 @@ namespace MartinCostello.Logging.XUnit
 
             // Assert
             mock.Verify((p) => p.WriteLine(It.Is<string>((r) => r.Length > 1024)), Times.Once());
+        }
+
+        [Fact]
+        public static void XUnitLogger_Log_Logs_Message_If_Scopes_Included_But_There_Are_No_Scopes()
+        {
+            // Arrange
+            var mock = new Mock<ITestOutputHelper>();
+
+            string name = "MyName";
+            var outputHelper = mock.Object;
+
+            var options = new XUnitLoggerOptions()
+            {
+                Filter = FilterTrue,
+                IncludeScopes = true,
+            };
+
+            var logger = new XUnitLogger(name, outputHelper, options)
+            {
+                Clock = StaticClock,
+            };
+
+            string expected = string.Join(
+                Environment.NewLine,
+                new[] { "[2018-08-19 16:12:16Z] info: MyName[0]", "      Message|False|False" });
+
+            // Act
+            logger.Log<string>(LogLevel.Information, 0, null, null, Formatter);
+
+            // Assert
+            mock.Verify((p) => p.WriteLine(expected), Times.Once());
+        }
+
+        [Fact]
+        public static void XUnitLogger_Log_Logs_Message_If_Scopes_Included_And_There_Are_Scopes()
+        {
+            // Arrange
+            var mock = new Mock<ITestOutputHelper>();
+
+            string name = "MyName";
+            var outputHelper = mock.Object;
+
+            var options = new XUnitLoggerOptions()
+            {
+                Filter = FilterTrue,
+                IncludeScopes = true,
+            };
+
+            var logger = new XUnitLogger(name, outputHelper, options)
+            {
+                Clock = StaticClock,
+            };
+
+            string expected = string.Join(
+                Environment.NewLine,
+                new[] { "[2018-08-19 16:12:16Z] info: MyName[0]", "      => _ => __ => ___ => [null]", "      Message|False|False" });
+
+            // Act
+            using (logger.BeginScope("_"))
+            {
+                using (logger.BeginScope("__"))
+                {
+                    using (logger.BeginScope("___"))
+                    {
+                        using (logger.BeginScope(null))
+                        {
+                            logger.Log<string>(LogLevel.Information, 0, null, null, Formatter);
+                        }
+                    }
+                }
+            }
+
+            // Assert
+            mock.Verify((p) => p.WriteLine(expected), Times.Once());
         }
 
         private static DateTimeOffset StaticClock() => new DateTimeOffset(2018, 08, 19, 17, 12, 16, TimeSpan.FromHours(1));

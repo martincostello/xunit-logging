@@ -4,7 +4,6 @@
 using System;
 using System.Text;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions.Internal;
 using Xunit.Abstractions;
 
 namespace MartinCostello.Logging.XUnit
@@ -60,7 +59,9 @@ namespace MartinCostello.Logging.XUnit
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
+
             Filter = options?.Filter ?? ((category, logLevel) => true);
+            IncludeScopes = options?.IncludeScopes ?? false;
         }
 
         /// <summary>
@@ -76,6 +77,11 @@ namespace MartinCostello.Logging.XUnit
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to include scopes.
+        /// </summary>
+        public bool IncludeScopes { get; set; }
+
+        /// <summary>
         /// Gets the name of the logger.
         /// </summary>
         public string Name { get; }
@@ -86,7 +92,15 @@ namespace MartinCostello.Logging.XUnit
         internal Func<DateTimeOffset> Clock { get; set; } = () => DateTimeOffset.Now;
 
         /// <inheritdoc />
-        public IDisposable BeginScope<TState>(TState state) => NullScope.Instance;
+        public IDisposable BeginScope<TState>(TState state)
+        {
+            if (state == null)
+            {
+                throw new ArgumentNullException(nameof(state));
+            }
+
+            return XUnitLogScope.Push(Name, state);
+        }
 
         /// <inheritdoc />
         public bool IsEnabled(LogLevel logLevel)
@@ -144,6 +158,11 @@ namespace MartinCostello.Logging.XUnit
             logBuilder.Append("[");
             logBuilder.Append(eventId);
             logBuilder.AppendLine("]");
+
+            if (IncludeScopes)
+            {
+                GetScopeInformation(logBuilder);
+            }
 
             bool hasMessage = !string.IsNullOrEmpty(message);
 
@@ -210,6 +229,38 @@ namespace MartinCostello.Logging.XUnit
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(logLevel));
+            }
+        }
+
+        /// <summary>
+        /// Gets the scope information for the current operation.
+        /// </summary>
+        /// <param name="builder">The <see cref="StringBuilder"/> to write the scope to.</param>
+        private static void GetScopeInformation(StringBuilder builder)
+        {
+            var current = XUnitLogScope.Current;
+            string scopeLog = string.Empty;
+            int length = builder.Length;
+
+            while (current != null)
+            {
+                if (length == builder.Length)
+                {
+                    scopeLog = $"=> {current}";
+                }
+                else
+                {
+                    scopeLog = $"=> {current} ";
+                }
+
+                builder.Insert(length, scopeLog);
+                current = current.Parent;
+            }
+
+            if (builder.Length > length)
+            {
+                builder.Insert(length, MessagePadding);
+                builder.AppendLine();
             }
         }
     }
