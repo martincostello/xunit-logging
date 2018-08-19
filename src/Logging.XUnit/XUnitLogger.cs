@@ -2,6 +2,7 @@
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
+using System.Text;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions.Internal;
 using Xunit.Abstractions;
@@ -13,8 +14,31 @@ namespace MartinCostello.Logging.XUnit
     /// </summary>
     public class XUnitLogger : ILogger
     {
+        //// Based on https://github.com/aspnet/Logging/blob/master/src/Microsoft.Extensions.Logging.Console/ConsoleLogger.cs
+
         /// <summary>
-        /// The <see cref="ITestOutputHelper"/> to use. This field is readonly.
+        /// The padding to use for log levels.
+        /// </summary>
+        private const string LogLevelPadding = ": ";
+
+        /// <summary>
+        /// The padding to use for messages. This field is read-only.
+        /// </summary>
+        private static readonly string MessagePadding = new string(' ', GetLogLevelString(LogLevel.Debug).Length + LogLevelPadding.Length);
+
+        /// <summary>
+        /// The padding to use for new lines. This field is read-only.
+        /// </summary>
+        private static readonly string NewLineWithMessagePadding = Environment.NewLine + MessagePadding;
+
+        /// <summary>
+        /// The current builder to use to generate log messages.
+        /// </summary>
+        [ThreadStatic]
+        private static StringBuilder _logBuilder;
+
+        /// <summary>
+        /// The <see cref="ITestOutputHelper"/> to use. This field is read-only.
         /// </summary>
         private readonly ITestOutputHelper _outputHelper;
 
@@ -87,7 +111,103 @@ namespace MartinCostello.Logging.XUnit
 
             if (!string.IsNullOrEmpty(message) || exception != null)
             {
-                _outputHelper.WriteLine($"[{DateTimeOffset.Now:u}] [{logLevel}:{Name}:{eventId}] {message}");
+                WriteMessage(logLevel, eventId.Id, message, exception);
+            }
+        }
+
+        /// <summary>
+        /// Writes a message to the <see cref="ITestOutputHelper"/> associated with the instance.
+        /// </summary>
+        /// <param name="logLevel">The message to write will be written on this level.</param>
+        /// <param name="eventId">The Id of the event.</param>
+        /// <param name="message">The message to write.</param>
+        /// <param name="exception">The exception related to this message.</param>
+        public virtual void WriteMessage(LogLevel logLevel, int eventId, string message, Exception exception)
+        {
+            StringBuilder logBuilder = _logBuilder;
+            _logBuilder = null;
+
+            if (logBuilder == null)
+            {
+                logBuilder = new StringBuilder();
+            }
+
+            string logLevelString = GetLogLevelString(logLevel);
+
+            logBuilder.Append(LogLevelPadding);
+            logBuilder.Append(Name);
+            logBuilder.Append("[");
+            logBuilder.Append(eventId);
+            logBuilder.AppendLine("]");
+
+            bool hasMessage = !string.IsNullOrEmpty(message);
+
+            if (hasMessage)
+            {
+                logBuilder.Append(MessagePadding);
+
+                int length = logBuilder.Length;
+                logBuilder.Append(message);
+                logBuilder.Replace(Environment.NewLine, NewLineWithMessagePadding, length, message.Length);
+            }
+
+            if (exception != null)
+            {
+                if (hasMessage)
+                {
+                    logBuilder.AppendLine();
+                }
+
+                logBuilder.Append(exception.ToString());
+            }
+
+            if (logBuilder.Length > 0)
+            {
+                string formatted = logBuilder.ToString();
+                _outputHelper.WriteLine($"[{DateTimeOffset.Now:u}] {logLevelString}{formatted}");
+            }
+
+            logBuilder.Clear();
+
+            if (logBuilder.Capacity > 1024)
+            {
+                logBuilder.Capacity = 1024;
+            }
+
+            _logBuilder = logBuilder;
+        }
+
+        /// <summary>
+        /// Returns the string to use for the specified logging level.
+        /// </summary>
+        /// <param name="logLevel">The log level to get the representation for.</param>
+        /// <returns>
+        /// A <see cref="string"/> containing the text representation of <paramref name="logLevel"/>.
+        /// </returns>
+        private static string GetLogLevelString(LogLevel logLevel)
+        {
+            switch (logLevel)
+            {
+                case LogLevel.Critical:
+                    return "crit";
+
+                case LogLevel.Debug:
+                    return "debug";
+
+                case LogLevel.Error:
+                    return "error";
+
+                case LogLevel.Information:
+                    return "info";
+
+                case LogLevel.Trace:
+                    return "trace";
+
+                case LogLevel.Warning:
+                    return "warn";
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(logLevel));
             }
         }
     }
