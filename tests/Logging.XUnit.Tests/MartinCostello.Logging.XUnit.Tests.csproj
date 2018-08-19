@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Description>Tests for MartinCostello.Logging.XUnit.</Description>
     <IsPackable>false</IsPackable>
-    <NoWarn>$(NoWarn);CA1034;CA1707</NoWarn>
+    <NoWarn>$(NoWarn);CA1707</NoWarn>
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <RootNamespace>MartinCostello.Logging.XUnit</RootNamespace>
     <Summary>$(Description)</Summary>

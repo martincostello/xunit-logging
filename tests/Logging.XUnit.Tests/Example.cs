@@ -20,7 +20,7 @@ namespace MartinCostello.Logging.XUnit
         private ITestOutputHelper OutputHelper { get; }
 
         [Fact]
-        public void Calculator_Sums_Two_Integers()
+        public void Calculator_Sums_Two_Different_Integers()
         {
             // Arrange
             var services = new ServiceCollection()
@@ -38,7 +38,20 @@ namespace MartinCostello.Logging.XUnit
             actual.ShouldBe(3);
         }
 
-        public sealed class Calculator
+        [Fact]
+        public void Calculator_Sums_Two_Equal_Integers()
+        {
+            // Arrange
+            var calculator = new Calculator(OutputHelper.ToLogger<Calculator>());
+
+            // Act
+            int actual = calculator.Sum(2, 2);
+
+            // Assert
+            actual.ShouldBe(4);
+        }
+
+        private sealed class Calculator
         {
             private readonly ILogger _logger;
 
