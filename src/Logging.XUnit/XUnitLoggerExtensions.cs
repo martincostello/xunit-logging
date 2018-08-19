@@ -41,6 +41,42 @@ namespace Microsoft.Extensions.Logging
         }
 
         /// <summary>
+        /// Adds an xunit logger to the logging builder.
+        /// </summary>
+        /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
+        /// <param name="outputHelper">The <see cref="ITestOutputHelper"/> to use.</param>
+        /// <param name="configure">A delegate to a method to use to configure the logging options.</param>
+        /// <returns>
+        /// The instance of <see cref="ILoggingBuilder"/> specified by <paramref name="builder"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="builder"/>, <paramref name="outputHelper"/> OR <paramref name="configure"/> is <see langword="null"/>.
+        /// </exception>
+        public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, ITestOutputHelper outputHelper, Action<XUnitLoggerOptions> configure)
+        {
+            if (builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
+
+            if (outputHelper == null)
+            {
+                throw new ArgumentNullException(nameof(outputHelper));
+            }
+
+            if (configure == null)
+            {
+                throw new ArgumentNullException(nameof(configure));
+            }
+
+            var options = new XUnitLoggerOptions();
+
+            configure(options);
+
+            return builder.AddProvider(new XUnitLoggerProvider(outputHelper, options));
+        }
+
+        /// <summary>
         /// Adds an xunit logger to the factory.
         /// </summary>
         /// <param name="factory">The <see cref="ILoggerFactory"/> to use.</param>
@@ -97,42 +133,6 @@ namespace Microsoft.Extensions.Logging
             }
 
             return factory.AddXUnit(outputHelper, (options) => options.Filter = filter);
-        }
-
-        /// <summary>
-        /// Adds an xunit logger to the logging builder.
-        /// </summary>
-        /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
-        /// <param name="outputHelper">The <see cref="ITestOutputHelper"/> to use.</param>
-        /// <param name="configure">A delegate to a method to use to configure the logging options.</param>
-        /// <returns>
-        /// The instance of <see cref="ILoggingBuilder"/> specified by <paramref name="builder"/>.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="builder"/>, <paramref name="outputHelper"/> OR <paramref name="configure"/> is <see langword="null"/>.
-        /// </exception>
-        public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, ITestOutputHelper outputHelper, Action<XUnitLoggerOptions> configure)
-        {
-            if (builder == null)
-            {
-                throw new ArgumentNullException(nameof(builder));
-            }
-
-            if (outputHelper == null)
-            {
-                throw new ArgumentNullException(nameof(outputHelper));
-            }
-
-            if (configure == null)
-            {
-                throw new ArgumentNullException(nameof(configure));
-            }
-
-            var options = new XUnitLoggerOptions();
-
-            configure(options);
-
-            return builder.AddProvider(new XUnitLoggerProvider(outputHelper, options));
         }
 
         /// <summary>

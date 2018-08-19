@@ -45,7 +45,7 @@ namespace MartinCostello.Logging.XUnit
         }
 
         /// <inheritdoc />
-        public virtual ILogger CreateLogger(string categoryName) => new XUnitLogger(categoryName, _outputHelper, _options.Filter);
+        public virtual ILogger CreateLogger(string categoryName) => new XUnitLogger(categoryName, _outputHelper, _options);
 
         /// <inheritdoc />
         public void Dispose()
