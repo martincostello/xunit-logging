@@ -55,6 +55,16 @@ namespace MartinCostello.Logging.XUnit
             Assert.Throws<ArgumentNullException>("filter", () => factory.AddXUnit(outputHelper, null as Func<string, LogLevel, bool>));
         }
 
+        [Fact]
+        public static void ToLoggerFactory_Validates_Parameters()
+        {
+            // Arrange
+            ITestOutputHelper outputHelper = null;
+
+            // Act and Assert
+            Assert.Throws<ArgumentNullException>("outputHelper", () => outputHelper.ToLoggerFactory());
+        }
+
         private static void ConfigureAction(XUnitLoggerOptions options)
         {
         }
