@@ -52,15 +52,15 @@ namespace MartinCostello.Logging.XUnit
         /// </summary>
         /// <param name="name">The name for messages produced by the logger.</param>
         /// <param name="outputHelper">The <see cref="ITestOutputHelper"/> to use.</param>
-        /// <param name="filter">The category filter to apply to logs.</param>
+        /// <param name="options">The <see cref="XUnitLoggerOptions"/> to use.</param>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="name"/> or <paramref name="outputHelper"/> is <see langword="null"/>.
         /// </exception>
-        public XUnitLogger(string name, ITestOutputHelper outputHelper, Func<string, LogLevel, bool> filter)
+        public XUnitLogger(string name, ITestOutputHelper outputHelper, XUnitLoggerOptions options)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
-            Filter = filter ?? ((category, logLevel) => true);
+            Filter = options?.Filter ?? ((category, logLevel) => true);
         }
 
         /// <summary>
@@ -79,6 +79,11 @@ namespace MartinCostello.Logging.XUnit
         /// Gets the name of the logger.
         /// </summary>
         public string Name { get; }
+
+        /// <summary>
+        /// Gets or sets a delegate representing the system clock.
+        /// </summary>
+        internal Func<DateTimeOffset> Clock { get; set; } = () => DateTimeOffset.Now;
 
         /// <inheritdoc />
         public IDisposable BeginScope<TState>(TState state) => NullScope.Instance;
@@ -161,11 +166,8 @@ namespace MartinCostello.Logging.XUnit
                 logBuilder.Append(exception.ToString());
             }
 
-            if (logBuilder.Length > 0)
-            {
-                string formatted = logBuilder.ToString();
-                _outputHelper.WriteLine($"[{DateTimeOffset.Now:u}] {logLevelString}{formatted}");
-            }
+            string formatted = logBuilder.ToString();
+            _outputHelper.WriteLine($"[{Clock():u}] {logLevelString}{formatted}");
 
             logBuilder.Clear();
 
@@ -192,16 +194,16 @@ namespace MartinCostello.Logging.XUnit
                     return "crit";
 
                 case LogLevel.Debug:
-                    return "debug";
+                    return "dbug";
 
                 case LogLevel.Error:
-                    return "error";
+                    return "fail";
 
                 case LogLevel.Information:
                     return "info";
 
                 case LogLevel.Trace:
-                    return "trace";
+                    return "trce";
 
                 case LogLevel.Warning:
                     return "warn";
