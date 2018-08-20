@@ -80,7 +80,9 @@ namespace MyApp.Calculator
 }
 ```
 
-See [here](https://github.com/martincostello/xunit-logging/blob/master/tests/Logging.XUnit.Tests/Example.cs "Example test") for more examples.
+See below for links to more examples:
+  1. [Unit tests](https://github.com/martincostello/xunit-logging/blob/master/tests/Logging.XUnit.Tests/Examples.cs "Unit test examples")
+  1. [Integration tests for an ASP.NET Core HTTP application](https://github.com/martincostello/xunit-logging/blob/master/tests/Logging.XUnit.Tests/Integration/HttpApplicationTests.cs "Integration test examples")
 
 ## Feedback
 
