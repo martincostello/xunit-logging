@@ -13,7 +13,7 @@ namespace MartinCostello.Logging.XUnit
     public static class IntegrationTests
     {
         [Fact]
-        public static void Can_Configure_xunit_For_ILoggerBuilder()
+        public static void Can_Configure_xunit_For_ILoggerBuilder_TestOutputHelper()
         {
             // Arrange
             var mock = new Mock<ITestOutputHelper>();
@@ -28,7 +28,7 @@ namespace MartinCostello.Logging.XUnit
         }
 
         [Fact]
-        public static void Can_Configure_xunit_For_ILoggerBuilder_With_Configuration()
+        public static void Can_Configure_xunit_For_ILoggerBuilder_TestOutputHelper_With_Configuration()
         {
             // Arrange
             var mock = new Mock<ITestOutputHelper>();
@@ -47,6 +47,62 @@ namespace MartinCostello.Logging.XUnit
 
             // Assert
             mock.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Once());
+        }
+
+        [Fact]
+        public static void Can_Configure_xunit_For_ILoggerBuilderAccessor_TestOutputHelper()
+        {
+            // Arrange
+            var mockOutputHelper = new Mock<ITestOutputHelper>();
+            var outputHelper = mockOutputHelper.Object;
+
+            var mockAccessor = new Mock<ITestOutputHelperAccessor>();
+
+            mockAccessor
+                .Setup((p) => p.OutputHelper)
+                .Returns(outputHelper);
+
+            var accessor = mockAccessor.Object;
+
+            var logger = BootstrapBuilder((builder) => builder.AddXUnit(accessor));
+
+            // Act
+            logger.LogError("This is a brand new problem, a problem without any clues.");
+            logger.LogInformation("If you know the clues, it's easy to get through.");
+
+            // Assert
+            mockOutputHelper.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Exactly(2));
+        }
+
+        [Fact]
+        public static void Can_Configure_xunit_For_ILoggerBuilder_TestOutputHelperAccessor_With_Configuration()
+        {
+            // Arrange
+            var mockOutputHelper = new Mock<ITestOutputHelper>();
+            var outputHelper = mockOutputHelper.Object;
+
+            var mockAccessor = new Mock<ITestOutputHelperAccessor>();
+
+            mockAccessor
+                .Setup((p) => p.OutputHelper)
+                .Returns(outputHelper);
+
+            var accessor = mockAccessor.Object;
+
+            var logger = BootstrapBuilder(
+                (builder) =>
+                {
+                    builder.AddXUnit(
+                        mockOutputHelper.Object,
+                        (options) => options.Filter = (_, level) => level >= LogLevel.Error);
+                });
+
+            // Act
+            logger.LogError("This is a brand new problem, a problem without any clues.");
+            logger.LogTrace("If you know the clues, it's easy to get through.");
+
+            // Assert
+            mockOutputHelper.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Once());
         }
 
         [Fact]
@@ -155,6 +211,28 @@ namespace MartinCostello.Logging.XUnit
 
             // Assert
             mock.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Once());
+        }
+
+        [Fact]
+        public static void Can_Configure_xunit_For_ILoggerBuilder()
+        {
+            // Arrange
+            var serviceProvider = new ServiceCollection()
+                .AddLogging((builder) => builder.AddXUnit())
+                .BuildServiceProvider();
+
+            var mock = new Mock<ITestOutputHelper>();
+
+            serviceProvider.GetRequiredService<ITestOutputHelperAccessor>().OutputHelper = mock.Object;
+
+            var logger = serviceProvider.GetRequiredService<ILogger<XUnitLogger>>();
+
+            // Act
+            logger.LogError("This is a brand new problem, a problem without any clues.");
+            logger.LogInformation("If you know the clues, it's easy to get through.");
+
+            // Assert
+            mock.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Exactly(2));
         }
 
         private static ILogger BootstrapBuilder(Action<ILoggingBuilder> configure)

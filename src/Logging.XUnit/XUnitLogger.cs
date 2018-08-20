@@ -37,9 +37,9 @@ namespace MartinCostello.Logging.XUnit
         private static StringBuilder _logBuilder;
 
         /// <summary>
-        /// The <see cref="ITestOutputHelper"/> to use. This field is read-only.
+        /// The <see cref="ITestOutputHelperAccessor"/> to use. This field is read-only.
         /// </summary>
-        private readonly ITestOutputHelper _outputHelper;
+        private readonly ITestOutputHelperAccessor _accessor;
 
         /// <summary>
         /// Gets or sets the filter to use.
@@ -56,9 +56,23 @@ namespace MartinCostello.Logging.XUnit
         /// <paramref name="name"/> or <paramref name="outputHelper"/> is <see langword="null"/>.
         /// </exception>
         public XUnitLogger(string name, ITestOutputHelper outputHelper, XUnitLoggerOptions options)
+            : this(name, new TestOutputHelperAccessor(outputHelper), options)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XUnitLogger"/> class.
+        /// </summary>
+        /// <param name="name">The name for messages produced by the logger.</param>
+        /// <param name="accessor">The <see cref="ITestOutputHelperAccessor"/> to use.</param>
+        /// <param name="options">The <see cref="XUnitLoggerOptions"/> to use.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="name"/> or <paramref name="accessor"/> is <see langword="null"/>.
+        /// </exception>
+        public XUnitLogger(string name, ITestOutputHelperAccessor accessor, XUnitLoggerOptions options)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
-            _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
+            _accessor = accessor ?? throw new ArgumentNullException(nameof(accessor));
 
             Filter = options?.Filter ?? ((category, logLevel) => true);
             IncludeScopes = options?.IncludeScopes ?? false;
@@ -143,6 +157,13 @@ namespace MartinCostello.Logging.XUnit
         /// <param name="exception">The exception related to this message.</param>
         public virtual void WriteMessage(LogLevel logLevel, int eventId, string message, Exception exception)
         {
+            ITestOutputHelper outputHelper = _accessor.OutputHelper;
+
+            if (outputHelper == null)
+            {
+                return;
+            }
+
             StringBuilder logBuilder = _logBuilder;
             _logBuilder = null;
 
@@ -186,7 +207,7 @@ namespace MartinCostello.Logging.XUnit
             }
 
             string formatted = logBuilder.ToString();
-            _outputHelper.WriteLine($"[{Clock():u}] {logLevelString}{formatted}");
+            outputHelper.WriteLine($"[{Clock():u}] {logLevelString}{formatted}");
 
             logBuilder.Clear();
 

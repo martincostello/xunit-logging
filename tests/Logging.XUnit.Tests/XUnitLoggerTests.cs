@@ -26,7 +26,8 @@ namespace MartinCostello.Logging.XUnit
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>("name", () => new XUnitLogger(null, outputHelper, options));
-            Assert.Throws<ArgumentNullException>("outputHelper", () => new XUnitLogger(name, null, options));
+            Assert.Throws<ArgumentNullException>("outputHelper", () => new XUnitLogger(name, null as ITestOutputHelper, options));
+            Assert.Throws<ArgumentNullException>("accessor", () => new XUnitLogger(name, null as ITestOutputHelperAccessor, options));
 
             // Arrange
             var logger = new XUnitLogger(name, outputHelper, options);
@@ -226,6 +227,24 @@ namespace MartinCostello.Logging.XUnit
 
             // Assert
             mock.Verify((p) => p.WriteLine(It.IsAny<string>()), Times.Never());
+        }
+
+        [Fact]
+        public static void XUnitLogger_Log_Does_Nothing_If_No_OutputHelper()
+        {
+            // Arrange
+            string name = "MyName";
+            var accessor = Mock.Of<ITestOutputHelperAccessor>();
+
+            var options = new XUnitLoggerOptions()
+            {
+                Filter = FilterTrue,
+            };
+
+            var logger = new XUnitLogger(name, accessor, options);
+
+            // Act (no Assert)
+            logger.Log(LogLevel.Information, new EventId(2), "state", null, Formatter);
         }
 
         [Fact]

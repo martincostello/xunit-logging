@@ -13,9 +13,9 @@ namespace MartinCostello.Logging.XUnit
     public class XUnitLoggerProvider : ILoggerProvider
     {
         /// <summary>
-        /// The <see cref="ITestOutputHelper"/> to use. This field is readonly.
+        /// The <see cref="ITestOutputHelperAccessor"/> to use. This field is readonly.
         /// </summary>
-        private readonly ITestOutputHelper _outputHelper;
+        private readonly ITestOutputHelperAccessor _accessor;
 
         /// <summary>
         /// The <see cref="XUnitLoggerOptions"/> to use. This field is readonly.
@@ -31,8 +31,21 @@ namespace MartinCostello.Logging.XUnit
         /// <paramref name="outputHelper"/> or <paramref name="options"/> is <see langword="null"/>.
         /// </exception>
         public XUnitLoggerProvider(ITestOutputHelper outputHelper, XUnitLoggerOptions options)
+            : this(new TestOutputHelperAccessor(outputHelper), options)
         {
-            _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XUnitLoggerProvider"/> class.
+        /// </summary>
+        /// <param name="accessor">The <see cref="ITestOutputHelperAccessor"/> to use.</param>
+        /// <param name="options">The options to use for logging to xunit.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="accessor"/> or <paramref name="options"/> is <see langword="null"/>.
+        /// </exception>
+        public XUnitLoggerProvider(ITestOutputHelperAccessor accessor, XUnitLoggerOptions options)
+        {
+            _accessor = accessor ?? throw new ArgumentNullException(nameof(accessor));
             _options = options ?? throw new ArgumentNullException(nameof(options));
         }
 
@@ -45,7 +58,7 @@ namespace MartinCostello.Logging.XUnit
         }
 
         /// <inheritdoc />
-        public virtual ILogger CreateLogger(string categoryName) => new XUnitLogger(categoryName, _outputHelper, _options);
+        public virtual ILogger CreateLogger(string categoryName) => new XUnitLogger(categoryName, _accessor, _options);
 
         /// <inheritdoc />
         public void Dispose()
