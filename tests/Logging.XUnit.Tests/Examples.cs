@@ -10,9 +10,9 @@ using Xunit.Abstractions;
 
 namespace MartinCostello.Logging.XUnit
 {
-    public class Example
+    public class Examples
     {
-        public Example(ITestOutputHelper outputHelper)
+        public Examples(ITestOutputHelper outputHelper)
         {
             OutputHelper = outputHelper;
         }
@@ -20,9 +20,22 @@ namespace MartinCostello.Logging.XUnit
         private ITestOutputHelper OutputHelper { get; }
 
         [Fact]
+        public void Calculator_Sums_Two_Equal_Integers()
+        {
+            // Arrange using conversion to a logger
+            var calculator = new Calculator(OutputHelper.ToLogger<Calculator>());
+
+            // Act
+            int actual = calculator.Sum(2, 2);
+
+            // Assert
+            actual.ShouldBe(4);
+        }
+
+        [Fact]
         public void Calculator_Sums_Two_Different_Integers()
         {
-            // Arrange
+            // Arrange using the logging provider
             var services = new ServiceCollection()
                 .AddLogging((builder) => builder.AddXUnit(OutputHelper))
                 .AddSingleton<Calculator>();
@@ -36,19 +49,6 @@ namespace MartinCostello.Logging.XUnit
 
             // Assert
             actual.ShouldBe(3);
-        }
-
-        [Fact]
-        public void Calculator_Sums_Two_Equal_Integers()
-        {
-            // Arrange
-            var calculator = new Calculator(OutputHelper.ToLogger<Calculator>());
-
-            // Act
-            int actual = calculator.Sum(2, 2);
-
-            // Assert
-            actual.ShouldBe(4);
         }
 
         private sealed class Calculator
