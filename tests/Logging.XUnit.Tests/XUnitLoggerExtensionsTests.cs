@@ -18,13 +18,20 @@ namespace MartinCostello.Logging.XUnit
             // Arrange
             var builder = Mock.Of<ILoggingBuilder>();
             var outputHelper = Mock.Of<ITestOutputHelper>();
+            var accessor = Mock.Of<ITestOutputHelperAccessor>();
 
             // Act and Assert
+            Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder).AddXUnit());
             Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder).AddXUnit(outputHelper));
             Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder).AddXUnit(outputHelper, ConfigureAction));
+            Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder).AddXUnit(accessor));
+            Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder).AddXUnit(accessor, ConfigureAction));
+            Assert.Throws<ArgumentNullException>("accessor", () => builder.AddXUnit(null as ITestOutputHelperAccessor));
+            Assert.Throws<ArgumentNullException>("accessor", () => builder.AddXUnit(null as ITestOutputHelperAccessor, ConfigureAction));
             Assert.Throws<ArgumentNullException>("outputHelper", () => builder.AddXUnit(null as ITestOutputHelper));
-            Assert.Throws<ArgumentNullException>("outputHelper", () => builder.AddXUnit(null, ConfigureAction));
+            Assert.Throws<ArgumentNullException>("outputHelper", () => builder.AddXUnit(null as ITestOutputHelper, ConfigureAction));
             Assert.Throws<ArgumentNullException>("configure", () => builder.AddXUnit(outputHelper, null as Action<XUnitLoggerOptions>));
+            Assert.Throws<ArgumentNullException>("configure", () => builder.AddXUnit(accessor, null as Action<XUnitLoggerOptions>));
         }
 
         [Fact]

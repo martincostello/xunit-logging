@@ -4,6 +4,7 @@
 using System;
 using System.ComponentModel;
 using MartinCostello.Logging.XUnit;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Xunit.Abstractions;
 
 namespace Microsoft.Extensions.Logging
@@ -14,6 +15,91 @@ namespace Microsoft.Extensions.Logging
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class XUnitLoggerExtensions
     {
+        /// <summary>
+        /// Adds an xunit logger to the logging builder.
+        /// </summary>
+        /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
+        /// <returns>
+        /// The instance of <see cref="ILoggingBuilder"/> specified by <paramref name="builder"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="builder"/>  is <see langword="null"/>.
+        /// </exception>
+        public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder)
+        {
+            if (builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
+
+            return builder.AddXUnit(new AmbientTestOutputHelperAccessor(), (_) => { });
+        }
+
+        /// <summary>
+        /// Adds an xunit logger to the logging builder.
+        /// </summary>
+        /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
+        /// <param name="accessor">The <see cref="ITestOutputHelperAccessor"/> to use.</param>
+        /// <returns>
+        /// The instance of <see cref="ILoggingBuilder"/> specified by <paramref name="builder"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="builder"/> or <paramref name="accessor"/> is <see langword="null"/>.
+        /// </exception>
+        public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, ITestOutputHelperAccessor accessor)
+        {
+            if (builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
+
+            if (accessor == null)
+            {
+                throw new ArgumentNullException(nameof(accessor));
+            }
+
+            return builder.AddXUnit(accessor, (_) => { });
+        }
+
+        /// <summary>
+        /// Adds an xunit logger to the logging builder.
+        /// </summary>
+        /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
+        /// <param name="accessor">The <see cref="ITestOutputHelperAccessor"/> to use.</param>
+        /// <param name="configure">A delegate to a method to use to configure the logging options.</param>
+        /// <returns>
+        /// The instance of <see cref="ILoggingBuilder"/> specified by <paramref name="builder"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="builder"/>, <paramref name="accessor"/> OR <paramref name="configure"/> is <see langword="null"/>.
+        /// </exception>
+        public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, ITestOutputHelperAccessor accessor, Action<XUnitLoggerOptions> configure)
+        {
+            if (builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
+
+            if (accessor == null)
+            {
+                throw new ArgumentNullException(nameof(accessor));
+            }
+
+            if (configure == null)
+            {
+                throw new ArgumentNullException(nameof(configure));
+            }
+
+            var options = new XUnitLoggerOptions();
+
+            configure(options);
+
+            builder.AddProvider(new XUnitLoggerProvider(accessor, options));
+            builder.Services.TryAddSingleton(accessor);
+
+            return builder;
+        }
+
         /// <summary>
         /// Adds an xunit logger to the logging builder.
         /// </summary>

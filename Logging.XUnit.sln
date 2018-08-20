@@ -52,6 +52,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MartinCostello.Logging.XUni
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MartinCostello.Logging.XUnit", "src\Logging.XUnit\MartinCostello.Logging.XUnit.csproj", "{BB443063-F523-474D-83E3-D5FF5B075950}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApp", "tests\SampleApp\SampleApp.csproj", "{B690F271-3B5D-4975-A607-AED1768595B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,10 @@ Global
 		{BB443063-F523-474D-83E3-D5FF5B075950}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB443063-F523-474D-83E3-D5FF5B075950}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB443063-F523-474D-83E3-D5FF5B075950}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B690F271-3B5D-4975-A607-AED1768595B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B690F271-3B5D-4975-A607-AED1768595B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B690F271-3B5D-4975-A607-AED1768595B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B690F271-3B5D-4975-A607-AED1768595B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,6 +82,7 @@ Global
 		{F37263E7-6656-4A2B-B02E-538B5F9970BD} = {D0426D09-1FF8-4E1F-A9AF-38DDEE5D7CCA}
 		{331BC69B-DFFC-4174-8A97-6335BF6D86CF} = {278BCCB1-39B2-46DB-9395-7F85995A6132}
 		{BB443063-F523-474D-83E3-D5FF5B075950} = {2684B19D-7D49-4099-8BD2-4D281455EB29}
+		{B690F271-3B5D-4975-A607-AED1768595B1} = {278BCCB1-39B2-46DB-9395-7F85995A6132}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3B9E157C-5E92-4357-B233-281B4530EABD}
