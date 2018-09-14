@@ -20,6 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE = LICENSE
 		Logging.XUnit.ruleset = Logging.XUnit.ruleset
 		Logging.XUnit.snk = Logging.XUnit.snk
+		NuGet.config = NuGet.config
 		README.md = README.md
 		stylecop.json = stylecop.json
 	EndProjectSection
@@ -52,7 +53,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MartinCostello.Logging.XUni
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MartinCostello.Logging.XUnit", "src\Logging.XUnit\MartinCostello.Logging.XUnit.csproj", "{BB443063-F523-474D-83E3-D5FF5B075950}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApp", "tests\SampleApp\SampleApp.csproj", "{B690F271-3B5D-4975-A607-AED1768595B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleApp", "tests\SampleApp\SampleApp.csproj", "{B690F271-3B5D-4975-A607-AED1768595B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
