@@ -13,8 +13,13 @@ while :; do
     lowerI="$(echo $1 | awk '{print tolower($0)}')"
     case $lowerI in
         -\?|-h|--help)
-            echo "./build.sh [--skip-tests]"
+            echo "./build.sh [--skip-tests] [--output <OUTPUT_DIR>]"
             exit 1
+            ;;
+
+        --output)
+            artifacts="$2"
+            shift
             ;;
 
         --skip-tests)
@@ -43,5 +48,9 @@ dotnet build ./Logging.XUnit.sln --output $artifacts --configuration $configurat
 dotnet pack ./src/Logging.XUnit/MartinCostello.Logging.XUnit.csproj --output $artifacts --configuration $configuration || exit 1
 
 if [ $skipTests == 0 ]; then
-    dotnet test ./tests/Logging.XUnit.Tests/MartinCostello.Logging.XUnit.Tests.csproj --output $artifacts --configuration $configuration || exit 1
+    if [ "$TF_BUILD" != "" ]; then
+        dotnet test ./tests/Logging.XUnit.Tests/MartinCostello.Logging.XUnit.Tests.csproj --output $artifacts --configuration $configuration --logger trx || exit 1
+    else
+        dotnet test ./tests/Logging.XUnit.Tests/MartinCostello.Logging.XUnit.Tests.csproj --output $artifacts --configuration $configuration || exit 1
+    fi
 fi
