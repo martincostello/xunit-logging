@@ -2,10 +2,10 @@
 
 [![NuGet](https://buildstats.info/nuget/MartinCostello.Logging.XUnit?includePreReleases=true)](http://www.nuget.org/packages/MartinCostello.Logging.XUnit "Download MartinCostello.Logging.XUnit from NuGet")
 
-| | Windows | Linux |
-|:-:|:-:|:-:|
-| **Build Status** | [![Windows build status](https://img.shields.io/appveyor/ci/martincostello/xunit-logging/master.svg)](https://ci.appveyor.com/project/martincostello/xunit-logging) [![Code coverage](https://codecov.io/gh/martincostello/xunit-logging/branch/master/graph/badge.svg)](https://codecov.io/gh/martincostello/xunit-logging) | [![Linux build status](https://img.shields.io/travis-ci/com/martincostello/xunit-logging/master.svg)](https://travis-ci.com/martincostello/xunit-logging) |
-| **Build History** | [![Windows build history](https://buildstats.info/appveyor/chart/martincostello/xunit-logging?branch=master&includeBuildsFromPullRequest=false)](https://ci.appveyor.com/project/martincostello/xunit-logging) | [![Linux build history](https://buildstats.info/travisci/chart/martincostello/xunit-logging?branch=master&includeBuildsFromPullRequest=false)](https://travis-ci.com/martincostello/xunit-logging) |
+| | Windows | Linux/OS X | Linux/macOS/Windows |
+|:-:|:-:|:-:|:-:|
+| **Build Status** | [![Windows build status](https://img.shields.io/appveyor/ci/martincostello/xunit-logging/master.svg)](https://ci.appveyor.com/project/martincostello/xunit-logging) [![Code coverage](https://codecov.io/gh/martincostello/xunit-logging/branch/master/graph/badge.svg)](https://codecov.io/gh/martincostello/xunit-logging) | [![Linux build status](https://img.shields.io/travis-ci/com/martincostello/xunit-logging/master.svg)](https://travis-ci.com/martincostello/xunit-logging) | [![Azure Pipelines build status](https://dev.azure.com/martincostello/xunit-logging/_apis/build/status/CI)](https://dev.azure.com/martincostello/xunit-logging/_build/latest?definitionId=67) |
+| **Build History** | [![Windows build history](https://buildstats.info/appveyor/chart/martincostello/xunit-logging?branch=master&includeBuildsFromPullRequest=false)](https://ci.appveyor.com/project/martincostello/xunit-logging) | [![Linux build history](https://buildstats.info/travisci/chart/martincostello/xunit-logging?branch=master&includeBuildsFromPullRequest=false)](https://travis-ci.com/martincostello/xunit-logging) | _Not supported_ |
 
 ## Introduction
 
@@ -98,7 +98,7 @@ This project is licensed under the [Apache 2.0](http://www.apache.org/licenses/L
 
 ## Building and Testing
 
-Compiling the library yourself requires Git and the [.NET Core SDK](https://www.microsoft.com/net/download/core "Download the .NET Core SDK") to be installed (version `2.1.400` or later).
+Compiling the library yourself requires Git and the [.NET Core SDK](https://www.microsoft.com/net/download/core "Download the .NET Core SDK") to be installed (version `2.1.402` or later).
 
 To build and test the library locally from a terminal/command-line, run one of the following set of commands:
 
