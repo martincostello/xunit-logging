@@ -207,7 +207,16 @@ namespace MartinCostello.Logging.XUnit
             }
 
             string formatted = logBuilder.ToString();
-            outputHelper.WriteLine($"[{Clock():u}] {logLevelString}{formatted}");
+
+            try
+            {
+                outputHelper.WriteLine($"[{Clock():u}] {logLevelString}{formatted}");
+            }
+            catch (InvalidOperationException)
+            {
+                // Ignore exception if the application tries to log after the test ends
+                // but before the ITestOutputHelper is detached, e.g. "There is no currently active test."
+            }
 
             logBuilder.Clear();
 
