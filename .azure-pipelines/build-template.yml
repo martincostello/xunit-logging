@@ -64,6 +64,7 @@ phases:
           condition: always()
           inputs:
             codeCoverageTool: cobertura
+            failIfCoverageEmpty: true
             reportDirectory: $(Build.StagingDirectory)/**/coverage
             summaryFileLocation: $(Build.StagingDirectory)/**/Cobertura.xml
       - task: PublishBuildArtifacts@1
