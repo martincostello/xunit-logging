@@ -16,9 +16,9 @@ phases:
       ${{ if ne(parameters.queueName, '') }}:
         name: ${{ parameters.queueName }}
       ${{ if and(eq(parameters.queueName, ''), eq(parameters.agentOS, 'Linux')) }}:
-        name: Hosted Linux Preview
+        name: Hosted Ubuntu 1604
       ${{ if and(eq(parameters.queueName, ''), eq(parameters.agentOS, 'macOS')) }}:
-        name: Hosted macOS Preview
+        name: Hosted macOS
       ${{ if and(eq(parameters.queueName, ''), eq(parameters.agentOS, 'Windows')) }}:
         name: Hosted VS2017
     variables:
@@ -29,8 +29,8 @@ phases:
       - ${{ parameters.beforeBuild }}
       - ${{ if eq(parameters.agentOS, 'Linux') }}:
         - script: |
-            apt-get update
-            apt-get install -y --no-install-recommends gettext libcurl4-openssl-dev libicu-dev libssl-dev libunwind8
+            sudo apt-get update
+            sudo apt-get install -y --no-install-recommends gettext libcurl4-openssl-dev libicu-dev libssl-dev libunwind8
           name: InstallDotNetCoreDeps
           displayName: Install .NET Core pre-requisites
       - ${{ if eq(parameters.agentOS, 'Windows') }}:
