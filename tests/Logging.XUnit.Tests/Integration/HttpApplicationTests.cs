@@ -16,14 +16,14 @@ namespace MartinCostello.Logging.XUnit.Integration
         public HttpApplicationTests(HttpServerFixture fixture, ITestOutputHelper outputHelper)
         {
             Fixture = fixture;
-            Fixture.SetOutputHelper(outputHelper);
+            Fixture.OutputHelper = outputHelper;
         }
 
         private HttpServerFixture Fixture { get; }
 
         public void Dispose()
         {
-            Fixture.ClearOutputHelper();
+            Fixture.OutputHelper = null;
         }
 
         [Fact]
