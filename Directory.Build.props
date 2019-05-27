@@ -25,6 +25,7 @@
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <NeutralLanguage>en-US</NeutralLanguage>
     <NoWarn>$(NoWarn)</NoWarn>
+    <NoWarn Condition=" '$(GenerateDocumentationFile)' != 'true' ">$(NoWarn);SA0001</NoWarn>
     <PackageIconUrl></PackageIconUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/martincostello/xunit-logging</PackageProjectUrl>

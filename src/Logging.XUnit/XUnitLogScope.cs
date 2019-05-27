@@ -69,7 +69,7 @@ namespace MartinCostello.Logging.XUnit
 
             Current = new XUnitLogScope(name, state)
             {
-                Parent = temp
+                Parent = temp,
             };
 
             return new DisposableScope();
