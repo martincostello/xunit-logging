@@ -61,7 +61,7 @@ if ($installDotNetSdk -eq $true) {
     $dotnet = Join-Path "$env:DOTNET_INSTALL_DIR" "dotnet.exe"
 }
 else {
-    $dotnet = "dotnet"
+    $dotnet = "dotnet.exe"
 }
 
 function DotNetBuild {
@@ -113,11 +113,12 @@ function DotNetTest {
         }
 
         $nugetPath = Join-Path $env:USERPROFILE ".nuget\packages"
+        $propsFile = Join-Path $solutionPath "Directory.Build.props"
 
-        $openCoverVersion = "4.7.922"
+        $openCoverVersion = (Select-Xml -Path $propsFile -XPath "//PackageReference[@Include='OpenCover']/@Version").Node.'#text'
         $openCoverPath = Join-Path $nugetPath "OpenCover\$openCoverVersion\tools\OpenCover.Console.exe"
 
-        $reportGeneratorVersion = "4.1.9"
+        $reportGeneratorVersion = (Select-Xml -Path $propsFile -XPath "//PackageReference[@Include='ReportGenerator']/@Version").Node.'#text'
         $reportGeneratorPath = Join-Path $nugetPath "ReportGenerator\$reportGeneratorVersion\tools\netcoreapp2.0\ReportGenerator.dll"
 
         $coverageOutput = Join-Path $OutputPath "code-coverage.xml"
