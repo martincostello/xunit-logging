@@ -2,16 +2,7 @@
 <RuleSet Name="Logging.XUnit Rules" Description="This rule set contains rules for the Logging.XUnit solution." ToolsVersion="15.0">
   <IncludeAll Action="Warning" />
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
-    <Rule Id="CA1016" Action="None" />
-    <Rule Id="CA1054" Action="None" />
-    <Rule Id="CA1055" Action="None" />
-    <Rule Id="CA1056" Action="None" />
-    <Rule Id="CA1062" Action="None" />
     <Rule Id="CA1303" Action="None" />
-    <Rule Id="CA1812" Action="None" />
-    <Rule Id="CA1819" Action="None" />
-    <Rule Id="CA2007" Action="None" />
-    <Rule Id="CA2227" Action="None" />
   </Rules>
   <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
     <Rule Id="AD0001" Action="None" />
