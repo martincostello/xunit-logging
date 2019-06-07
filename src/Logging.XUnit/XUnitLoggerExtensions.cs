@@ -94,7 +94,10 @@ namespace Microsoft.Extensions.Logging
 
             configure(options);
 
+#pragma warning disable CA2000
             builder.AddProvider(new XUnitLoggerProvider(accessor, options));
+#pragma warning restore CA2000
+
             builder.Services.TryAddSingleton(accessor);
 
             return builder;
@@ -159,7 +162,9 @@ namespace Microsoft.Extensions.Logging
 
             configure(options);
 
+#pragma warning disable CA2000
             return builder.AddProvider(new XUnitLoggerProvider(outputHelper, options));
+#pragma warning restore CA2000
         }
 
         /// <summary>
@@ -348,9 +353,10 @@ namespace Microsoft.Extensions.Logging
             }
 
             var options = configure();
-            var provider = new XUnitLoggerProvider(outputHelper, configure());
 
-            factory.AddProvider(provider);
+#pragma warning disable CA2000
+            factory.AddProvider(new XUnitLoggerProvider(outputHelper, options));
+#pragma warning restore CA2000
 
             return factory;
         }
