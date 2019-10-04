@@ -36,19 +36,18 @@ namespace MartinCostello.Logging.XUnit
 
             string categoryName = "MyLogger";
 
-            using (var target = new XUnitLoggerProvider(outputHelper, options))
-            {
-                // Act
-                ILogger actual = target.CreateLogger(categoryName);
+            using var target = new XUnitLoggerProvider(outputHelper, options);
 
-                // Assert
-                actual.ShouldNotBeNull();
+            // Act
+            ILogger actual = target.CreateLogger(categoryName);
 
-                var xunit = actual.ShouldBeOfType<XUnitLogger>();
-                xunit.Name.ShouldBe(categoryName);
-                xunit.Filter.ShouldBeSameAs(options.Filter);
-                xunit.IncludeScopes.ShouldBeFalse();
-            }
+            // Assert
+            actual.ShouldNotBeNull();
+
+            var xunit = actual.ShouldBeOfType<XUnitLogger>();
+            xunit.Name.ShouldBe(categoryName);
+            xunit.Filter.ShouldBeSameAs(options.Filter);
+            xunit.IncludeScopes.ShouldBeFalse();
         }
     }
 }

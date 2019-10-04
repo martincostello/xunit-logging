@@ -212,7 +212,9 @@ namespace MartinCostello.Logging.XUnit
             {
                 outputHelper.WriteLine($"[{Clock():u}] {logLevelString}{formatted}");
             }
+#pragma warning disable CA1031
             catch (InvalidOperationException)
+#pragma warning restore CA1031
             {
                 // Ignore exception if the application tries to log after the test ends
                 // but before the ITestOutputHelper is detached, e.g. "There is no currently active test."
@@ -237,29 +239,22 @@ namespace MartinCostello.Logging.XUnit
         /// </returns>
         private static string GetLogLevelString(LogLevel logLevel)
         {
-            switch (logLevel)
+            return logLevel switch
             {
-                case LogLevel.Critical:
-                    return "crit";
+                LogLevel.Critical => "crit",
 
-                case LogLevel.Debug:
-                    return "dbug";
+                LogLevel.Debug => "dbug",
 
-                case LogLevel.Error:
-                    return "fail";
+                LogLevel.Error => "fail",
 
-                case LogLevel.Information:
-                    return "info";
+                LogLevel.Information => "info",
 
-                case LogLevel.Trace:
-                    return "trce";
+                LogLevel.Trace => "trce",
 
-                case LogLevel.Warning:
-                    return "warn";
+                LogLevel.Warning => "warn",
 
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(logLevel));
-            }
+                _ => throw new ArgumentOutOfRangeException(nameof(logLevel)),
+            };
         }
 
         /// <summary>

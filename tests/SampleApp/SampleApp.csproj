@@ -1,10 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <IsPackable>false</IsPackable>
-    <NoWarn>$(NoWarn);CA1801;CA1822</NoWarn>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <NoWarn>$(NoWarn);CA1801;CA1822;SA1600</NoWarn>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
 </Project>

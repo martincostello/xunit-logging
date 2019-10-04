@@ -3,6 +3,8 @@
 
 using System;
 using System.Net.Http;
+using System.Net.Mime;
+using System.Text;
 using System.Threading.Tasks;
 using Shouldly;
 using Xunit;
@@ -30,75 +32,67 @@ namespace MartinCostello.Logging.XUnit.Integration
         public async Task Http_Get_Many()
         {
             // Arrange
-            using (var httpClient = Fixture.CreateClient())
-            {
-                // Act
-                using (var response = await httpClient.GetAsync("api/values"))
-                {
-                    // Assert
-                    response.IsSuccessStatusCode.ShouldBeTrue();
-                }
-            }
+            using var httpClient = Fixture.CreateClient();
+
+            // Act
+            using var response = await httpClient.GetAsync("api/values");
+
+            // Assert
+            response.IsSuccessStatusCode.ShouldBeTrue();
         }
 
         [Fact]
         public async Task Http_Get_Single()
         {
             // Arrange
-            using (var httpClient = Fixture.CreateClient())
-            {
-                // Act
-                using (var response = await httpClient.GetAsync("api/values/a"))
-                {
-                    // Assert
-                    response.IsSuccessStatusCode.ShouldBeTrue();
-                }
-            }
+            using var httpClient = Fixture.CreateClient();
+
+            // Act
+            using var response = await httpClient.GetAsync("api/values/a");
+
+            // Assert
+            response.IsSuccessStatusCode.ShouldBeTrue();
         }
 
         [Fact]
         public async Task Http_Post()
         {
             // Arrange
-            using (var httpClient = Fixture.CreateClient())
-            {
-                // Act
-                using (var response = await httpClient.PostAsJsonAsync("api/values", "d"))
-                {
-                    // Assert
-                    response.IsSuccessStatusCode.ShouldBeTrue();
-                }
-            }
+            using var httpClient = Fixture.CreateClient();
+
+            // Act
+            using var content = new StringContent(@"""d""", Encoding.UTF8, MediaTypeNames.Application.Json);
+            using var response = await httpClient.PostAsync("api/values", content);
+
+            // Assert
+            response.IsSuccessStatusCode.ShouldBeTrue();
         }
 
         [Fact]
         public async Task Http_Put()
         {
             // Arrange
-            using (var httpClient = Fixture.CreateClient())
-            {
-                // Act
-                using (var response = await httpClient.PutAsJsonAsync("api/values/d", "d"))
-                {
-                    // Assert
-                    response.IsSuccessStatusCode.ShouldBeTrue();
-                }
-            }
+            using var httpClient = Fixture.CreateClient();
+
+            // Act
+            using var content = new StringContent(@"""d""", Encoding.UTF8, MediaTypeNames.Application.Json);
+            using var response = await httpClient.PutAsync("api/values/d", content);
+
+            // Assert
+            response.IsSuccessStatusCode.ShouldBeTrue();
         }
 
         [Fact]
         public async Task Http_Delete()
         {
             // Arrange
-            using (var httpClient = Fixture.CreateClient())
-            {
-                // Act
-                using (var response = await httpClient.DeleteAsync("api/values/d"))
-                {
-                    // Assert
-                    response.IsSuccessStatusCode.ShouldBeTrue();
-                }
-            }
+            using var httpClient = Fixture.CreateClient();
+
+            // Act
+            using var response = await httpClient.DeleteAsync("api/values/d");
+
+            // Assert
+            response.IsSuccessStatusCode.ShouldBeTrue();
         }
     }
 }
