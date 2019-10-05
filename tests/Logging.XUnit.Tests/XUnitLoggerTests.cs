@@ -77,11 +77,10 @@ namespace MartinCostello.Logging.XUnit
             var logger = new XUnitLogger(name, outputHelper, options);
 
             // Act
-            using (IDisposable actual = logger.BeginScope(true))
-            {
-                // Assert
-                actual.ShouldNotBeNull();
-            }
+            using IDisposable actual = logger.BeginScope(true);
+
+            // Assert
+            actual.ShouldNotBeNull();
         }
 
         [Fact]

@@ -3,7 +3,6 @@ dist: xenial
 
 language: csharp
 mono: none
-dotnet: 2.2.104
 
 os:
   - linux
