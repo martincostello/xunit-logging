@@ -19,6 +19,7 @@ after_build:
 
 artifacts:
   - path: artifacts\*.nupkg
+  - path: artifacts\*.snupkg
 
 nuget:
   disable_publish_on_pr: true
