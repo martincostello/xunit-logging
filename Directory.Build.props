@@ -47,7 +47,7 @@
     <VersionSuffix Condition=" '$(VersionSuffix)' == '' AND '$(TRAVIS)' == 'true'">beta$([System.Convert]::ToInt32(`$(TRAVIS_BUILD_NUMBER)`).ToString(`0000`))</VersionSuffix>
     <VersionSuffix Condition=" '$(APPVEYOR_REPO_TAG)' == 'true' AND '$(APPVEYOR_REPO_TAG_NAME)' != '' AND '$(APPVEYOR_REPO_TAG_NAME.Contains(`-`))' == 'true' ">$(APPVEYOR_REPO_TAG_NAME.Substring($(APPVEYOR_REPO_TAG_NAME.IndexOf(`-`))).Substring(1))</VersionSuffix>
   </PropertyGroup>
-  <PropertyGroup>
+  <PropertyGroup Condition=" '$(BuildingInsideVisualStudio)' != 'true' ">
     <CollectCoverage>true</CollectCoverage>
     <CoverletOutput Condition=" '$(OutputPath)' != '' ">$(OutputPath)/</CoverletOutput>
     <CoverletOutputFormat>cobertura,json</CoverletOutputFormat>

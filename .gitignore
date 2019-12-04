@@ -12,11 +12,13 @@ Backup*/
 bin
 Bin
 coverage
+coverage.*
 obj
 packages
 TestResults
 UpgradeLog*.htm
 UpgradeLog*.XML
+*.coverage
 *.DotSettings
 *.GhostDoc.xml
 *.log
