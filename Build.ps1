@@ -115,7 +115,7 @@ function DotNetTest {
     $reportGeneratorVersion = (Select-Xml -Path $propsFile -XPath "//PackageReference[@Include='ReportGenerator']/@Version").Node.'#text'
     $reportGeneratorPath = Join-Path $nugetPath "ReportGenerator\$reportGeneratorVersion\tools\netcoreapp2.0\ReportGenerator.dll"
 
-    $coverageOutput = Join-Path $OutputPath "coverage.cobertura.xml"
+    $coverageOutput = Join-Path $OutputPath "coverage.*.cobertura.xml"
     $reportOutput = Join-Path $OutputPath "coverage"
 
     if ($null -ne $env:TF_BUILD) {
