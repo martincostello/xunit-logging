@@ -17,11 +17,6 @@ namespace MartinCostello.Logging.XUnit
         private static readonly AsyncLocal<XUnitLogScope> _value = new AsyncLocal<XUnitLogScope>();
 
         /// <summary>
-        /// The name of the logging scope. This class cannot be inherited.
-        /// </summary>
-        private readonly string _name;
-
-        /// <summary>
         /// The state object for the scope.
         /// </summary>
         private readonly object _state;
@@ -29,11 +24,9 @@ namespace MartinCostello.Logging.XUnit
         /// <summary>
         /// Initializes a new instance of the <see cref="XUnitLogScope"/> class.
         /// </summary>
-        /// <param name="name">The name of the logging scope.</param>
         /// <param name="state">The state object for the scope.</param>
-        internal XUnitLogScope(string name, object state)
+        internal XUnitLogScope(object state)
         {
-            _name = name;
             _state = state;
         }
 
@@ -58,16 +51,15 @@ namespace MartinCostello.Logging.XUnit
         /// <summary>
         /// Pushes a new value into the scope.
         /// </summary>
-        /// <param name="name">The name of the logging scope.</param>
         /// <param name="state">The state object for the scope.</param>
         /// <returns>
         /// An <see cref="IDisposable"/> that pops the scope.
         /// </returns>
-        internal static IDisposable Push(string name, object state)
+        internal static IDisposable Push(object state)
         {
             var temp = Current;
 
-            Current = new XUnitLogScope(name, state)
+            Current = new XUnitLogScope(state)
             {
                 Parent = temp,
             };

@@ -113,7 +113,7 @@ namespace MartinCostello.Logging.XUnit
                 throw new ArgumentNullException(nameof(state));
             }
 
-            return XUnitLogScope.Push(Name, state);
+            return XUnitLogScope.Push(state);
         }
 
         /// <inheritdoc />
@@ -264,7 +264,7 @@ namespace MartinCostello.Logging.XUnit
         private static void GetScopeInformation(StringBuilder builder)
         {
             var current = XUnitLogScope.Current;
-            string scopeLog = string.Empty;
+            string scopeLog;
             int length = builder.Length;
 
             while (current != null)
