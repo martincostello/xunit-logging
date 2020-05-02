@@ -1,17 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E207A447-68A1-4D72-B24F-89FB7890AE12}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
-		.travis.yml = .travis.yml
-		appveyor.yml = appveyor.yml
-		Build.ps1 = Build.ps1
-		build.sh = build.sh
+		build.ps1 = build.ps1
 		CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md
 		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
 		Directory.Build.props = Directory.Build.props
@@ -55,10 +52,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MartinCostello.Logging.XUni
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleApp", "tests\SampleApp\SampleApp.csproj", "{B690F271-3B5D-4975-A607-AED1768595B1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".azure-pipelines", ".azure-pipelines", "{531ACDE3-294C-45FF-882B-EDE4447991B1}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{7764A046-DEE7-4D88-83E2-537DB7767123}"
 	ProjectSection(SolutionItems) = preProject
-		.azure-pipelines\build-template.yml = .azure-pipelines\build-template.yml
-		.azure-pipelines\build.yml = .azure-pipelines\build.yml
+		.github\workflows\build.yml = .github\workflows\build.yml
+		.github\workflows\update-dotnet-sdk.yml = .github\workflows\update-dotnet-sdk.yml
 	EndProjectSection
 EndProject
 Global
@@ -90,7 +87,7 @@ Global
 		{331BC69B-DFFC-4174-8A97-6335BF6D86CF} = {278BCCB1-39B2-46DB-9395-7F85995A6132}
 		{BB443063-F523-474D-83E3-D5FF5B075950} = {2684B19D-7D49-4099-8BD2-4D281455EB29}
 		{B690F271-3B5D-4975-A607-AED1768595B1} = {278BCCB1-39B2-46DB-9395-7F85995A6132}
-		{531ACDE3-294C-45FF-882B-EDE4447991B1} = {E207A447-68A1-4D72-B24F-89FB7890AE12}
+		{7764A046-DEE7-4D88-83E2-537DB7767123} = {D0426D09-1FF8-4E1F-A9AF-38DDEE5D7CCA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3B9E157C-5E92-4357-B233-281B4530EABD}

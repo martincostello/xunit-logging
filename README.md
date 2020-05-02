@@ -2,10 +2,7 @@
 
 [![NuGet](https://buildstats.info/nuget/MartinCostello.Logging.XUnit?includePreReleases=true)](http://www.nuget.org/packages/MartinCostello.Logging.XUnit "Download MartinCostello.Logging.XUnit from NuGet")
 
-| | Windows | Linux/OS X | Linux/macOS/Windows |
-|:-:|:-:|:-:|:-:|
-| **Build Status** | [![Windows build status](https://img.shields.io/appveyor/ci/martincostello/xunit-logging/master.svg)](https://ci.appveyor.com/project/martincostello/xunit-logging) [![Code coverage](https://codecov.io/gh/martincostello/xunit-logging/branch/master/graph/badge.svg)](https://codecov.io/gh/martincostello/xunit-logging) | [![Linux build status](https://img.shields.io/travis/com/martincostello/xunit-logging/master.svg)](https://travis-ci.com/martincostello/xunit-logging) | [![Azure Pipelines build status](https://dev.azure.com/martincostello/xunit-logging/_apis/build/status/CI)](https://dev.azure.com/martincostello/xunit-logging/_build/latest?definitionId=67) |
-| **Build History** | [![Windows build history](https://buildstats.info/appveyor/chart/martincostello/xunit-logging?branch=master&includeBuildsFromPullRequest=false)](https://ci.appveyor.com/project/martincostello/xunit-logging) | [![Linux build history](https://buildstats.info/travisci/chart/martincostello/xunit-logging?branch=master&includeBuildsFromPullRequest=false)](https://travis-ci.com/martincostello/xunit-logging) | [![Build history](https://buildstats.info/azurepipelines/chart/martincostello/xunit-logging/67?branch=master&includeBuildsFromPullRequest=false)](https://dev.azure.com/martincostello/xunit-logging/_build?definitionId=67) |
+[![Build status](https://github.com/martincostello/xunit-logging/workflows/build/badge.svg?branch=master&event=push)](https://github.com/martincostello/xunit-logging/actions?query=workflow%3Abuild+branch%3Amaster+event%3Apush)
 
 ## Introduction
 
@@ -102,18 +99,8 @@ Compiling the library yourself requires Git and the [.NET Core SDK](https://www.
 
 To build and test the library locally from a terminal/command-line, run one of the following set of commands:
 
-**Windows**
-
 ```powershell
 git clone https://github.com/martincostello/xunit-logging.git
 cd xunit-logging
-.\Build.ps1
-```
-
-**Linux/macOS**
-
-```sh
-git clone https://github.com/martincostello/xunit-logging.git
-cd xunit-logging
-./build.sh
+./build.ps1
 ```

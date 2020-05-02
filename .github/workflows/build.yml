@@ -1,0 +1,60 @@
+name: build
+
+on:
+  push:
+    branches: [ master ]
+    tags: [ v* ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ macos-latest, ubuntu-latest, windows-latest ]
+        include:
+          - os: macos-latest
+            os_name: macos
+          - os: ubuntu-latest
+            os_name: linux
+          - os: windows-latest
+            os_name: windows
+
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.201
+
+    - name: Build, Test and Package
+      shell: pwsh
+      run: ./build.ps1
+      env:
+        DOTNET_CLI_TELEMETRY_OPTOUT: true
+        DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+        NUGET_XMLDOC_MODE: skip
+
+    - uses: codecov/codecov-action@v1
+      name: Upload coverage to Codecov
+      with:
+        file: ./artifacts/coverage.netcoreapp3.1.cobertura.xml
+        flags: ${{ matrix.os_name }}
+
+    - name: Publish artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: artifacts-${{ matrix.os_name }}
+        path: ./artifacts
+
+    - name: Publish NuGet packages
+      uses: actions/upload-artifact@v1
+      with:
+        name: packages-${{ matrix.os_name }}
+        path: ./artifacts/packages
