@@ -107,7 +107,7 @@ To build and test the library locally from a terminal/command-line, run one of t
 ```powershell
 git clone https://github.com/martincostello/xunit-logging.git
 cd xunit-logging
-.\Build.ps1
+.\build.ps1
 ```
 
 **Linux/macOS**
