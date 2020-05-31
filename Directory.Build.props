@@ -21,8 +21,7 @@
     <Company>https://github.com/martincostello/xunit-logging</Company>
     <ContinuousIntegrationBuild Condition=" '$(CI)' != '' ">true</ContinuousIntegrationBuild>
     <Copyright>Martin Costello (c) $([System.DateTime]::Now.ToString(yyyy))</Copyright>
-    <!-- Enable deterministic builds for CI once https://github.com/tonerdo/coverlet/issues/363 fixed -->
-    <Deterministic>false</Deterministic>
+    <Deterministic>true</Deterministic>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <GenerateGitMetadata Condition=" '$(CI)' != '' and '$(GenerateGitMetadata)' == '' ">true</GenerateGitMetadata>
