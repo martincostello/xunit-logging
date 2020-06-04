@@ -1,0 +1,17 @@
+version: 2
+updates:
+- package-ecosystem: nuget
+  directory: "/"
+  schedule:
+    interval: daily
+    timezone: Europe/London
+    reviewers:
+      - "martincostello"
+  open-pull-requests-limit: 99
+  ignore:
+  - dependency-name: Microsoft.Extensions.Logging
+    versions:
+    - "> 2.0.0"
+  - dependency-name: xunit.abstractions
+    versions:
+    - "> 2.0.1, < 2.1"
