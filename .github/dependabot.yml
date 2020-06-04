@@ -5,8 +5,8 @@ updates:
   schedule:
     interval: daily
     timezone: Europe/London
-    reviewers:
-      - "martincostello"
+  reviewers:
+    - "martincostello"
   open-pull-requests-limit: 99
   ignore:
   - dependency-name: Microsoft.Extensions.Logging
