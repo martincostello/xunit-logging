@@ -28,39 +28,4 @@
       </AssemblyAttribute>
     </ItemGroup>
   </Target>
-  <!--
-    Workaround bug in generation of _LocalTopLevelSourceRoot file path.
-    See https://github.com/coverlet-coverage/coverlet/pull/863.
-  -->
-  <Target Name="ReferencedPathMaps" BeforeTargets="CoreCompile" DependsOnTargets="ResolveProjectReferences" >
-    <MSBuild Projects="@(AnnotatedProjects->'%(FullPath)')"
-             Targets="CoverletGetPathMap"
-             Properties="TargetFramework=%(AnnotatedProjects.NearestTargetFramework)"
-             SkipNonexistentTargets="true">
-      <Output TaskParameter="TargetOutputs"
-              ItemName="_LocalTopLevelSourceRoot" />
-    </MSBuild>
-    <ItemGroup>
-      <_byProject Include="@(_LocalTopLevelSourceRoot->'%(MSBuildSourceProjectFile)')" OriginalPath="%(Identity)" />
-      <_mapping Include="@(_byProject->'%(Identity)|%(OriginalPath)=%(MappedPath)')" />
-    </ItemGroup>
-    <PropertyGroup>
-      <_sourceRootMappingFilePath>$([System.IO.Path]::Combine('$(OutputPath)', 'CoverletSourceRootsMapping'))</_sourceRootMappingFilePath>
-    </PropertyGroup>
-    <WriteLinesToFile File="$(_sourceRootMappingFilePath)" Lines="@(_mapping)"
-                      Overwrite="true" Encoding="Unicode"
-                      Condition="'@(_mapping)'!=''"
-                      WriteOnlyWhenDifferent="true" />
-    <ItemGroup>
-      <FileWrites Include="$(_sourceRootMappingFilePath)" Condition="'@(_mapping)'!=''" />
-    </ItemGroup>
-  </Target>
-  <Target Name="CoverletGetPathMap"
-          DependsOnTargets="InitializeSourceRootMappedPaths"
-          Returns="@(_LocalTopLevelSourceRoot)"
-          Condition="'$(DeterministicSourcePaths)' == 'true'">
-    <ItemGroup>
-      <_LocalTopLevelSourceRoot Include="@(SourceRoot)" Condition="'%(SourceRoot.NestedRoot)' == ''"/>
-    </ItemGroup>
-  </Target>
 </Project>
