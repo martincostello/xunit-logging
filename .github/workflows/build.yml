@@ -2,10 +2,10 @@ name: build
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
     tags: [ v* ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -60,7 +60,7 @@ jobs:
 
     - name: Push NuGet packages to MyGet
       run: dotnet nuget push "artifacts\packages\*.nupkg" --api-key ${{ secrets.MYGET_TOKEN }} --skip-duplicate --source https://www.myget.org/F/martincostello/api/v2/package
-      if: ${{ (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v')) && runner.os == 'Windows' }}
+      if: ${{ (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')) && runner.os == 'Windows' }}
 
     - name: Push NuGet packages to NuGet.org
       run: dotnet nuget push "artifacts\packages\*.nupkg" --api-key ${{ secrets.NUGET_TOKEN }} --skip-duplicate --source https://api.nuget.org/v3/index.json

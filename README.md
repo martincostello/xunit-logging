@@ -2,7 +2,7 @@
 
 [![NuGet](https://buildstats.info/nuget/MartinCostello.Logging.XUnit?includePreReleases=true)](http://www.nuget.org/packages/MartinCostello.Logging.XUnit "Download MartinCostello.Logging.XUnit from NuGet")
 
-[![Build status](https://github.com/martincostello/xunit-logging/workflows/build/badge.svg?branch=master&event=push)](https://github.com/martincostello/xunit-logging/actions?query=workflow%3Abuild+branch%3Amaster+event%3Apush)
+[![Build status](https://github.com/martincostello/xunit-logging/workflows/build/badge.svg?branch=main&event=push)](https://github.com/martincostello/xunit-logging/actions?query=workflow%3Abuild+branch%3Amain+event%3Apush)
 
 ## Introduction
 
@@ -78,8 +78,8 @@ namespace MyApp.Calculator
 ```
 
 See below for links to more examples:
-  1. [Unit tests](https://github.com/martincostello/xunit-logging/blob/master/tests/Logging.XUnit.Tests/Examples.cs "Unit test examples")
-  1. [Integration tests for an ASP.NET Core HTTP application](https://github.com/martincostello/xunit-logging/blob/master/tests/Logging.XUnit.Tests/Integration/HttpApplicationTests.cs "Integration test examples")
+  1. [Unit tests](https://github.com/martincostello/xunit-logging/blob/main/tests/Logging.XUnit.Tests/Examples.cs "Unit test examples")
+  1. [Integration tests for an ASP.NET Core HTTP application](https://github.com/martincostello/xunit-logging/blob/main/tests/Logging.XUnit.Tests/Integration/HttpApplicationTests.cs "Integration test examples")
 
 ## Feedback
 
