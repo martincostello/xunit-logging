@@ -176,7 +176,7 @@ namespace MartinCostello.Logging.XUnit
 
             logBuilder.Append(LogLevelPadding);
             logBuilder.Append(Name);
-            logBuilder.Append("[");
+            logBuilder.Append('[');
             logBuilder.Append(eventId);
             logBuilder.AppendLine("]");
 
