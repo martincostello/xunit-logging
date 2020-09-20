@@ -1,0 +1,28 @@
+name: automerge
+on:
+  pull_request:
+    types:
+      - edited
+      - labeled
+      - opened
+      - ready_for_review
+      - reopened
+      - synchronize
+      - unlabeled
+      - unlocked
+  pull_request_review:
+    types:
+      - submitted
+  check_suite:
+    types:
+      - completed
+  status: {}
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: automerge
+        uses: "pascalgn/automerge-action@f81beb99aef41bb55ad072857d43073fba833a98"
+        env:
+          GITHUB_TOKEN: "${{ secrets.ACCESS_TOKEN }}"
+          MERGE_LABELS: "automerge,!blocked"
