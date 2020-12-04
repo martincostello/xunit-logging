@@ -2,7 +2,6 @@
   <ItemGroup>
     <PackageVersion Include="coverlet.msbuild" Version="2.9.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.2" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.0.0" />
     <PackageVersion Include="Moq" Version="4.15.2" />
@@ -21,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="coverlet.msbuild" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" PrivateAssets="All" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
     <PackageReference Include="ReportGenerator" PrivateAssets="All" />
     <PackageReference Include="StyleCop.Analyzers" PrivateAssets="All" />
