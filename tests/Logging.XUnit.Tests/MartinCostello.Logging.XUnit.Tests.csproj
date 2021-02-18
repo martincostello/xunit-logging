@@ -7,7 +7,7 @@
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <RootNamespace>MartinCostello.Logging.XUnit</RootNamespace>
     <Summary>$(Description)</Summary>
-    <TargetFrameworks>net5.0</TargetFrameworks>
+    <TargetFrameworks>net6.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
