@@ -17,18 +17,18 @@ namespace MartinCostello.Logging.XUnit
         private static readonly AsyncLocal<XUnitLogScope> _value = new AsyncLocal<XUnitLogScope>();
 
         /// <summary>
-        /// The state object for the scope.
-        /// </summary>
-        private readonly object _state;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="XUnitLogScope"/> class.
         /// </summary>
         /// <param name="state">The state object for the scope.</param>
         internal XUnitLogScope(object state)
         {
-            _state = state;
+            State = state;
         }
+
+        /// <summary>
+        /// Gets the state object for the scope.
+        /// </summary>
+        public object State { get; }
 
         /// <summary>
         /// Gets or sets the current scope.
@@ -46,7 +46,7 @@ namespace MartinCostello.Logging.XUnit
 
         /// <inheritdoc />
         public override string ToString()
-            => _state.ToString();
+            => State.ToString();
 
         /// <summary>
         /// Pushes a new value into the scope.

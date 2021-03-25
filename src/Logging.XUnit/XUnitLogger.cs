@@ -2,6 +2,8 @@
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
@@ -269,16 +271,20 @@ namespace MartinCostello.Logging.XUnit
 
             while (current != null)
             {
-                if (length == builder.Length)
+                foreach (var property in StringifyScope(current))
                 {
-                    scopeLog = $"=> {current}";
-                }
-                else
-                {
-                    scopeLog = $"=> {current} ";
+                    if (length == builder.Length)
+                    {
+                        scopeLog = $"=> {property}";
+                    }
+                    else
+                    {
+                        scopeLog = $"=> {property} ";
+                    }
+
+                    builder.Insert(length, scopeLog);
                 }
 
-                builder.Insert(length, scopeLog);
                 current = current.Parent;
             }
 
@@ -286,6 +292,33 @@ namespace MartinCostello.Logging.XUnit
             {
                 builder.Insert(length, MessagePadding);
                 builder.AppendLine();
+            }
+        }
+
+        /// <summary>
+        /// Returns one or more stringified properties from the log scope.
+        /// </summary>
+        /// <param name="scope">The <see cref="XUnitLogScope"/> to stringify.</param>
+        /// <returns>An enumeration of scope properties from the current scope.</returns>
+        private static IEnumerable<string> StringifyScope(XUnitLogScope scope)
+        {
+            if (scope.State is IEnumerable<KeyValuePair<string, object>> pairs)
+            {
+                foreach (var pair in pairs)
+                {
+                    yield return $"{pair.Key}: {pair.Value}";
+                }
+            }
+            else if (scope.State is IEnumerable<string> entries)
+            {
+                foreach (var entry in entries)
+                {
+                    yield return entry;
+                }
+            }
+            else
+            {
+                yield return scope.ToString();
             }
         }
     }
