@@ -4,6 +4,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
@@ -266,32 +267,26 @@ namespace MartinCostello.Logging.XUnit
         private static void GetScopeInformation(StringBuilder builder)
         {
             var current = XUnitLogScope.Current;
-            string scopeLog;
-            int length = builder.Length;
 
+            var stack = new Stack<XUnitLogScope>();
             while (current != null)
             {
-                foreach (var property in StringifyScope(current))
-                {
-                    if (length == builder.Length)
-                    {
-                        scopeLog = $"=> {property}";
-                    }
-                    else
-                    {
-                        scopeLog = $"=> {property} ";
-                    }
-
-                    builder.Insert(length, scopeLog);
-                }
-
+                stack.Push(current);
                 current = current.Parent;
             }
 
-            if (builder.Length > length)
+            var depth = 0;
+            string DepthPadding(int depth) => new string(' ', depth * 2);
+
+            while (stack.Any())
             {
-                builder.Insert(length, MessagePadding);
-                builder.AppendLine();
+                var elem = stack.Pop();
+                foreach (var property in StringifyScope(elem))
+                {
+                    builder.AppendLine($"{MessagePadding}{DepthPadding(depth)}=> {property}");
+                }
+
+                depth++;
             }
         }
 
