@@ -2,6 +2,7 @@
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
+using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Shouldly;
@@ -452,7 +453,12 @@ namespace MartinCostello.Logging.XUnit
 
             string expected = string.Join(
                 Environment.NewLine,
-                new[] { "[2018-08-19 16:12:16Z] info: MyName[0]", "      => _ => __ => ___ => [null]", "      Message|False|False" });
+                "[2018-08-19 16:12:16Z] info: MyName[0]",
+                "      => _",
+                "        => __",
+                "          => ___",
+                "            => {OriginalFormat}: [null]",
+                "      Message|False|False");
 
             // Act
             using (logger.BeginScope("_"))
@@ -467,6 +473,180 @@ namespace MartinCostello.Logging.XUnit
                         }
                     }
                 }
+            }
+
+            // Assert
+            mock.Verify((p) => p.WriteLine(expected), Times.Once());
+        }
+
+        [Fact]
+        public static void XUnitLogger_Log_Logs_Message_If_Scopes_Included_And_There_Is_Scope_Of_KeyValuePair()
+        {
+            // Arrange
+            var mock = new Mock<ITestOutputHelper>();
+
+            string name = "MyName";
+            var outputHelper = mock.Object;
+
+            var options = new XUnitLoggerOptions()
+            {
+                Filter = FilterTrue,
+                IncludeScopes = true,
+            };
+
+            var logger = new XUnitLogger(name, outputHelper, options)
+            {
+                Clock = StaticClock,
+            };
+
+            string expected = string.Join(
+                Environment.NewLine,
+                "[2018-08-19 16:12:16Z] info: MyName[0]",
+                "      => ScopeKey: ScopeValue",
+                "      Message|False|False");
+
+            // Act
+            using (logger.BeginScope(new[]
+            {
+                new KeyValuePair<string, object>("ScopeKey", "ScopeValue"),
+            }))
+            {
+                logger.Log<string>(LogLevel.Information, 0, null, null, Formatter);
+            }
+
+            // Assert
+            mock.Verify((p) => p.WriteLine(expected), Times.Once());
+        }
+
+        [Fact]
+        public static void XUnitLogger_Log_Logs_Message_If_Scopes_Included_And_There_Is_Scope_Of_KeyValuePairs()
+        {
+            // Arrange
+            var mock = new Mock<ITestOutputHelper>();
+
+            string name = "MyName";
+            var outputHelper = mock.Object;
+
+            var options = new XUnitLoggerOptions()
+            {
+                Filter = FilterTrue,
+                IncludeScopes = true,
+            };
+
+            var logger = new XUnitLogger(name, outputHelper, options)
+            {
+                Clock = StaticClock,
+            };
+
+            string expected = string.Join(
+                Environment.NewLine,
+                "[2018-08-19 16:12:16Z] info: MyName[0]",
+                "      => ScopeKeyOne: ScopeValueOne",
+                "      => ScopeKeyTwo: ScopeValueTwo",
+                "      => ScopeKeyThree: ScopeValueThree",
+                "      Message|False|False");
+
+            // Act
+            using (logger.BeginScope(new[]
+            {
+                new KeyValuePair<string, object>("ScopeKeyOne", "ScopeValueOne"),
+                new KeyValuePair<string, object>("ScopeKeyTwo", "ScopeValueTwo"),
+                new KeyValuePair<string, object>("ScopeKeyThree", "ScopeValueThree"),
+            }))
+            {
+                logger.Log<string>(LogLevel.Information, 0, null, null, Formatter);
+            }
+
+            // Assert
+            mock.Verify((p) => p.WriteLine(expected), Times.Once());
+        }
+
+        [Fact]
+        public static void XUnitLogger_Log_Logs_Message_If_Scopes_Included_And_There_Are_Scopes_Of_KeyValuePairs()
+        {
+            // Arrange
+            var mock = new Mock<ITestOutputHelper>();
+
+            string name = "MyName";
+            var outputHelper = mock.Object;
+
+            var options = new XUnitLoggerOptions()
+            {
+                Filter = FilterTrue,
+                IncludeScopes = true,
+            };
+
+            var logger = new XUnitLogger(name, outputHelper, options)
+            {
+                Clock = StaticClock,
+            };
+
+            string expected = string.Join(
+                Environment.NewLine,
+                "[2018-08-19 16:12:16Z] info: MyName[0]",
+                "      => ScopeKeyOne: ScopeValueOne",
+                "      => ScopeKeyTwo: ScopeValueTwo",
+                "      => ScopeKeyThree: ScopeValueThree",
+                "        => ScopeKeyFour: ScopeValueFour",
+                "        => ScopeKeyFive: ScopeValueFive",
+                "        => ScopeKeySix: ScopeValueSix",
+                "      Message|False|False");
+
+            // Act
+            using (logger.BeginScope(new[]
+            {
+                new KeyValuePair<string, object>("ScopeKeyOne", "ScopeValueOne"),
+                new KeyValuePair<string, object>("ScopeKeyTwo", "ScopeValueTwo"),
+                new KeyValuePair<string, object>("ScopeKeyThree", "ScopeValueThree"),
+            }))
+            {
+                using (logger.BeginScope(new[]
+                {
+                    new KeyValuePair<string, object>("ScopeKeyFour", "ScopeValueFour"),
+                    new KeyValuePair<string, object>("ScopeKeyFive", "ScopeValueFive"),
+                    new KeyValuePair<string, object>("ScopeKeySix", "ScopeValueSix"),
+                }))
+                {
+                    logger.Log<string>(LogLevel.Information, 0, null, null, Formatter);
+                }
+            }
+
+            // Assert
+            mock.Verify((p) => p.WriteLine(expected), Times.Once());
+        }
+
+        [Fact]
+        public static void XUnitLogger_Log_Logs_Message_If_Scopes_Included_And_There_Is_Scope_Of_IEnumerable()
+        {
+            // Arrange
+            var mock = new Mock<ITestOutputHelper>();
+
+            string name = "MyName";
+            var outputHelper = mock.Object;
+
+            var options = new XUnitLoggerOptions()
+            {
+                Filter = FilterTrue,
+                IncludeScopes = true,
+            };
+
+            var logger = new XUnitLogger(name, outputHelper, options)
+            {
+                Clock = StaticClock,
+            };
+
+            string expected = string.Join(
+                Environment.NewLine,
+                "[2018-08-19 16:12:16Z] info: MyName[0]",
+                "      => ScopeKeyOne",
+                "      => ScopeKeyTwo",
+                "      => ScopeKeyThree",
+                "      Message|False|False");
+
+            // Act
+            using (logger.BeginScope(new[] { "ScopeKeyOne", "ScopeKeyTwo", "ScopeKeyThree" }))
+            {
+                logger.Log<string>(LogLevel.Information, 0, null, null, Formatter);
             }
 
             // Assert
