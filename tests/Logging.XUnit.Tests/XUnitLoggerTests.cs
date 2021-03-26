@@ -501,7 +501,9 @@ namespace MartinCostello.Logging.XUnit
 
             string expected = string.Join(
                 Environment.NewLine,
-                new[] { "[2018-08-19 16:12:16Z] info: MyName[0]", "      => ScopeKey: ScopeValue", "      Message|False|False" });
+                "[2018-08-19 16:12:16Z] info: MyName[0]",
+                "      => ScopeKey: ScopeValue",
+                "      Message|False|False");
 
             // Act
             using (logger.BeginScope(new[]

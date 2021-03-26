@@ -276,14 +276,18 @@ namespace MartinCostello.Logging.XUnit
             }
 
             var depth = 0;
-            string DepthPadding(int depth) => new string(' ', depth * 2);
+            static string DepthPadding(int depth) => new string(' ', depth * 2);
 
-            while (stack.Any())
+            while (stack.Count > 0)
             {
                 var elem = stack.Pop();
                 foreach (var property in StringifyScope(elem))
                 {
-                    builder.AppendLine($"{MessagePadding}{DepthPadding(depth)}=> {property}");
+                    builder.Append(MessagePadding)
+                           .Append(DepthPadding(depth))
+                           .Append("=> ")
+                           .Append(property)
+                           .AppendLine();
                 }
 
                 depth++;
@@ -301,7 +305,7 @@ namespace MartinCostello.Logging.XUnit
             {
                 foreach (var pair in pairs)
                 {
-                    yield return $"{pair.Key}: {pair.Value}";
+                    yield return pair.Key + ": " + pair.Value;
                 }
             }
             else if (scope.State is IEnumerable<string> entries)
