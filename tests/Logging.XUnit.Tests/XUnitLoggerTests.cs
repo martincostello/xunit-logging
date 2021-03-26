@@ -615,6 +615,44 @@ namespace MartinCostello.Logging.XUnit
             mock.Verify((p) => p.WriteLine(expected), Times.Once());
         }
 
+        [Fact]
+        public static void XUnitLogger_Log_Logs_Message_If_Scopes_Included_And_There_Is_Scope_Of_IEnumerable()
+        {
+            // Arrange
+            var mock = new Mock<ITestOutputHelper>();
+
+            string name = "MyName";
+            var outputHelper = mock.Object;
+
+            var options = new XUnitLoggerOptions()
+            {
+                Filter = FilterTrue,
+                IncludeScopes = true,
+            };
+
+            var logger = new XUnitLogger(name, outputHelper, options)
+            {
+                Clock = StaticClock,
+            };
+
+            string expected = string.Join(
+                Environment.NewLine,
+                "[2018-08-19 16:12:16Z] info: MyName[0]",
+                "      => ScopeKeyOne",
+                "      => ScopeKeyTwo",
+                "      => ScopeKeyThree",
+                "      Message|False|False");
+
+            // Act
+            using (logger.BeginScope(new[] { "ScopeKeyOne", "ScopeKeyTwo", "ScopeKeyThree" }))
+            {
+                logger.Log<string>(LogLevel.Information, 0, null, null, Formatter);
+            }
+
+            // Assert
+            mock.Verify((p) => p.WriteLine(expected), Times.Once());
+        }
+
         private static DateTimeOffset StaticClock() => new DateTimeOffset(2018, 08, 19, 17, 12, 16, TimeSpan.FromHours(1));
 
         private static bool FilterTrue(string categoryName, LogLevel level) => true;
