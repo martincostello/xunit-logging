@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyTitle>Logging Extensions for xunit</AssemblyTitle>
-    <DebugType>full</DebugType>
     <Description>Extensions for Microsoft.Extensions.Logging for xunit.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn)</NoWarn>
