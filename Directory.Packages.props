@@ -2,7 +2,7 @@
   <ItemGroup>
     <PackageVersion Include="coverlet.msbuild" Version="3.0.3" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.4" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.0.0" />
     <PackageVersion Include="Moq" Version="4.16.1" />
     <PackageVersion Include="ReportGenerator" Version="4.8.7" />
