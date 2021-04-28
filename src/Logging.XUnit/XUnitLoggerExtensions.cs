@@ -206,7 +206,7 @@ namespace Microsoft.Extensions.Logging
         /// <exception cref="ArgumentNullException">
         /// <paramref name="factory"/>, <paramref name="outputHelper"/> or <paramref name="filter"/> is <see langword="null"/>.
         /// </exception>
-        public static ILoggerFactory AddXUnit(this ILoggerFactory factory, ITestOutputHelper outputHelper, Func<string, LogLevel, bool> filter)
+        public static ILoggerFactory AddXUnit(this ILoggerFactory factory, ITestOutputHelper outputHelper, Func<string?, LogLevel, bool> filter)
         {
             if (factory == null)
             {

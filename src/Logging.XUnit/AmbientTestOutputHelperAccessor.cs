@@ -15,13 +15,13 @@ namespace MartinCostello.Logging.XUnit
         /// <summary>
         /// A backing field for the <see cref="ITestOutputHelper"/> for the current thread.
         /// </summary>
-        private static readonly AsyncLocal<ITestOutputHelper> _current = new AsyncLocal<ITestOutputHelper>();
+        private static readonly AsyncLocal<ITestOutputHelper?> _current = new AsyncLocal<ITestOutputHelper?>();
 
 #pragma warning disable CA1822
         /// <summary>
         /// Gets or sets the current <see cref="ITestOutputHelper"/>.
         /// </summary>
-        public ITestOutputHelper OutputHelper
+        public ITestOutputHelper? OutputHelper
         {
             get { return _current.Value; }
             set { _current.Value = value; }

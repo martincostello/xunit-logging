@@ -14,7 +14,7 @@ namespace MartinCostello.Logging.XUnit
         /// <summary>
         /// The scope for the current thread.
         /// </summary>
-        private static readonly AsyncLocal<XUnitLogScope> _value = new AsyncLocal<XUnitLogScope>();
+        private static readonly AsyncLocal<XUnitLogScope?> _value = new AsyncLocal<XUnitLogScope?>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="XUnitLogScope"/> class.
@@ -33,7 +33,7 @@ namespace MartinCostello.Logging.XUnit
         /// <summary>
         /// Gets or sets the current scope.
         /// </summary>
-        internal static XUnitLogScope Current
+        internal static XUnitLogScope? Current
         {
             get { return _value.Value; }
             set { _value.Value = value; }
@@ -42,7 +42,7 @@ namespace MartinCostello.Logging.XUnit
         /// <summary>
         /// Gets the parent scope.
         /// </summary>
-        internal XUnitLogScope Parent { get; private set; }
+        internal XUnitLogScope? Parent { get; private set; }
 
         /// <inheritdoc />
         public override string ToString()
@@ -75,7 +75,7 @@ namespace MartinCostello.Logging.XUnit
             /// <inheritdoc />
             public void Dispose()
             {
-                Current = Current.Parent;
+                Current = Current?.Parent;
             }
         }
     }

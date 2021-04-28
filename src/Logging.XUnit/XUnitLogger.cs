@@ -37,7 +37,7 @@ namespace MartinCostello.Logging.XUnit
         /// The current builder to use to generate log messages.
         /// </summary>
         [ThreadStatic]
-        private static StringBuilder _logBuilder;
+        private static StringBuilder? _logBuilder;
 
         /// <summary>
         /// The <see cref="ITestOutputHelperAccessor"/> to use. This field is read-only.
@@ -47,7 +47,7 @@ namespace MartinCostello.Logging.XUnit
         /// <summary>
         /// Gets or sets the filter to use.
         /// </summary>
-        private Func<string, LogLevel, bool> _filter;
+        private Func<string?, LogLevel, bool> _filter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="XUnitLogger"/> class.
@@ -58,7 +58,7 @@ namespace MartinCostello.Logging.XUnit
         /// <exception cref="ArgumentNullException">
         /// <paramref name="name"/> or <paramref name="outputHelper"/> is <see langword="null"/>.
         /// </exception>
-        public XUnitLogger(string name, ITestOutputHelper outputHelper, XUnitLoggerOptions options)
+        public XUnitLogger(string name, ITestOutputHelper outputHelper, XUnitLoggerOptions? options)
             : this(name, new TestOutputHelperAccessor(outputHelper), options)
         {
         }
@@ -72,12 +72,12 @@ namespace MartinCostello.Logging.XUnit
         /// <exception cref="ArgumentNullException">
         /// <paramref name="name"/> or <paramref name="accessor"/> is <see langword="null"/>.
         /// </exception>
-        public XUnitLogger(string name, ITestOutputHelperAccessor accessor, XUnitLoggerOptions options)
+        public XUnitLogger(string name, ITestOutputHelperAccessor accessor, XUnitLoggerOptions? options)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             _accessor = accessor ?? throw new ArgumentNullException(nameof(accessor));
 
-            Filter = options?.Filter ?? ((category, logLevel) => true);
+            _filter = options?.Filter ?? ((category, logLevel) => true);
             IncludeScopes = options?.IncludeScopes ?? false;
         }
 
@@ -87,7 +87,7 @@ namespace MartinCostello.Logging.XUnit
         /// <exception cref="ArgumentNullException">
         /// <paramref name="value"/> is <see langword="null"/>.
         /// </exception>
-        public Func<string, LogLevel, bool> Filter
+        public Func<string?, LogLevel, bool> Filter
         {
             get { return _filter; }
             set { _filter = value ?? throw new ArgumentNullException(nameof(value)); }
@@ -131,7 +131,7 @@ namespace MartinCostello.Logging.XUnit
         }
 
         /// <inheritdoc />
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState? state, Exception? exception, Func<TState?, Exception?, string?> formatter)
         {
             if (!IsEnabled(logLevel))
             {
@@ -143,7 +143,7 @@ namespace MartinCostello.Logging.XUnit
                 throw new ArgumentNullException(nameof(formatter));
             }
 
-            string message = formatter(state, exception);
+            string? message = formatter(state, exception);
 
             if (!string.IsNullOrEmpty(message) || exception != null)
             {
@@ -158,16 +158,16 @@ namespace MartinCostello.Logging.XUnit
         /// <param name="eventId">The Id of the event.</param>
         /// <param name="message">The message to write.</param>
         /// <param name="exception">The exception related to this message.</param>
-        public virtual void WriteMessage(LogLevel logLevel, int eventId, string message, Exception exception)
+        public virtual void WriteMessage(LogLevel logLevel, int eventId, string? message, Exception? exception)
         {
-            ITestOutputHelper outputHelper = _accessor.OutputHelper;
+            ITestOutputHelper? outputHelper = _accessor.OutputHelper;
 
             if (outputHelper == null)
             {
                 return;
             }
 
-            StringBuilder logBuilder = _logBuilder;
+            StringBuilder? logBuilder = _logBuilder;
             _logBuilder = null;
 
             if (logBuilder == null)
@@ -196,7 +196,7 @@ namespace MartinCostello.Logging.XUnit
 
                 int length = logBuilder.Length;
                 logBuilder.Append(message);
-                logBuilder.Replace(Environment.NewLine, NewLineWithMessagePadding, length, message.Length);
+                logBuilder.Replace(Environment.NewLine, NewLineWithMessagePadding, length, message!.Length);
             }
 
             if (exception != null)

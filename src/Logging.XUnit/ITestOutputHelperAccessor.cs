@@ -13,6 +13,6 @@ namespace MartinCostello.Logging.XUnit
         /// <summary>
         /// Gets or sets the <see cref="ITestOutputHelper"/> to use.
         /// </summary>
-        ITestOutputHelper OutputHelper { get; set; }
+        ITestOutputHelper? OutputHelper { get; set; }
     }
 }

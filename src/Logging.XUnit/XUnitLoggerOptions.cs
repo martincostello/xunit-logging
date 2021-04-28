@@ -21,7 +21,7 @@ namespace MartinCostello.Logging.XUnit
         /// <summary>
         /// Gets or sets the category filter to apply to logs.
         /// </summary>
-        public Func<string, LogLevel, bool> Filter { get; set; } = (c, l) => true; // By default log everything
+        public Func<string?, LogLevel, bool> Filter { get; set; } = (c, l) => true; // By default log everything
 
         /// <summary>
         /// Gets or sets a value indicating whether to include scopes.
