@@ -26,6 +26,6 @@ namespace MartinCostello.Logging.XUnit
         /// <summary>
         /// Gets or sets the current <see cref="ITestOutputHelper"/>.
         /// </summary>
-        public ITestOutputHelper OutputHelper { get; set; }
+        public ITestOutputHelper? OutputHelper { get; set; }
     }
 }

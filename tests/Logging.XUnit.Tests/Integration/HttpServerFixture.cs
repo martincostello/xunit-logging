@@ -23,7 +23,7 @@ namespace MartinCostello.Logging.XUnit.Integration
         }
 
         /// <inheritdoc />
-        public ITestOutputHelper OutputHelper { get; set; }
+        public ITestOutputHelper? OutputHelper { get; set; }
 
         /// <inheritdoc />
         protected override void ConfigureWebHost(IWebHostBuilder builder)

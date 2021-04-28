@@ -26,15 +26,15 @@ namespace MartinCostello.Logging.XUnit
             };
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("name", () => new XUnitLogger(null, outputHelper, options));
-            Assert.Throws<ArgumentNullException>("outputHelper", () => new XUnitLogger(name, null as ITestOutputHelper, options));
-            Assert.Throws<ArgumentNullException>("accessor", () => new XUnitLogger(name, null as ITestOutputHelperAccessor, options));
+            Assert.Throws<ArgumentNullException>("name", () => new XUnitLogger(null!, outputHelper, options));
+            Assert.Throws<ArgumentNullException>("outputHelper", () => new XUnitLogger(name, (null as ITestOutputHelper) !, options));
+            Assert.Throws<ArgumentNullException>("accessor", () => new XUnitLogger(name, (null as ITestOutputHelperAccessor) !, options));
 
             // Arrange
             var logger = new XUnitLogger(name, outputHelper, options);
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("value", () => logger.Filter = null);
+            Assert.Throws<ArgumentNullException>("value", () => logger.Filter = null!);
         }
 
         [Fact]
@@ -111,7 +111,7 @@ namespace MartinCostello.Logging.XUnit
             string name = "MyName";
             var outputHelper = Mock.Of<ITestOutputHelper>();
 
-            bool CustomFilter(string categoryName, LogLevel level)
+            bool CustomFilter(string? categoryName, LogLevel level)
             {
                 categoryName.ShouldBe(name);
                 level.ShouldBe(logLevel);
@@ -143,7 +143,7 @@ namespace MartinCostello.Logging.XUnit
             var logger = new XUnitLogger(name, outputHelper, options);
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("formatter", () => logger.Log(LogLevel.Information, new EventId(2), true, null, null));
+            Assert.Throws<ArgumentNullException>("formatter", () => logger.Log(LogLevel.Information, new EventId(2), true, null, null!));
         }
 
         [Fact]
@@ -655,20 +655,20 @@ namespace MartinCostello.Logging.XUnit
 
         private static DateTimeOffset StaticClock() => new DateTimeOffset(2018, 08, 19, 17, 12, 16, TimeSpan.FromHours(1));
 
-        private static bool FilterTrue(string categoryName, LogLevel level) => true;
+        private static bool FilterTrue(string? categoryName, LogLevel level) => true;
 
-        private static bool FilterFalse(string categoryName, LogLevel level) => false;
+        private static bool FilterFalse(string? categoryName, LogLevel level) => false;
 
-        private static string Formatter<TState>(TState state, Exception exception)
+        private static string Formatter<TState>(TState? state, Exception? exception)
             where TState : class
         {
             return $"Message|{(state == null ? bool.FalseString : bool.TrueString)}|{(exception == null ? bool.FalseString : bool.TrueString)}";
         }
 
-        private static string FormatterEmpty<TState>(TState state, Exception exception) => string.Empty;
+        private static string FormatterEmpty<TState>(TState? state, Exception? exception) => string.Empty;
 
-        private static string FormatterLong<TState>(TState state, Exception exception) => new string('a', 2048);
+        private static string FormatterLong<TState>(TState? state, Exception? exception) => new string('a', 2048);
 
-        private static string FormatterNull<TState>(TState state, Exception exception) => null;
+        private static string FormatterNull<TState>(TState? state, Exception? exception) => null!;
     }
 }

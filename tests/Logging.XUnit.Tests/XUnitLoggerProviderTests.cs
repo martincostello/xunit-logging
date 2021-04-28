@@ -21,10 +21,10 @@ namespace MartinCostello.Logging.XUnit
             var options = new XUnitLoggerOptions();
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("outputHelper", () => new XUnitLoggerProvider(null as ITestOutputHelper, options));
-            Assert.Throws<ArgumentNullException>("accessor", () => new XUnitLoggerProvider(null as ITestOutputHelperAccessor, options));
-            Assert.Throws<ArgumentNullException>("options", () => new XUnitLoggerProvider(outputHelper, null));
-            Assert.Throws<ArgumentNullException>("options", () => new XUnitLoggerProvider(accessor, null));
+            Assert.Throws<ArgumentNullException>("outputHelper", () => new XUnitLoggerProvider((null as ITestOutputHelper) !, options));
+            Assert.Throws<ArgumentNullException>("accessor", () => new XUnitLoggerProvider((null as ITestOutputHelperAccessor) !, options));
+            Assert.Throws<ArgumentNullException>("options", () => new XUnitLoggerProvider(outputHelper, null!));
+            Assert.Throws<ArgumentNullException>("options", () => new XUnitLoggerProvider(accessor, null!));
         }
 
         [Fact]
