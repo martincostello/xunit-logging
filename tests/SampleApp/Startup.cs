@@ -21,7 +21,7 @@ namespace SampleApp
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddMvc();
         }
 
         public void Configure(IApplicationBuilder app, IHostEnvironment env)
