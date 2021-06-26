@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <Sdk Name="Microsoft.DotNet.PackageValidation" Version="1.0.0-preview.5.21302.8" />
   <PropertyGroup>
     <AssemblyTitle>Logging Extensions for xunit</AssemblyTitle>
     <Description>Extensions for Microsoft.Extensions.Logging for xunit.</Description>
@@ -6,6 +7,7 @@
     <NoWarn>$(NoWarn)</NoWarn>
     <OutputType>Library</OutputType>
     <PackageId>MartinCostello.Logging.XUnit</PackageId>
+    <PackageValidationBaselineVersion>0.1.0</PackageValidationBaselineVersion>
     <RootNamespace>MartinCostello.Logging.XUnit</RootNamespace>
     <Summary>$(Description)</Summary>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
