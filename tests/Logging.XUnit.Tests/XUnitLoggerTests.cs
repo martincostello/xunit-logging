@@ -496,7 +496,7 @@ namespace MartinCostello.Logging.XUnit
                 {
                     using (logger.BeginScope("___"))
                     {
-                        using (logger.BeginScope(null))
+                        using (logger.BeginScope(null!))
                         {
                             logger.Log<string>(LogLevel.Information, 0, null, null, Formatter);
                         }
