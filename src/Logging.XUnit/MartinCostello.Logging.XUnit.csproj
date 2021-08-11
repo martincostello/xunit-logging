@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Sdk Name="Microsoft.DotNet.PackageValidation" Version="1.0.0-preview.6.21355.3" />
+  <Sdk Name="Microsoft.DotNet.PackageValidation" Version="1.0.0-preview.7.21379.12" />
   <PropertyGroup>
     <AssemblyTitle>Logging Extensions for xunit</AssemblyTitle>
     <Description>Extensions for Microsoft.Extensions.Logging for xunit.</Description>
