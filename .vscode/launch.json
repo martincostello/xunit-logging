@@ -10,7 +10,7 @@
       "args": [
         "test"
       ],
-      "cwd": "${workspaceRoot}/tests/Logging.XUnit.Tests",
+      "cwd": "${workspaceFolder}/tests/Logging.XUnit.Tests",
       "console": "internalConsole",
       "stopAtEntry": false,
       "internalConsoleOptions": "openOnSessionStart"

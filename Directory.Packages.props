@@ -19,9 +19,11 @@
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.3" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="coverlet.msbuild" PrivateAssets="All" Condition=" '$(IsTestProject)' == 'true' " />
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
-    <PackageReference Include="ReportGenerator" PrivateAssets="All" />
     <PackageReference Include="StyleCop.Analyzers" PrivateAssets="All" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(IsTestProject)' == 'true' ">
+    <PackageReference Include="coverlet.msbuild" PrivateAssets="All" />
+    <PackageReference Include="ReportGenerator" PrivateAssets="All" />
   </ItemGroup>
 </Project>
