@@ -1,7 +1,7 @@
 <Project>
   <ItemGroup>
     <PackageVersion Include="coverlet.msbuild" Version="3.1.0" />
-    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.0-preview.7.21378.6" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.0-rc.1.21420.16" />
     <PackageVersion Include="Microsoft.DotNet.PackageValidation" Version="1.0.0-preview.7.21379.12" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.0.0" />
@@ -16,7 +16,7 @@
     <PackageVersion Include="xunit.extensibility.execution" Version="2.4.0" />
   </ItemGroup>
   <ItemGroup Condition=" '$(IsTestProject)' == 'true' ">
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="6.0.0-preview.7.21377.19" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="6.0.0-rc.1.21420.7" />
     <PackageVersion Include="xunit" Version="2.4.1" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.3" />
   </ItemGroup>
