@@ -10,89 +10,88 @@ using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace MartinCostello.Logging.XUnit.Integration
+namespace MartinCostello.Logging.XUnit.Integration;
+
+[Collection(HttpServerCollection.Name)]
+public sealed class HttpApplicationTests : IDisposable
 {
-    [Collection(HttpServerCollection.Name)]
-    public sealed class HttpApplicationTests : IDisposable
+    public HttpApplicationTests(HttpServerFixture fixture, ITestOutputHelper outputHelper)
     {
-        public HttpApplicationTests(HttpServerFixture fixture, ITestOutputHelper outputHelper)
-        {
-            Fixture = fixture;
-            Fixture.OutputHelper = outputHelper;
-        }
+        Fixture = fixture;
+        Fixture.OutputHelper = outputHelper;
+    }
 
-        private HttpServerFixture Fixture { get; }
+    private HttpServerFixture Fixture { get; }
 
-        public void Dispose()
-        {
-            Fixture.OutputHelper = null;
-        }
+    public void Dispose()
+    {
+        Fixture.OutputHelper = null;
+    }
 
-        [Fact]
-        public async Task Http_Get_Many()
-        {
-            // Arrange
-            using var httpClient = Fixture.CreateClient();
+    [Fact]
+    public async Task Http_Get_Many()
+    {
+        // Arrange
+        using var httpClient = Fixture.CreateClient();
 
-            // Act
-            using var response = await httpClient.GetAsync("api/values");
+        // Act
+        using var response = await httpClient.GetAsync("api/values");
 
-            // Assert
-            response.IsSuccessStatusCode.ShouldBeTrue();
-        }
+        // Assert
+        response.IsSuccessStatusCode.ShouldBeTrue();
+    }
 
-        [Fact]
-        public async Task Http_Get_Single()
-        {
-            // Arrange
-            using var httpClient = Fixture.CreateClient();
+    [Fact]
+    public async Task Http_Get_Single()
+    {
+        // Arrange
+        using var httpClient = Fixture.CreateClient();
 
-            // Act
-            using var response = await httpClient.GetAsync("api/values/a");
+        // Act
+        using var response = await httpClient.GetAsync("api/values/a");
 
-            // Assert
-            response.IsSuccessStatusCode.ShouldBeTrue();
-        }
+        // Assert
+        response.IsSuccessStatusCode.ShouldBeTrue();
+    }
 
-        [Fact]
-        public async Task Http_Post()
-        {
-            // Arrange
-            using var httpClient = Fixture.CreateClient();
+    [Fact]
+    public async Task Http_Post()
+    {
+        // Arrange
+        using var httpClient = Fixture.CreateClient();
 
-            // Act
-            using var content = new StringContent(@"""d""", Encoding.UTF8, MediaTypeNames.Application.Json);
-            using var response = await httpClient.PostAsync("api/values", content);
+        // Act
+        using var content = new StringContent(@"""d""", Encoding.UTF8, MediaTypeNames.Application.Json);
+        using var response = await httpClient.PostAsync("api/values", content);
 
-            // Assert
-            response.IsSuccessStatusCode.ShouldBeTrue();
-        }
+        // Assert
+        response.IsSuccessStatusCode.ShouldBeTrue();
+    }
 
-        [Fact]
-        public async Task Http_Put()
-        {
-            // Arrange
-            using var httpClient = Fixture.CreateClient();
+    [Fact]
+    public async Task Http_Put()
+    {
+        // Arrange
+        using var httpClient = Fixture.CreateClient();
 
-            // Act
-            using var content = new StringContent(@"""d""", Encoding.UTF8, MediaTypeNames.Application.Json);
-            using var response = await httpClient.PutAsync("api/values/d", content);
+        // Act
+        using var content = new StringContent(@"""d""", Encoding.UTF8, MediaTypeNames.Application.Json);
+        using var response = await httpClient.PutAsync("api/values/d", content);
 
-            // Assert
-            response.IsSuccessStatusCode.ShouldBeTrue();
-        }
+        // Assert
+        response.IsSuccessStatusCode.ShouldBeTrue();
+    }
 
-        [Fact]
-        public async Task Http_Delete()
-        {
-            // Arrange
-            using var httpClient = Fixture.CreateClient();
+    [Fact]
+    public async Task Http_Delete()
+    {
+        // Arrange
+        using var httpClient = Fixture.CreateClient();
 
-            // Act
-            using var response = await httpClient.DeleteAsync("api/values/d");
+        // Act
+        using var response = await httpClient.DeleteAsync("api/values/d");
 
-            // Assert
-            response.IsSuccessStatusCode.ShouldBeTrue();
-        }
+        // Assert
+        response.IsSuccessStatusCode.ShouldBeTrue();
     }
 }

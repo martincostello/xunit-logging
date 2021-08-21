@@ -6,302 +6,301 @@ using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace MartinCostello.Logging.XUnit
+namespace MartinCostello.Logging.XUnit;
+
+/// <summary>
+/// A class representing an <see cref="ILogger"/> to use with xunit.
+/// </summary>
+public partial class XUnitLogger : ILogger
 {
+    //// Based on https://github.com/aspnet/Logging/blob/master/src/Microsoft.Extensions.Logging.Console/ConsoleLogger.cs
+
     /// <summary>
-    /// A class representing an <see cref="ILogger"/> to use with xunit.
+    /// The padding to use for log levels.
     /// </summary>
-    public partial class XUnitLogger : ILogger
+    private const string LogLevelPadding = ": ";
+
+    /// <summary>
+    /// The padding to use for messages. This field is read-only.
+    /// </summary>
+    private static readonly string MessagePadding = new(' ', GetLogLevelString(LogLevel.Debug).Length + LogLevelPadding.Length);
+
+    /// <summary>
+    /// The padding to use for new lines. This field is read-only.
+    /// </summary>
+    private static readonly string NewLineWithMessagePadding = Environment.NewLine + MessagePadding;
+
+    /// <summary>
+    /// The current builder to use to generate log messages.
+    /// </summary>
+    [ThreadStatic]
+    private static StringBuilder? _logBuilder;
+
+    /// <summary>
+    /// Gets or sets the filter to use.
+    /// </summary>
+    private Func<string?, LogLevel, bool> _filter;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="XUnitLogger"/> class.
+    /// </summary>
+    /// <param name="name">The name for messages produced by the logger.</param>
+    /// <param name="options">The <see cref="XUnitLoggerOptions"/> to use.</param>
+    private XUnitLogger(string name, XUnitLoggerOptions? options)
     {
-        //// Based on https://github.com/aspnet/Logging/blob/master/src/Microsoft.Extensions.Logging.Console/ConsoleLogger.cs
+        Name = name ?? throw new ArgumentNullException(nameof(name));
 
-        /// <summary>
-        /// The padding to use for log levels.
-        /// </summary>
-        private const string LogLevelPadding = ": ";
+        _filter = options?.Filter ?? ((_, _) => true);
+        _messageSinkMessageFactory = options?.MessageSinkMessageFactory ?? (message => new DiagnosticMessage(message));
+        IncludeScopes = options?.IncludeScopes ?? false;
+    }
 
-        /// <summary>
-        /// The padding to use for messages. This field is read-only.
-        /// </summary>
-        private static readonly string MessagePadding = new(' ', GetLogLevelString(LogLevel.Debug).Length + LogLevelPadding.Length);
+    /// <summary>
+    /// Gets or sets the category filter to apply to logs.
+    /// </summary>
+    /// <exception cref="ArgumentNullException">
+    /// <paramref name="value"/> is <see langword="null"/>.
+    /// </exception>
+    public Func<string?, LogLevel, bool> Filter
+    {
+        get { return _filter; }
+        set { _filter = value ?? throw new ArgumentNullException(nameof(value)); }
+    }
 
-        /// <summary>
-        /// The padding to use for new lines. This field is read-only.
-        /// </summary>
-        private static readonly string NewLineWithMessagePadding = Environment.NewLine + MessagePadding;
+    /// <summary>
+    /// Gets or sets a value indicating whether to include scopes.
+    /// </summary>
+    public bool IncludeScopes { get; set; }
 
-        /// <summary>
-        /// The current builder to use to generate log messages.
-        /// </summary>
-        [ThreadStatic]
-        private static StringBuilder? _logBuilder;
+    /// <summary>
+    /// Gets the name of the logger.
+    /// </summary>
+    public string Name { get; }
 
-        /// <summary>
-        /// Gets or sets the filter to use.
-        /// </summary>
-        private Func<string?, LogLevel, bool> _filter;
+    /// <summary>
+    /// Gets or sets a delegate representing the system clock.
+    /// </summary>
+    internal Func<DateTimeOffset> Clock { get; set; } = () => DateTimeOffset.Now;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XUnitLogger"/> class.
-        /// </summary>
-        /// <param name="name">The name for messages produced by the logger.</param>
-        /// <param name="options">The <see cref="XUnitLoggerOptions"/> to use.</param>
-        private XUnitLogger(string name, XUnitLoggerOptions? options)
+    /// <inheritdoc />
+    public IDisposable BeginScope<TState>(TState state)
+    {
+        if (state == null)
         {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-
-            _filter = options?.Filter ?? ((_, _) => true);
-            _messageSinkMessageFactory = options?.MessageSinkMessageFactory ?? (message => new DiagnosticMessage(message));
-            IncludeScopes = options?.IncludeScopes ?? false;
+            throw new ArgumentNullException(nameof(state));
         }
 
-        /// <summary>
-        /// Gets or sets the category filter to apply to logs.
-        /// </summary>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="value"/> is <see langword="null"/>.
-        /// </exception>
-        public Func<string?, LogLevel, bool> Filter
+        return XUnitLogScope.Push(state);
+    }
+
+    /// <inheritdoc />
+    public bool IsEnabled(LogLevel logLevel)
+    {
+        if (logLevel == LogLevel.None)
         {
-            get { return _filter; }
-            set { _filter = value ?? throw new ArgumentNullException(nameof(value)); }
+            return false;
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to include scopes.
-        /// </summary>
-        public bool IncludeScopes { get; set; }
+        return Filter(Name, logLevel);
+    }
 
-        /// <summary>
-        /// Gets the name of the logger.
-        /// </summary>
-        public string Name { get; }
-
-        /// <summary>
-        /// Gets or sets a delegate representing the system clock.
-        /// </summary>
-        internal Func<DateTimeOffset> Clock { get; set; } = () => DateTimeOffset.Now;
-
-        /// <inheritdoc />
-        public IDisposable BeginScope<TState>(TState state)
+    /// <inheritdoc />
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState? state, Exception? exception, Func<TState?, Exception?, string?> formatter)
+    {
+        if (!IsEnabled(logLevel))
         {
-            if (state == null)
-            {
-                throw new ArgumentNullException(nameof(state));
-            }
-
-            return XUnitLogScope.Push(state);
+            return;
         }
 
-        /// <inheritdoc />
-        public bool IsEnabled(LogLevel logLevel)
+        if (formatter == null)
         {
-            if (logLevel == LogLevel.None)
-            {
-                return false;
-            }
-
-            return Filter(Name, logLevel);
+            throw new ArgumentNullException(nameof(formatter));
         }
 
-        /// <inheritdoc />
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState? state, Exception? exception, Func<TState?, Exception?, string?> formatter)
+        string? message = formatter(state, exception);
+
+        if (!string.IsNullOrEmpty(message) || exception != null)
         {
-            if (!IsEnabled(logLevel))
-            {
-                return;
-            }
+            WriteMessage(logLevel, eventId.Id, message, exception);
+        }
+    }
 
-            if (formatter == null)
-            {
-                throw new ArgumentNullException(nameof(formatter));
-            }
+    /// <summary>
+    /// Writes a message to the <see cref="ITestOutputHelper"/> or <see cref="IMessageSink"/> associated with the instance.
+    /// </summary>
+    /// <param name="logLevel">The message to write will be written on this level.</param>
+    /// <param name="eventId">The Id of the event.</param>
+    /// <param name="message">The message to write.</param>
+    /// <param name="exception">The exception related to this message.</param>
+    public virtual void WriteMessage(LogLevel logLevel, int eventId, string? message, Exception? exception)
+    {
+        ITestOutputHelper? outputHelper = _outputHelperAccessor?.OutputHelper;
+        IMessageSink? messageSink = _messageSinkAccessor?.MessageSink;
 
-            string? message = formatter(state, exception);
-
-            if (!string.IsNullOrEmpty(message) || exception != null)
-            {
-                WriteMessage(logLevel, eventId.Id, message, exception);
-            }
+        if (outputHelper is null && messageSink is null)
+        {
+            return;
         }
 
-        /// <summary>
-        /// Writes a message to the <see cref="ITestOutputHelper"/> or <see cref="IMessageSink"/> associated with the instance.
-        /// </summary>
-        /// <param name="logLevel">The message to write will be written on this level.</param>
-        /// <param name="eventId">The Id of the event.</param>
-        /// <param name="message">The message to write.</param>
-        /// <param name="exception">The exception related to this message.</param>
-        public virtual void WriteMessage(LogLevel logLevel, int eventId, string? message, Exception? exception)
+        StringBuilder? logBuilder = _logBuilder;
+        _logBuilder = null;
+
+        if (logBuilder == null)
         {
-            ITestOutputHelper? outputHelper = _outputHelperAccessor?.OutputHelper;
-            IMessageSink? messageSink = _messageSinkAccessor?.MessageSink;
+            logBuilder = new StringBuilder();
+        }
 
-            if (outputHelper is null && messageSink is null)
-            {
-                return;
-            }
+        string logLevelString = GetLogLevelString(logLevel);
 
-            StringBuilder? logBuilder = _logBuilder;
-            _logBuilder = null;
+        logBuilder.Append(LogLevelPadding);
+        logBuilder.Append(Name);
+        logBuilder.Append('[');
+        logBuilder.Append(eventId);
+        logBuilder.AppendLine("]");
 
-            if (logBuilder == null)
-            {
-                logBuilder = new StringBuilder();
-            }
+        if (IncludeScopes)
+        {
+            GetScopeInformation(logBuilder);
+        }
 
-            string logLevelString = GetLogLevelString(logLevel);
+        bool hasMessage = !string.IsNullOrEmpty(message);
 
-            logBuilder.Append(LogLevelPadding);
-            logBuilder.Append(Name);
-            logBuilder.Append('[');
-            logBuilder.Append(eventId);
-            logBuilder.AppendLine("]");
+        if (hasMessage)
+        {
+            logBuilder.Append(MessagePadding);
 
-            if (IncludeScopes)
-            {
-                GetScopeInformation(logBuilder);
-            }
+            int length = logBuilder.Length;
+            logBuilder.Append(message);
+            logBuilder.Replace(Environment.NewLine, NewLineWithMessagePadding, length, message!.Length);
+        }
 
-            bool hasMessage = !string.IsNullOrEmpty(message);
-
+        if (exception != null)
+        {
             if (hasMessage)
             {
-                logBuilder.Append(MessagePadding);
-
-                int length = logBuilder.Length;
-                logBuilder.Append(message);
-                logBuilder.Replace(Environment.NewLine, NewLineWithMessagePadding, length, message!.Length);
+                logBuilder.AppendLine();
             }
 
-            if (exception != null)
-            {
-                if (hasMessage)
-                {
-                    logBuilder.AppendLine();
-                }
-
-                logBuilder.Append(exception.ToString());
-            }
-
-            string formatted = logBuilder.ToString();
-
-            try
-            {
-                var line = $"[{Clock():u}] {logLevelString}{formatted}";
-                if (outputHelper != null)
-                {
-                    outputHelper.WriteLine(line);
-                }
-
-                if (messageSink != null)
-                {
-                    var sinkMessage = _messageSinkMessageFactory(line);
-                    messageSink.OnMessage(sinkMessage);
-                }
-            }
-            catch (InvalidOperationException)
-            {
-                // Ignore exception if the application tries to log after the test ends
-                // but before the ITestOutputHelper is detached, e.g. "There is no currently active test."
-            }
-
-            logBuilder.Clear();
-
-            if (logBuilder.Capacity > 1024)
-            {
-                logBuilder.Capacity = 1024;
-            }
-
-            _logBuilder = logBuilder;
+            logBuilder.Append(exception.ToString());
         }
 
-        /// <summary>
-        /// Returns the string to use for the specified logging level.
-        /// </summary>
-        /// <param name="logLevel">The log level to get the representation for.</param>
-        /// <returns>
-        /// A <see cref="string"/> containing the text representation of <paramref name="logLevel"/>.
-        /// </returns>
-        private static string GetLogLevelString(LogLevel logLevel)
+        string formatted = logBuilder.ToString();
+
+        try
         {
-            return logLevel switch
+            var line = $"[{Clock():u}] {logLevelString}{formatted}";
+            if (outputHelper != null)
             {
-                LogLevel.Critical => "crit",
-
-                LogLevel.Debug => "dbug",
-
-                LogLevel.Error => "fail",
-
-                LogLevel.Information => "info",
-
-                LogLevel.Trace => "trce",
-
-                LogLevel.Warning => "warn",
-
-                _ => throw new ArgumentOutOfRangeException(nameof(logLevel)),
-            };
-        }
-
-        /// <summary>
-        /// Gets the scope information for the current operation.
-        /// </summary>
-        /// <param name="builder">The <see cref="StringBuilder"/> to write the scope to.</param>
-        private static void GetScopeInformation(StringBuilder builder)
-        {
-            var current = XUnitLogScope.Current;
-
-            var stack = new Stack<XUnitLogScope>();
-            while (current != null)
-            {
-                stack.Push(current);
-                current = current.Parent;
+                outputHelper.WriteLine(line);
             }
 
-            var depth = 0;
-            static string DepthPadding(int depth) => new(' ', depth * 2);
-
-            while (stack.Count > 0)
+            if (messageSink != null)
             {
-                var elem = stack.Pop();
-                foreach (var property in StringifyScope(elem))
-                {
-                    builder.Append(MessagePadding)
-                           .Append(DepthPadding(depth))
-                           .Append("=> ")
-                           .Append(property)
-                           .AppendLine();
-                }
-
-                depth++;
+                var sinkMessage = _messageSinkMessageFactory(line);
+                messageSink.OnMessage(sinkMessage);
             }
         }
-
-        /// <summary>
-        /// Returns one or more stringified properties from the log scope.
-        /// </summary>
-        /// <param name="scope">The <see cref="XUnitLogScope"/> to stringify.</param>
-        /// <returns>An enumeration of scope properties from the current scope.</returns>
-        private static IEnumerable<string> StringifyScope(XUnitLogScope scope)
+        catch (InvalidOperationException)
         {
-            if (scope.State is IEnumerable<KeyValuePair<string, object>> pairs)
+            // Ignore exception if the application tries to log after the test ends
+            // but before the ITestOutputHelper is detached, e.g. "There is no currently active test."
+        }
+
+        logBuilder.Clear();
+
+        if (logBuilder.Capacity > 1024)
+        {
+            logBuilder.Capacity = 1024;
+        }
+
+        _logBuilder = logBuilder;
+    }
+
+    /// <summary>
+    /// Returns the string to use for the specified logging level.
+    /// </summary>
+    /// <param name="logLevel">The log level to get the representation for.</param>
+    /// <returns>
+    /// A <see cref="string"/> containing the text representation of <paramref name="logLevel"/>.
+    /// </returns>
+    private static string GetLogLevelString(LogLevel logLevel)
+    {
+        return logLevel switch
+        {
+            LogLevel.Critical => "crit",
+
+            LogLevel.Debug => "dbug",
+
+            LogLevel.Error => "fail",
+
+            LogLevel.Information => "info",
+
+            LogLevel.Trace => "trce",
+
+            LogLevel.Warning => "warn",
+
+            _ => throw new ArgumentOutOfRangeException(nameof(logLevel)),
+        };
+    }
+
+    /// <summary>
+    /// Gets the scope information for the current operation.
+    /// </summary>
+    /// <param name="builder">The <see cref="StringBuilder"/> to write the scope to.</param>
+    private static void GetScopeInformation(StringBuilder builder)
+    {
+        var current = XUnitLogScope.Current;
+
+        var stack = new Stack<XUnitLogScope>();
+        while (current != null)
+        {
+            stack.Push(current);
+            current = current.Parent;
+        }
+
+        var depth = 0;
+        static string DepthPadding(int depth) => new(' ', depth * 2);
+
+        while (stack.Count > 0)
+        {
+            var elem = stack.Pop();
+            foreach (var property in StringifyScope(elem))
             {
-                foreach (var pair in pairs)
-                {
-                    yield return pair.Key + ": " + pair.Value;
-                }
+                builder.Append(MessagePadding)
+                        .Append(DepthPadding(depth))
+                        .Append("=> ")
+                        .Append(property)
+                        .AppendLine();
             }
-            else if (scope.State is IEnumerable<string> entries)
+
+            depth++;
+        }
+    }
+
+    /// <summary>
+    /// Returns one or more stringified properties from the log scope.
+    /// </summary>
+    /// <param name="scope">The <see cref="XUnitLogScope"/> to stringify.</param>
+    /// <returns>An enumeration of scope properties from the current scope.</returns>
+    private static IEnumerable<string> StringifyScope(XUnitLogScope scope)
+    {
+        if (scope.State is IEnumerable<KeyValuePair<string, object>> pairs)
+        {
+            foreach (var pair in pairs)
             {
-                foreach (var entry in entries)
-                {
-                    yield return entry;
-                }
+                yield return pair.Key + ": " + pair.Value;
             }
-            else
+        }
+        else if (scope.State is IEnumerable<string> entries)
+        {
+            foreach (var entry in entries)
             {
-                yield return scope.ToString();
+                yield return entry;
             }
+        }
+        else
+        {
+            yield return scope.ToString();
         }
     }
 }

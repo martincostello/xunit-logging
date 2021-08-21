@@ -3,28 +3,27 @@
 
 using Xunit.Abstractions;
 
-namespace MartinCostello.Logging.XUnit
+namespace MartinCostello.Logging.XUnit;
+
+/// <summary>
+/// A class representing the default implementation of <see cref="ITestOutputHelperAccessor"/>. This class cannot be inherited.
+/// </summary>
+internal sealed class TestOutputHelperAccessor : ITestOutputHelperAccessor
 {
     /// <summary>
-    /// A class representing the default implementation of <see cref="ITestOutputHelperAccessor"/>. This class cannot be inherited.
+    /// Initializes a new instance of the <see cref="TestOutputHelperAccessor"/> class.
     /// </summary>
-    internal sealed class TestOutputHelperAccessor : ITestOutputHelperAccessor
+    /// <param name="outputHelper">The <see cref="ITestOutputHelper"/> to use.</param>
+    /// <exception cref="ArgumentNullException">
+    /// <paramref name="outputHelper"/> is <see langword="null"/>.
+    /// </exception>
+    internal TestOutputHelperAccessor(ITestOutputHelper outputHelper)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TestOutputHelperAccessor"/> class.
-        /// </summary>
-        /// <param name="outputHelper">The <see cref="ITestOutputHelper"/> to use.</param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="outputHelper"/> is <see langword="null"/>.
-        /// </exception>
-        internal TestOutputHelperAccessor(ITestOutputHelper outputHelper)
-        {
-            OutputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
-        }
-
-        /// <summary>
-        /// Gets or sets the current <see cref="ITestOutputHelper"/>.
-        /// </summary>
-        public ITestOutputHelper? OutputHelper { get; set; }
+        OutputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
     }
+
+    /// <summary>
+    /// Gets or sets the current <see cref="ITestOutputHelper"/>.
+    /// </summary>
+    public ITestOutputHelper? OutputHelper { get; set; }
 }

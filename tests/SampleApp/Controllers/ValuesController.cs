@@ -3,37 +3,36 @@
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace SampleApp.Controllers
+namespace SampleApp.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class ValuesController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ValuesController : ControllerBase
+    [HttpGet]
+    public ActionResult<IEnumerable<string>> Get()
     {
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] { "a", "b", "c" };
-        }
+        return new string[] { "a", "b", "c" };
+    }
 
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(string id)
-        {
-            return "value";
-        }
+    [HttpGet("{id}")]
+    public ActionResult<string> Get(string id)
+    {
+        return "value";
+    }
 
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
+    [HttpPost]
+    public void Post([FromBody] string value)
+    {
+    }
 
-        [HttpPut("{id}")]
-        public void Put(string id, [FromBody] string value)
-        {
-        }
+    [HttpPut("{id}")]
+    public void Put(string id, [FromBody] string value)
+    {
+    }
 
-        [HttpDelete("{id}")]
-        public void Delete(string id)
-        {
-        }
+    [HttpDelete("{id}")]
+    public void Delete(string id)
+    {
     }
 }

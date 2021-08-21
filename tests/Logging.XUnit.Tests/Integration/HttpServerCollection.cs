@@ -3,17 +3,16 @@
 
 using Xunit;
 
-namespace MartinCostello.Logging.XUnit.Integration
+namespace MartinCostello.Logging.XUnit.Integration;
+
+/// <summary>
+/// A class representing the collection fixture for an HTTP server. This class cannot be inherited.
+/// </summary>
+[CollectionDefinition(Name)]
+public sealed class HttpServerCollection : ICollectionFixture<HttpServerFixture>
 {
     /// <summary>
-    /// A class representing the collection fixture for an HTTP server. This class cannot be inherited.
+    /// The name of the test fixture.
     /// </summary>
-    [CollectionDefinition(Name)]
-    public sealed class HttpServerCollection : ICollectionFixture<HttpServerFixture>
-    {
-        /// <summary>
-        /// The name of the test fixture.
-        /// </summary>
-        public const string Name = "HTTP server collection";
-    }
+    public const string Name = "HTTP server collection";
 }
