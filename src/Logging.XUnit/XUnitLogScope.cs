@@ -1,9 +1,6 @@
 ﻿// Copyright (c) Martin Costello, 2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
-using System;
-using System.Threading;
-
 namespace MartinCostello.Logging.XUnit
 {
     /// <summary>
@@ -14,7 +11,7 @@ namespace MartinCostello.Logging.XUnit
         /// <summary>
         /// The scope for the current thread.
         /// </summary>
-        private static readonly AsyncLocal<XUnitLogScope?> _value = new AsyncLocal<XUnitLogScope?>();
+        private static readonly AsyncLocal<XUnitLogScope?> _value = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="XUnitLogScope"/> class.

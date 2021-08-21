@@ -1,13 +1,8 @@
 ﻿// Copyright (c) Martin Costello, 2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
-using System;
-using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Shouldly;
-using Xunit;
-using Xunit.Abstractions;
 using Xunit.Sdk;
 
 namespace MartinCostello.Logging.XUnit
@@ -496,7 +491,8 @@ namespace MartinCostello.Logging.XUnit
                 {
                     using (logger.BeginScope("___"))
                     {
-                        using (logger.BeginScope(null!))
+                        string state = null!;
+                        using (logger.BeginScope(state))
                         {
                             logger.Log<string>(LogLevel.Information, 0, null, null, Formatter);
                         }

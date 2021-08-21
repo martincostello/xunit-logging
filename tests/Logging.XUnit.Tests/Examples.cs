@@ -1,12 +1,8 @@
 ﻿// Copyright (c) Martin Costello, 2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
-using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Shouldly;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace MartinCostello.Logging.XUnit
 {
@@ -64,7 +60,7 @@ namespace MartinCostello.Logging.XUnit
             {
                 int sum = x + y;
 
-                _logger.LogInformation("The sum of {x} and {y} is {sum}.", x, y, sum);
+                _logger.LogInformation("The sum of {X} and {Y} is {Sum}.", x, y, sum);
 
                 return sum;
             }
