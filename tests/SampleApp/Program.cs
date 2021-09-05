@@ -9,7 +9,7 @@ app.MapGet("/api/values", () => Results.Json(new string[] { "a", "b", "c" }));
 
 app.MapGet("/api/values/{id}", (string id) => "value");
 
-app.MapPost("/api/values", (string value) => Results.NoContent());
+app.MapPost("/api/values", (object value) => Results.NoContent());
 
 app.MapPut("/api/values/{id}", (string id) => Results.NoContent());
 

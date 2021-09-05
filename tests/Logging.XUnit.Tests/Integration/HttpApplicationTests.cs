@@ -1,14 +1,9 @@
 ﻿// Copyright (c) Martin Costello, 2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
-using System;
-using System.Net.Http;
+using System.Net.Http.Json;
 using System.Net.Mime;
 using System.Text;
-using System.Threading.Tasks;
-using Shouldly;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace MartinCostello.Logging.XUnit.Integration;
 
@@ -61,8 +56,7 @@ public sealed class HttpApplicationTests : IDisposable
         using var httpClient = Fixture.CreateClient();
 
         // Act
-        using var content = new StringContent(@"""d""", Encoding.UTF8, MediaTypeNames.Application.Json);
-        using var response = await httpClient.PostAsync("api/values", content);
+        using var response = await httpClient.PostAsJsonAsync("api/values", new { });
 
         // Assert
         response.IsSuccessStatusCode.ShouldBeTrue();
