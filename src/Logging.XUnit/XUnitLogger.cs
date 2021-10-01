@@ -2,19 +2,18 @@
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
+using Xunit.Sdk;
 
 namespace MartinCostello.Logging.XUnit
 {
     /// <summary>
     /// A class representing an <see cref="ILogger"/> to use with xunit.
     /// </summary>
-    public class XUnitLogger : ILogger
+    public partial class XUnitLogger : ILogger
     {
         //// Based on https://github.com/aspnet/Logging/blob/master/src/Microsoft.Extensions.Logging.Console/ConsoleLogger.cs
 
@@ -40,11 +39,6 @@ namespace MartinCostello.Logging.XUnit
         private static StringBuilder? _logBuilder;
 
         /// <summary>
-        /// The <see cref="ITestOutputHelperAccessor"/> to use. This field is read-only.
-        /// </summary>
-        private readonly ITestOutputHelperAccessor _accessor;
-
-        /// <summary>
         /// Gets or sets the filter to use.
         /// </summary>
         private Func<string?, LogLevel, bool> _filter;
@@ -53,31 +47,13 @@ namespace MartinCostello.Logging.XUnit
         /// Initializes a new instance of the <see cref="XUnitLogger"/> class.
         /// </summary>
         /// <param name="name">The name for messages produced by the logger.</param>
-        /// <param name="outputHelper">The <see cref="ITestOutputHelper"/> to use.</param>
         /// <param name="options">The <see cref="XUnitLoggerOptions"/> to use.</param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="name"/> or <paramref name="outputHelper"/> is <see langword="null"/>.
-        /// </exception>
-        public XUnitLogger(string name, ITestOutputHelper outputHelper, XUnitLoggerOptions? options)
-            : this(name, new TestOutputHelperAccessor(outputHelper), options)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XUnitLogger"/> class.
-        /// </summary>
-        /// <param name="name">The name for messages produced by the logger.</param>
-        /// <param name="accessor">The <see cref="ITestOutputHelperAccessor"/> to use.</param>
-        /// <param name="options">The <see cref="XUnitLoggerOptions"/> to use.</param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="name"/> or <paramref name="accessor"/> is <see langword="null"/>.
-        /// </exception>
-        public XUnitLogger(string name, ITestOutputHelperAccessor accessor, XUnitLoggerOptions? options)
+        private XUnitLogger(string name, XUnitLoggerOptions? options)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
-            _accessor = accessor ?? throw new ArgumentNullException(nameof(accessor));
 
-            _filter = options?.Filter ?? ((category, logLevel) => true);
+            _filter = options?.Filter ?? ((_, _) => true);
+            _messageSinkMessageFactory = options?.MessageSinkMessageFactory ?? (message => new DiagnosticMessage(message));
             IncludeScopes = options?.IncludeScopes ?? false;
         }
 
@@ -152,7 +128,7 @@ namespace MartinCostello.Logging.XUnit
         }
 
         /// <summary>
-        /// Writes a message to the <see cref="ITestOutputHelper"/> associated with the instance.
+        /// Writes a message to the <see cref="ITestOutputHelper"/> or <see cref="IMessageSink"/> associated with the instance.
         /// </summary>
         /// <param name="logLevel">The message to write will be written on this level.</param>
         /// <param name="eventId">The Id of the event.</param>
@@ -160,13 +136,6 @@ namespace MartinCostello.Logging.XUnit
         /// <param name="exception">The exception related to this message.</param>
         public virtual void WriteMessage(LogLevel logLevel, int eventId, string? message, Exception? exception)
         {
-            ITestOutputHelper? outputHelper = _accessor.OutputHelper;
-
-            if (outputHelper == null)
-            {
-                return;
-            }
-
             StringBuilder? logBuilder = _logBuilder;
             _logBuilder = null;
 
@@ -213,7 +182,20 @@ namespace MartinCostello.Logging.XUnit
 
             try
             {
-                outputHelper.WriteLine($"[{Clock():u}] {logLevelString}{formatted}");
+                ITestOutputHelper? outputHelper = _outputHelperAccessor?.OutputHelper;
+                IMessageSink? messageSink = _messageSinkAccessor?.MessageSink;
+
+                var line = $"[{Clock():u}] {logLevelString}{formatted}";
+                if (outputHelper != null)
+                {
+                    outputHelper.WriteLine(line);
+                }
+
+                if (messageSink != null)
+                {
+                    var sinkMessage = MessageSinkMessageFactory(line);
+                    messageSink.OnMessage(sinkMessage);
+                }
             }
 #pragma warning disable CA1031
             catch (InvalidOperationException)

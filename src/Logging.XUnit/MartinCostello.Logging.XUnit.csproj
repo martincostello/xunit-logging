@@ -17,5 +17,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging" />
     <PackageReference Include="xunit.abstractions" />
+    <PackageReference Include="xunit.extensibility.execution" />
   </ItemGroup>
 </Project>

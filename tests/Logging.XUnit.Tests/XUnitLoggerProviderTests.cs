@@ -13,7 +13,7 @@ namespace MartinCostello.Logging.XUnit
     public static class XUnitLoggerProviderTests
     {
         [Fact]
-        public static void XUnitLoggerProvider_Constructor_Validates_Parameters()
+        public static void XUnitLoggerProvider_TestOutputHelper_Constructor_Validates_Parameters()
         {
             // Arrange
             var outputHelper = Mock.Of<ITestOutputHelper>();
@@ -28,15 +28,38 @@ namespace MartinCostello.Logging.XUnit
         }
 
         [Fact]
-        public static void XUnitLoggerProvider_Creates_Logger()
+        public static void XUnitLoggerProvider_MessageSink_Constructor_Validates_Parameters()
         {
             // Arrange
-            var outputHelper = Mock.Of<ITestOutputHelper>();
+            var messageSink = Mock.Of<IMessageSink>();
+            var accessor = Mock.Of<IMessageSinkAccessor>();
+            var options = new XUnitLoggerOptions();
+
+            // Act and Assert
+            Assert.Throws<ArgumentNullException>("messageSink", () => new XUnitLoggerProvider((null as IMessageSink) !, options));
+            Assert.Throws<ArgumentNullException>("accessor", () => new XUnitLoggerProvider((null as IMessageSinkAccessor) !, options));
+            Assert.Throws<ArgumentNullException>("options", () => new XUnitLoggerProvider(messageSink, null!));
+            Assert.Throws<ArgumentNullException>("options", () => new XUnitLoggerProvider(accessor, null!));
+        }
+
+        [Theory]
+        [InlineData(Constructor.ITestOutputHelper)]
+        [InlineData(Constructor.IMessageSink)]
+        public static void XUnitLoggerProvider_Creates_Logger(Constructor constructor)
+        {
+            // Arrange
+            var testOutputHelper = Mock.Of<ITestOutputHelper>();
+            var messageSink = Mock.Of<IMessageSink>();
             var options = new XUnitLoggerOptions();
 
             string categoryName = "MyLogger";
 
-            using var target = new XUnitLoggerProvider(outputHelper, options);
+            using var target = constructor switch
+            {
+                Constructor.ITestOutputHelper => new XUnitLoggerProvider(testOutputHelper, options),
+                Constructor.IMessageSink => new XUnitLoggerProvider(messageSink, options),
+                _ => throw new ArgumentOutOfRangeException(nameof(constructor), constructor, null)
+            };
 
             // Act
             ILogger actual = target.CreateLogger(categoryName);
@@ -47,6 +70,7 @@ namespace MartinCostello.Logging.XUnit
             var xunit = actual.ShouldBeOfType<XUnitLogger>();
             xunit.Name.ShouldBe(categoryName);
             xunit.Filter.ShouldBeSameAs(options.Filter);
+            xunit.MessageSinkMessageFactory.ShouldBeSameAs(options.MessageSinkMessageFactory);
             xunit.IncludeScopes.ShouldBeFalse();
         }
     }

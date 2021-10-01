@@ -11,7 +11,8 @@
   </ItemGroup>
   <ItemGroup Condition=" '$(IsTestProject)' != 'true' ">
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="2.0.0" />
-    <PackageVersion Include="xunit.abstractions" Version="2.0.1" />
+    <PackageVersion Include="xunit.abstractions" Version="2.0.3" />
+    <PackageVersion Include="xunit.extensibility.execution" Version="2.4.1" />
   </ItemGroup>
   <ItemGroup Condition=" '$(IsTestProject)' == 'true' ">
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="5.0.0" />
