@@ -13,7 +13,7 @@ namespace Microsoft.Extensions.Logging
     /// A class containing extension methods for configuring logging to xunit. This class cannot be inherited.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public static class XUnitLoggerExtensions
+    public static partial class XUnitLoggerExtensions
     {
         /// <summary>
         /// Adds an xunit logger to the logging builder.

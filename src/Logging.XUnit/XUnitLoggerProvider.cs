@@ -3,51 +3,18 @@
 
 using System;
 using Microsoft.Extensions.Logging;
-using Xunit.Abstractions;
 
 namespace MartinCostello.Logging.XUnit
 {
     /// <summary>
     /// A class representing an <see cref="ILoggerProvider"/> to use with xunit.
     /// </summary>
-    public class XUnitLoggerProvider : ILoggerProvider
+    public partial class XUnitLoggerProvider : ILoggerProvider
     {
-        /// <summary>
-        /// The <see cref="ITestOutputHelperAccessor"/> to use. This field is readonly.
-        /// </summary>
-        private readonly ITestOutputHelperAccessor _accessor;
-
         /// <summary>
         /// The <see cref="XUnitLoggerOptions"/> to use. This field is readonly.
         /// </summary>
         private readonly XUnitLoggerOptions _options;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XUnitLoggerProvider"/> class.
-        /// </summary>
-        /// <param name="outputHelper">The <see cref="ITestOutputHelper"/> to use.</param>
-        /// <param name="options">The options to use for logging to xunit.</param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="outputHelper"/> or <paramref name="options"/> is <see langword="null"/>.
-        /// </exception>
-        public XUnitLoggerProvider(ITestOutputHelper outputHelper, XUnitLoggerOptions options)
-            : this(new TestOutputHelperAccessor(outputHelper), options)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="XUnitLoggerProvider"/> class.
-        /// </summary>
-        /// <param name="accessor">The <see cref="ITestOutputHelperAccessor"/> to use.</param>
-        /// <param name="options">The options to use for logging to xunit.</param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="accessor"/> or <paramref name="options"/> is <see langword="null"/>.
-        /// </exception>
-        public XUnitLoggerProvider(ITestOutputHelperAccessor accessor, XUnitLoggerOptions options)
-        {
-            _accessor = accessor ?? throw new ArgumentNullException(nameof(accessor));
-            _options = options ?? throw new ArgumentNullException(nameof(options));
-        }
 
         /// <summary>
         /// Finalizes an instance of the <see cref="XUnitLoggerProvider"/> class.
@@ -58,7 +25,20 @@ namespace MartinCostello.Logging.XUnit
         }
 
         /// <inheritdoc />
-        public virtual ILogger CreateLogger(string categoryName) => new XUnitLogger(categoryName, _accessor, _options);
+        public virtual ILogger CreateLogger(string categoryName)
+        {
+            if (_outputHelperAccessor != null)
+            {
+                return new XUnitLogger(categoryName, _outputHelperAccessor, _options);
+            }
+
+            if (_messageSinkAccessor != null)
+            {
+                return new XUnitLogger(categoryName, _messageSinkAccessor, _options);
+            }
+
+            throw new InvalidOperationException("INTERNAL ERROR. This code path is not reachable since XUnitLoggerProvider is initialized with either a non null _outputHelperAccessor or a non null _messageSinkAccessor.");
+        }
 
         /// <inheritdoc />
         public void Dispose()
