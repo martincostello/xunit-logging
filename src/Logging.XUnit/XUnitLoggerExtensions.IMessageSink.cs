@@ -49,7 +49,7 @@ namespace Microsoft.Extensions.Logging
         /// The instance of <see cref="ILoggingBuilder"/> specified by <paramref name="builder"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="builder"/>, <paramref name="accessor"/> OR <paramref name="configure"/> is <see langword="null"/>.
+        /// <paramref name="builder"/>, <paramref name="accessor"/> or <paramref name="configure"/> is <see langword="null"/>.
         /// </exception>
         public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, IMessageSinkAccessor accessor, Action<XUnitLoggerOptions> configure)
         {
