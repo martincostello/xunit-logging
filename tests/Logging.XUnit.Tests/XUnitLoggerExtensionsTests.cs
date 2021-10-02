@@ -2,9 +2,11 @@
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using System;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
+using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -121,6 +123,83 @@ namespace MartinCostello.Logging.XUnit
             // Act and Assert
             Assert.Throws<ArgumentNullException>("outputHelper", () => outputHelper!.ToLoggerFactory());
             Assert.Throws<ArgumentNullException>("messageSink", () => messageSink!.ToLoggerFactory());
+        }
+
+        [Fact]
+        public static void AddXUnit_Registers_Services()
+        {
+            // Arrange
+            var services = new ServiceCollection();
+
+            // Act
+            services.AddLogging(c => c.AddXUnit());
+
+            // Assert
+            var serviceProvider = services.BuildServiceProvider();
+            serviceProvider.GetService<ILoggerProvider>().ShouldBeOfType<XUnitLoggerProvider>();
+            serviceProvider.GetService<ITestOutputHelperAccessor>().ShouldBeOfType<AmbientTestOutputHelperAccessor>();
+        }
+
+        [Fact]
+        public static void AddXUnit_ITestOutputHelperAccessor_Registers_Services()
+        {
+            // Arrange
+            var services = new ServiceCollection();
+            var accessor = Mock.Of<ITestOutputHelperAccessor>();
+
+            // Act
+            services.AddLogging(c => c.AddXUnit(accessor));
+
+            // Assert
+            var serviceProvider = services.BuildServiceProvider();
+            serviceProvider.GetService<ILoggerProvider>().ShouldBeOfType<XUnitLoggerProvider>();
+            serviceProvider.GetService<ITestOutputHelperAccessor>().ShouldBe(accessor);
+        }
+
+        [Fact]
+        public static void AddXUnit_IMessageSinkAccessor_Registers_Services()
+        {
+            // Arrange
+            var services = new ServiceCollection();
+            var accessor = Mock.Of<IMessageSinkAccessor>();
+
+            // Act
+            services.AddLogging(c => c.AddXUnit(accessor));
+
+            // Assert
+            var serviceProvider = services.BuildServiceProvider();
+            serviceProvider.GetService<ILoggerProvider>().ShouldBeOfType<XUnitLoggerProvider>();
+            serviceProvider.GetService<IMessageSinkAccessor>().ShouldBe(accessor);
+        }
+
+        [Fact]
+        public static void AddXUnit_ITestOutputHelper_Registers_Services()
+        {
+            // Arrange
+            var services = new ServiceCollection();
+            var testOutputHelper = Mock.Of<ITestOutputHelper>();
+
+            // Act
+            services.AddLogging(c => c.AddXUnit(testOutputHelper));
+
+            // Assert
+            var serviceProvider = services.BuildServiceProvider();
+            serviceProvider.GetService<ILoggerProvider>().ShouldBeOfType<XUnitLoggerProvider>();
+        }
+
+        [Fact]
+        public static void AddXUnit_IMessageSink_Registers_Services()
+        {
+            // Arrange
+            var services = new ServiceCollection();
+            var messageSink = Mock.Of<IMessageSink>();
+
+            // Act
+            services.AddLogging(c => c.AddXUnit(messageSink));
+
+            // Assert
+            var serviceProvider = services.BuildServiceProvider();
+            serviceProvider.GetService<ILoggerProvider>().ShouldBeOfType<XUnitLoggerProvider>();
         }
 
         private static void ConfigureAction(XUnitLoggerOptions options)
