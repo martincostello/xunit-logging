@@ -272,7 +272,7 @@ namespace Microsoft.Extensions.Logging
         /// The instance of <see cref="ILoggerFactory"/> specified by <paramref name="factory"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// <paramref name="factory"/>, <paramref name="messageSink"/> OR <paramref name="configure"/> is <see langword="null"/>.
+        /// <paramref name="factory"/>, <paramref name="messageSink"/> or <paramref name="configure"/> is <see langword="null"/>.
         /// </exception>
         public static ILoggerFactory AddXUnit(this ILoggerFactory factory, IMessageSink messageSink, Action<XUnitLoggerOptions> configure)
         {
