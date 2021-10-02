@@ -198,7 +198,7 @@ namespace MartinCostello.Logging.XUnit
 
                 if (messageSink != null)
                 {
-                    var sinkMessage = MessageSinkMessageFactory(line);
+                    var sinkMessage = _messageSinkMessageFactory(line);
                     messageSink.OnMessage(sinkMessage);
                 }
             }
