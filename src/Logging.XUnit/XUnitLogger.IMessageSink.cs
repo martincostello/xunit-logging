@@ -18,7 +18,7 @@ namespace MartinCostello.Logging.XUnit
         private readonly IMessageSinkAccessor? _messageSinkAccessor;
 
         /// <summary>
-        /// Gets or sets the message sink message factory to use when writing to a <see cref="IMessageSink"/>.
+        /// Gets or sets the message sink message factory to use when writing to an <see cref="IMessageSink"/>.
         /// </summary>
         private Func<string, IMessageSinkMessage> _messageSinkMessageFactory;
 
