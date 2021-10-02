@@ -136,6 +136,14 @@ namespace MartinCostello.Logging.XUnit
         /// <param name="exception">The exception related to this message.</param>
         public virtual void WriteMessage(LogLevel logLevel, int eventId, string? message, Exception? exception)
         {
+            ITestOutputHelper? outputHelper = _outputHelperAccessor?.OutputHelper;
+            IMessageSink? messageSink = _messageSinkAccessor?.MessageSink;
+
+            if (outputHelper is null && messageSink is null)
+            {
+                return;
+            }
+
             StringBuilder? logBuilder = _logBuilder;
             _logBuilder = null;
 
@@ -182,9 +190,6 @@ namespace MartinCostello.Logging.XUnit
 
             try
             {
-                ITestOutputHelper? outputHelper = _outputHelperAccessor?.OutputHelper;
-                IMessageSink? messageSink = _messageSinkAccessor?.MessageSink;
-
                 var line = $"[{Clock():u}] {logLevelString}{formatted}";
                 if (outputHelper != null)
                 {
