@@ -52,7 +52,7 @@ namespace MartinCostello.Logging.XUnit
         }
 
         /// <summary>
-        /// Gets or sets the message sink message factory to use when writing to a <see cref="IMessageSink"/>.
+        /// Gets or sets the message sink message factory to use when writing to an <see cref="IMessageSink"/>.
         /// </summary>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="value"/> is <see langword="null"/>.
