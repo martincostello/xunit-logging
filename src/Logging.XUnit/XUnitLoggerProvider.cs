@@ -38,7 +38,7 @@ namespace MartinCostello.Logging.XUnit
                 return new XUnitLogger(categoryName, _messageSinkAccessor, _options);
             }
 
-            throw new InvalidOperationException($"Either {nameof(_outputHelperAccessor)} or {nameof(_messageSinkAccessor)} must not be null.");
+            throw new InvalidOperationException("INTERNAL ERROR. This code path is not reachable since XUnitLoggerProvider is initialized with either a non null _outputHelperAccessor or a non null _messageSinkAccessor.");
         }
 
         /// <inheritdoc />
