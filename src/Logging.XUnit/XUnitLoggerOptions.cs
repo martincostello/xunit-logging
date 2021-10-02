@@ -27,7 +27,6 @@ namespace MartinCostello.Logging.XUnit
 
         /// <summary>
         /// Gets or sets the message sink message factory to use when writing to a <see cref="IMessageSink"/>.
-        /// By default, creates a <see cref="DiagnosticMessage"/>.
         /// </summary>
         public Func<string, IMessageSinkMessage> MessageSinkMessageFactory { get; set; } = m => new DiagnosticMessage(m);
 
