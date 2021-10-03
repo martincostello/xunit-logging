@@ -21,8 +21,8 @@ namespace MartinCostello.Logging.XUnit
             var options = new XUnitLoggerOptions();
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("outputHelper", () => new XUnitLoggerProvider((null as ITestOutputHelper) !, options));
-            Assert.Throws<ArgumentNullException>("accessor", () => new XUnitLoggerProvider((null as ITestOutputHelperAccessor) !, options));
+            Assert.Throws<ArgumentNullException>("outputHelper", () => new XUnitLoggerProvider((null as ITestOutputHelper)!, options));
+            Assert.Throws<ArgumentNullException>("accessor", () => new XUnitLoggerProvider((null as ITestOutputHelperAccessor)!, options));
             Assert.Throws<ArgumentNullException>("options", () => new XUnitLoggerProvider(outputHelper, null!));
             Assert.Throws<ArgumentNullException>("options", () => new XUnitLoggerProvider(accessor, null!));
         }
@@ -36,8 +36,8 @@ namespace MartinCostello.Logging.XUnit
             var options = new XUnitLoggerOptions();
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("messageSink", () => new XUnitLoggerProvider((null as IMessageSink) !, options));
-            Assert.Throws<ArgumentNullException>("accessor", () => new XUnitLoggerProvider((null as IMessageSinkAccessor) !, options));
+            Assert.Throws<ArgumentNullException>("messageSink", () => new XUnitLoggerProvider((null as IMessageSink)!, options));
+            Assert.Throws<ArgumentNullException>("accessor", () => new XUnitLoggerProvider((null as IMessageSinkAccessor)!, options));
             Assert.Throws<ArgumentNullException>("options", () => new XUnitLoggerProvider(messageSink, null!));
             Assert.Throws<ArgumentNullException>("options", () => new XUnitLoggerProvider(accessor, null!));
         }
@@ -58,7 +58,7 @@ namespace MartinCostello.Logging.XUnit
             {
                 Constructor.ITestOutputHelper => new XUnitLoggerProvider(testOutputHelper, options),
                 Constructor.IMessageSink => new XUnitLoggerProvider(messageSink, options),
-                _ => throw new ArgumentOutOfRangeException(nameof(constructor), constructor, null)
+                _ => throw new ArgumentOutOfRangeException(nameof(constructor), constructor, null),
             };
 
             // Act
