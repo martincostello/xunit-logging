@@ -202,6 +202,53 @@ namespace MartinCostello.Logging.XUnit
             serviceProvider.GetService<ILoggerProvider>().ShouldBeOfType<XUnitLoggerProvider>();
         }
 
+        [Fact]
+        public static void AddXUnit_IMessageSink_With_LogLevel_Works()
+        {
+            // Arrange
+            ILoggerFactory factory = NullLoggerFactory.Instance;
+            var messageSink = Mock.Of<IMessageSink>();
+            var minLevel = LogLevel.Debug;
+
+            // Act
+            factory.AddXUnit(messageSink, minLevel);
+
+            // Assert
+            ILogger logger = factory.CreateLogger("SomeLogger");
+            logger.LogInformation("Some message");
+        }
+
+        [Fact]
+        public static void AddXUnit_IMessageSink_With_Filter_Works()
+        {
+            // Arrange
+            ILoggerFactory factory = NullLoggerFactory.Instance;
+            var messageSink = Mock.Of<IMessageSink>();
+
+            // Act
+            factory.AddXUnit(messageSink, (_) => { });
+
+            // Assert
+            ILogger logger = factory.CreateLogger("SomeLogger");
+            logger.LogInformation("Some message");
+        }
+
+        [Fact]
+        public static void AddXUnit_IMessageSink_With_Options_Works()
+        {
+            // Arrange
+            ILoggerFactory factory = NullLoggerFactory.Instance;
+            var messageSink = Mock.Of<IMessageSink>();
+            var options = new XUnitLoggerOptions();
+
+            // Act
+            factory.AddXUnit(messageSink, options);
+
+            // Assert
+            ILogger logger = factory.CreateLogger("SomeLogger");
+            logger.LogInformation("Some message");
+        }
+
         private static void ConfigureAction(XUnitLoggerOptions options)
         {
         }

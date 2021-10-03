@@ -38,6 +38,16 @@ namespace MartinCostello.Logging.XUnit
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>("value", () => logger.Filter = null!);
+            Assert.Throws<ArgumentNullException>("value", () => logger.MessageSinkMessageFactory = null!);
+
+            // Arrange
+            Func<string?, LogLevel, bool> filter = (_, _) => true;
+
+            // Act
+            logger.Filter = filter;
+
+            // Assert
+            logger.Filter.ShouldBeSameAs(filter);
         }
 
         [Theory]
