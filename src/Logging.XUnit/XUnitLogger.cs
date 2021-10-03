@@ -25,7 +25,7 @@ namespace MartinCostello.Logging.XUnit
         /// <summary>
         /// The padding to use for messages. This field is read-only.
         /// </summary>
-        private static readonly string MessagePadding = new string(' ', GetLogLevelString(LogLevel.Debug).Length + LogLevelPadding.Length);
+        private static readonly string MessagePadding = new(' ', GetLogLevelString(LogLevel.Debug).Length + LogLevelPadding.Length);
 
         /// <summary>
         /// The padding to use for new lines. This field is read-only.
@@ -202,9 +202,7 @@ namespace MartinCostello.Logging.XUnit
                     messageSink.OnMessage(sinkMessage);
                 }
             }
-#pragma warning disable CA1031
             catch (InvalidOperationException)
-#pragma warning restore CA1031
             {
                 // Ignore exception if the application tries to log after the test ends
                 // but before the ITestOutputHelper is detached, e.g. "There is no currently active test."
@@ -263,7 +261,7 @@ namespace MartinCostello.Logging.XUnit
             }
 
             var depth = 0;
-            static string DepthPadding(int depth) => new string(' ', depth * 2);
+            static string DepthPadding(int depth) => new(' ', depth * 2);
 
             while (stack.Count > 0)
             {

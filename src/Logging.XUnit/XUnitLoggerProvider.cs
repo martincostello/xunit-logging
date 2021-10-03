@@ -27,17 +27,14 @@ namespace MartinCostello.Logging.XUnit
         /// <inheritdoc />
         public virtual ILogger CreateLogger(string categoryName)
         {
-            if (_outputHelperAccessor != null)
+            if (_outputHelperAccessor is not null)
             {
                 return new XUnitLogger(categoryName, _outputHelperAccessor, _options);
             }
-
-            if (_messageSinkAccessor != null)
+            else
             {
-                return new XUnitLogger(categoryName, _messageSinkAccessor, _options);
+                return new XUnitLogger(categoryName, _messageSinkAccessor!, _options);
             }
-
-            throw new InvalidOperationException("INTERNAL ERROR. This code path is not reachable since XUnitLoggerProvider is initialized with either a non null _outputHelperAccessor or a non null _messageSinkAccessor.");
         }
 
         /// <inheritdoc />

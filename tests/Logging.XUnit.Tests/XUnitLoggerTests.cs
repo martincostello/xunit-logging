@@ -28,16 +28,26 @@ namespace MartinCostello.Logging.XUnit
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>("name", () => new XUnitLogger(null!, outputHelper, options));
-            Assert.Throws<ArgumentNullException>("outputHelper", () => new XUnitLogger(name, (null as ITestOutputHelper) !, options));
-            Assert.Throws<ArgumentNullException>("messageSink", () => new XUnitLogger(name, (null as IMessageSink) !, options));
-            Assert.Throws<ArgumentNullException>("accessor", () => new XUnitLogger(name, (null as ITestOutputHelperAccessor) !, options));
-            Assert.Throws<ArgumentNullException>("accessor", () => new XUnitLogger(name, (null as IMessageSinkAccessor) !, options));
+            Assert.Throws<ArgumentNullException>("outputHelper", () => new XUnitLogger(name, (null as ITestOutputHelper)!, options));
+            Assert.Throws<ArgumentNullException>("messageSink", () => new XUnitLogger(name, (null as IMessageSink)!, options));
+            Assert.Throws<ArgumentNullException>("accessor", () => new XUnitLogger(name, (null as ITestOutputHelperAccessor)!, options));
+            Assert.Throws<ArgumentNullException>("accessor", () => new XUnitLogger(name, (null as IMessageSinkAccessor)!, options));
 
             // Arrange
             var logger = new XUnitLogger(name, outputHelper, options);
 
             // Act and Assert
             Assert.Throws<ArgumentNullException>("value", () => logger.Filter = null!);
+            Assert.Throws<ArgumentNullException>("value", () => logger.MessageSinkMessageFactory = null!);
+
+            // Arrange
+            Func<string?, LogLevel, bool> filter = (_, _) => true;
+
+            // Act
+            logger.Filter = filter;
+
+            // Assert
+            logger.Filter.ShouldBeSameAs(filter);
         }
 
         [Theory]
@@ -62,7 +72,7 @@ namespace MartinCostello.Logging.XUnit
                 {
                     Constructor.ITestOutputHelper => new XUnitLogger(name, testOutputHelper, opts),
                     Constructor.IMessageSink => new XUnitLogger(name, messageSink, opts),
-                    _ => throw new ArgumentOutOfRangeException(nameof(constructor), constructor, null)
+                    _ => throw new ArgumentOutOfRangeException(nameof(constructor), constructor, null),
                 };
             }
 
@@ -672,7 +682,7 @@ namespace MartinCostello.Logging.XUnit
             mock.Verify((p) => p.WriteLine(expected), Times.Once());
         }
 
-        private static DateTimeOffset StaticClock() => new DateTimeOffset(2018, 08, 19, 17, 12, 16, TimeSpan.FromHours(1));
+        private static DateTimeOffset StaticClock() => new(2018, 08, 19, 17, 12, 16, TimeSpan.FromHours(1));
 
         private static IMessageSinkMessage DiagnosticMessageFactory(string message) => new DiagnosticMessage(message);
 
@@ -688,7 +698,7 @@ namespace MartinCostello.Logging.XUnit
 
         private static string FormatterEmpty<TState>(TState? state, Exception? exception) => string.Empty;
 
-        private static string FormatterLong<TState>(TState? state, Exception? exception) => new string('a', 2048);
+        private static string FormatterLong<TState>(TState? state, Exception? exception) => new('a', 2048);
 
         private static string FormatterNull<TState>(TState? state, Exception? exception) => null!;
     }

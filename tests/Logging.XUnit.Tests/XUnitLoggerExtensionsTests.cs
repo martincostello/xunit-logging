@@ -23,17 +23,17 @@ namespace MartinCostello.Logging.XUnit
             var accessor = Mock.Of<ITestOutputHelperAccessor>();
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder) !.AddXUnit());
-            Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder) !.AddXUnit(outputHelper));
-            Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder) !.AddXUnit(outputHelper, ConfigureAction));
-            Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder) !.AddXUnit(accessor));
-            Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder) !.AddXUnit(accessor, ConfigureAction));
-            Assert.Throws<ArgumentNullException>("accessor", () => builder.AddXUnit((null as ITestOutputHelperAccessor) !));
-            Assert.Throws<ArgumentNullException>("accessor", () => builder.AddXUnit((null as ITestOutputHelperAccessor) !, ConfigureAction));
-            Assert.Throws<ArgumentNullException>("outputHelper", () => builder.AddXUnit((null as ITestOutputHelper) !));
-            Assert.Throws<ArgumentNullException>("outputHelper", () => builder.AddXUnit((null as ITestOutputHelper) !, ConfigureAction));
-            Assert.Throws<ArgumentNullException>("configure", () => builder.AddXUnit(outputHelper, (null as Action<XUnitLoggerOptions>) !));
-            Assert.Throws<ArgumentNullException>("configure", () => builder.AddXUnit(accessor, (null as Action<XUnitLoggerOptions>) !));
+            Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder)!.AddXUnit());
+            Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder)!.AddXUnit(outputHelper));
+            Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder)!.AddXUnit(outputHelper, ConfigureAction));
+            Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder)!.AddXUnit(accessor));
+            Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder)!.AddXUnit(accessor, ConfigureAction));
+            Assert.Throws<ArgumentNullException>("accessor", () => builder.AddXUnit((null as ITestOutputHelperAccessor)!));
+            Assert.Throws<ArgumentNullException>("accessor", () => builder.AddXUnit((null as ITestOutputHelperAccessor)!, ConfigureAction));
+            Assert.Throws<ArgumentNullException>("outputHelper", () => builder.AddXUnit((null as ITestOutputHelper)!));
+            Assert.Throws<ArgumentNullException>("outputHelper", () => builder.AddXUnit((null as ITestOutputHelper)!, ConfigureAction));
+            Assert.Throws<ArgumentNullException>("configure", () => builder.AddXUnit(outputHelper, (null as Action<XUnitLoggerOptions>)!));
+            Assert.Throws<ArgumentNullException>("configure", () => builder.AddXUnit(accessor, (null as Action<XUnitLoggerOptions>)!));
         }
 
         [Fact]
@@ -45,16 +45,16 @@ namespace MartinCostello.Logging.XUnit
             var accessor = Mock.Of<IMessageSinkAccessor>();
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder) !.AddXUnit(messageSink));
-            Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder) !.AddXUnit(messageSink, ConfigureAction));
-            Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder) !.AddXUnit(accessor));
-            Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder) !.AddXUnit(accessor, ConfigureAction));
-            Assert.Throws<ArgumentNullException>("accessor", () => builder.AddXUnit((null as IMessageSinkAccessor) !));
-            Assert.Throws<ArgumentNullException>("accessor", () => builder.AddXUnit((null as IMessageSinkAccessor) !, ConfigureAction));
-            Assert.Throws<ArgumentNullException>("messageSink", () => builder.AddXUnit((null as IMessageSink) !));
-            Assert.Throws<ArgumentNullException>("messageSink", () => builder.AddXUnit((null as IMessageSink) !, ConfigureAction));
-            Assert.Throws<ArgumentNullException>("configure", () => builder.AddXUnit(messageSink, (null as Action<XUnitLoggerOptions>) !));
-            Assert.Throws<ArgumentNullException>("configure", () => builder.AddXUnit(accessor, (null as Action<XUnitLoggerOptions>) !));
+            Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder)!.AddXUnit(messageSink));
+            Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder)!.AddXUnit(messageSink, ConfigureAction));
+            Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder)!.AddXUnit(accessor));
+            Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder)!.AddXUnit(accessor, ConfigureAction));
+            Assert.Throws<ArgumentNullException>("accessor", () => builder.AddXUnit((null as IMessageSinkAccessor)!));
+            Assert.Throws<ArgumentNullException>("accessor", () => builder.AddXUnit((null as IMessageSinkAccessor)!, ConfigureAction));
+            Assert.Throws<ArgumentNullException>("messageSink", () => builder.AddXUnit((null as IMessageSink)!));
+            Assert.Throws<ArgumentNullException>("messageSink", () => builder.AddXUnit((null as IMessageSink)!, ConfigureAction));
+            Assert.Throws<ArgumentNullException>("configure", () => builder.AddXUnit(messageSink, (null as Action<XUnitLoggerOptions>)!));
+            Assert.Throws<ArgumentNullException>("configure", () => builder.AddXUnit(accessor, (null as Action<XUnitLoggerOptions>)!));
         }
 
         [Fact]
@@ -67,22 +67,22 @@ namespace MartinCostello.Logging.XUnit
             var options = new XUnitLoggerOptions();
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("factory", () => (null as ILoggerFactory) !.AddXUnit(outputHelper));
-            Assert.Throws<ArgumentNullException>("factory", () => (null as ILoggerFactory) !.AddXUnit(outputHelper, options));
-            Assert.Throws<ArgumentNullException>("factory", () => (null as ILoggerFactory) !.AddXUnit(outputHelper, ConfigureAction));
-            Assert.Throws<ArgumentNullException>("factory", () => (null as ILoggerFactory) !.AddXUnit(outputHelper, ConfigureFunction));
-            Assert.Throws<ArgumentNullException>("factory", () => (null as ILoggerFactory) !.AddXUnit(outputHelper, Filter));
-            Assert.Throws<ArgumentNullException>("factory", () => (null as ILoggerFactory) !.AddXUnit(outputHelper, logLevel));
-            Assert.Throws<ArgumentNullException>("outputHelper", () => factory.AddXUnit((null as ITestOutputHelper) !));
-            Assert.Throws<ArgumentNullException>("outputHelper", () => factory.AddXUnit((null as ITestOutputHelper) !, ConfigureAction));
-            Assert.Throws<ArgumentNullException>("outputHelper", () => factory.AddXUnit((null as ITestOutputHelper) !, ConfigureFunction));
-            Assert.Throws<ArgumentNullException>("outputHelper", () => factory.AddXUnit((null as ITestOutputHelper) !, Filter));
-            Assert.Throws<ArgumentNullException>("outputHelper", () => factory.AddXUnit((null as ITestOutputHelper) !, logLevel));
-            Assert.Throws<ArgumentNullException>("outputHelper", () => factory.AddXUnit((null as ITestOutputHelper) !, options));
-            Assert.Throws<ArgumentNullException>("options", () => factory.AddXUnit(outputHelper, (null as XUnitLoggerOptions) !));
-            Assert.Throws<ArgumentNullException>("configure", () => factory.AddXUnit(outputHelper, (null as Action<XUnitLoggerOptions>) !));
-            Assert.Throws<ArgumentNullException>("configure", () => factory.AddXUnit(outputHelper, (null as Func<XUnitLoggerOptions>) !));
-            Assert.Throws<ArgumentNullException>("filter", () => factory.AddXUnit(outputHelper, (null as Func<string, LogLevel, bool>) !));
+            Assert.Throws<ArgumentNullException>("factory", () => (null as ILoggerFactory)!.AddXUnit(outputHelper));
+            Assert.Throws<ArgumentNullException>("factory", () => (null as ILoggerFactory)!.AddXUnit(outputHelper, options));
+            Assert.Throws<ArgumentNullException>("factory", () => (null as ILoggerFactory)!.AddXUnit(outputHelper, ConfigureAction));
+            Assert.Throws<ArgumentNullException>("factory", () => (null as ILoggerFactory)!.AddXUnit(outputHelper, ConfigureFunction));
+            Assert.Throws<ArgumentNullException>("factory", () => (null as ILoggerFactory)!.AddXUnit(outputHelper, Filter));
+            Assert.Throws<ArgumentNullException>("factory", () => (null as ILoggerFactory)!.AddXUnit(outputHelper, logLevel));
+            Assert.Throws<ArgumentNullException>("outputHelper", () => factory.AddXUnit((null as ITestOutputHelper)!));
+            Assert.Throws<ArgumentNullException>("outputHelper", () => factory.AddXUnit((null as ITestOutputHelper)!, ConfigureAction));
+            Assert.Throws<ArgumentNullException>("outputHelper", () => factory.AddXUnit((null as ITestOutputHelper)!, ConfigureFunction));
+            Assert.Throws<ArgumentNullException>("outputHelper", () => factory.AddXUnit((null as ITestOutputHelper)!, Filter));
+            Assert.Throws<ArgumentNullException>("outputHelper", () => factory.AddXUnit((null as ITestOutputHelper)!, logLevel));
+            Assert.Throws<ArgumentNullException>("outputHelper", () => factory.AddXUnit((null as ITestOutputHelper)!, options));
+            Assert.Throws<ArgumentNullException>("options", () => factory.AddXUnit(outputHelper, (null as XUnitLoggerOptions)!));
+            Assert.Throws<ArgumentNullException>("configure", () => factory.AddXUnit(outputHelper, (null as Action<XUnitLoggerOptions>)!));
+            Assert.Throws<ArgumentNullException>("configure", () => factory.AddXUnit(outputHelper, (null as Func<XUnitLoggerOptions>)!));
+            Assert.Throws<ArgumentNullException>("filter", () => factory.AddXUnit(outputHelper, (null as Func<string, LogLevel, bool>)!));
         }
 
         [Fact]
@@ -95,22 +95,22 @@ namespace MartinCostello.Logging.XUnit
             var options = new XUnitLoggerOptions();
 
             // Act and Assert
-            Assert.Throws<ArgumentNullException>("factory", () => (null as ILoggerFactory) !.AddXUnit(messageSink));
-            Assert.Throws<ArgumentNullException>("factory", () => (null as ILoggerFactory) !.AddXUnit(messageSink, options));
-            Assert.Throws<ArgumentNullException>("factory", () => (null as ILoggerFactory) !.AddXUnit(messageSink, ConfigureAction));
-            Assert.Throws<ArgumentNullException>("factory", () => (null as ILoggerFactory) !.AddXUnit(messageSink, ConfigureFunction));
-            Assert.Throws<ArgumentNullException>("factory", () => (null as ILoggerFactory) !.AddXUnit(messageSink, Filter));
-            Assert.Throws<ArgumentNullException>("factory", () => (null as ILoggerFactory) !.AddXUnit(messageSink, logLevel));
-            Assert.Throws<ArgumentNullException>("messageSink", () => factory.AddXUnit((null as IMessageSink) !));
-            Assert.Throws<ArgumentNullException>("messageSink", () => factory.AddXUnit((null as IMessageSink) !, ConfigureAction));
-            Assert.Throws<ArgumentNullException>("messageSink", () => factory.AddXUnit((null as IMessageSink) !, ConfigureFunction));
-            Assert.Throws<ArgumentNullException>("messageSink", () => factory.AddXUnit((null as IMessageSink) !, Filter));
-            Assert.Throws<ArgumentNullException>("messageSink", () => factory.AddXUnit((null as IMessageSink) !, logLevel));
-            Assert.Throws<ArgumentNullException>("messageSink", () => factory.AddXUnit((null as IMessageSink) !, options));
-            Assert.Throws<ArgumentNullException>("options", () => factory.AddXUnit(messageSink, (null as XUnitLoggerOptions) !));
-            Assert.Throws<ArgumentNullException>("configure", () => factory.AddXUnit(messageSink, (null as Action<XUnitLoggerOptions>) !));
-            Assert.Throws<ArgumentNullException>("configure", () => factory.AddXUnit(messageSink, (null as Func<XUnitLoggerOptions>) !));
-            Assert.Throws<ArgumentNullException>("filter", () => factory.AddXUnit(messageSink, (null as Func<string, LogLevel, bool>) !));
+            Assert.Throws<ArgumentNullException>("factory", () => (null as ILoggerFactory)!.AddXUnit(messageSink));
+            Assert.Throws<ArgumentNullException>("factory", () => (null as ILoggerFactory)!.AddXUnit(messageSink, options));
+            Assert.Throws<ArgumentNullException>("factory", () => (null as ILoggerFactory)!.AddXUnit(messageSink, ConfigureAction));
+            Assert.Throws<ArgumentNullException>("factory", () => (null as ILoggerFactory)!.AddXUnit(messageSink, ConfigureFunction));
+            Assert.Throws<ArgumentNullException>("factory", () => (null as ILoggerFactory)!.AddXUnit(messageSink, Filter));
+            Assert.Throws<ArgumentNullException>("factory", () => (null as ILoggerFactory)!.AddXUnit(messageSink, logLevel));
+            Assert.Throws<ArgumentNullException>("messageSink", () => factory.AddXUnit((null as IMessageSink)!));
+            Assert.Throws<ArgumentNullException>("messageSink", () => factory.AddXUnit((null as IMessageSink)!, ConfigureAction));
+            Assert.Throws<ArgumentNullException>("messageSink", () => factory.AddXUnit((null as IMessageSink)!, ConfigureFunction));
+            Assert.Throws<ArgumentNullException>("messageSink", () => factory.AddXUnit((null as IMessageSink)!, Filter));
+            Assert.Throws<ArgumentNullException>("messageSink", () => factory.AddXUnit((null as IMessageSink)!, logLevel));
+            Assert.Throws<ArgumentNullException>("messageSink", () => factory.AddXUnit((null as IMessageSink)!, options));
+            Assert.Throws<ArgumentNullException>("options", () => factory.AddXUnit(messageSink, (null as XUnitLoggerOptions)!));
+            Assert.Throws<ArgumentNullException>("configure", () => factory.AddXUnit(messageSink, (null as Action<XUnitLoggerOptions>)!));
+            Assert.Throws<ArgumentNullException>("configure", () => factory.AddXUnit(messageSink, (null as Func<XUnitLoggerOptions>)!));
+            Assert.Throws<ArgumentNullException>("filter", () => factory.AddXUnit(messageSink, (null as Func<string, LogLevel, bool>)!));
         }
 
         [Fact]
@@ -202,11 +202,58 @@ namespace MartinCostello.Logging.XUnit
             serviceProvider.GetService<ILoggerProvider>().ShouldBeOfType<XUnitLoggerProvider>();
         }
 
+        [Fact]
+        public static void AddXUnit_IMessageSink_With_LogLevel_Works()
+        {
+            // Arrange
+            ILoggerFactory factory = NullLoggerFactory.Instance;
+            var messageSink = Mock.Of<IMessageSink>();
+            var minLevel = LogLevel.Debug;
+
+            // Act
+            factory.AddXUnit(messageSink, minLevel);
+
+            // Assert
+            ILogger logger = factory.CreateLogger("SomeLogger");
+            logger.LogInformation("Some message");
+        }
+
+        [Fact]
+        public static void AddXUnit_IMessageSink_With_Filter_Works()
+        {
+            // Arrange
+            ILoggerFactory factory = NullLoggerFactory.Instance;
+            var messageSink = Mock.Of<IMessageSink>();
+
+            // Act
+            factory.AddXUnit(messageSink, (_) => { });
+
+            // Assert
+            ILogger logger = factory.CreateLogger("SomeLogger");
+            logger.LogInformation("Some message");
+        }
+
+        [Fact]
+        public static void AddXUnit_IMessageSink_With_Options_Works()
+        {
+            // Arrange
+            ILoggerFactory factory = NullLoggerFactory.Instance;
+            var messageSink = Mock.Of<IMessageSink>();
+            var options = new XUnitLoggerOptions();
+
+            // Act
+            factory.AddXUnit(messageSink, options);
+
+            // Assert
+            ILogger logger = factory.CreateLogger("SomeLogger");
+            logger.LogInformation("Some message");
+        }
+
         private static void ConfigureAction(XUnitLoggerOptions options)
         {
         }
 
-        private static XUnitLoggerOptions ConfigureFunction() => new XUnitLoggerOptions();
+        private static XUnitLoggerOptions ConfigureFunction() => new();
 
         private static bool Filter(string? categoryName, LogLevel level) => true;
     }
