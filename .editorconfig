@@ -103,6 +103,9 @@ csharp_style_inlined_variable_declaration = true:suggestion
 # Namespace preferences
 csharp_style_namespace_declarations = file_scoped
 
+# Namespace preferences
+csharp_style_namespace_declarations = file_scoped
+
 ###############################
 # C# Formatting Rules         #
 ###############################
