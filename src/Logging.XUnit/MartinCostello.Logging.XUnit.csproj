@@ -7,7 +7,7 @@
     <NoWarn>$(NoWarn)</NoWarn>
     <OutputType>Library</OutputType>
     <PackageId>MartinCostello.Logging.XUnit</PackageId>
-    <PackageValidationBaselineVersion>0.1.0</PackageValidationBaselineVersion>
+    <PackageValidationBaselineVersion>0.2.0</PackageValidationBaselineVersion>
     <RootNamespace>MartinCostello.Logging.XUnit</RootNamespace>
     <Summary>$(Description)</Summary>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
