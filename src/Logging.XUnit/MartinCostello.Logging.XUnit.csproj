@@ -2,10 +2,12 @@
   <PropertyGroup>
     <AssemblyTitle>Logging Extensions for xunit</AssemblyTitle>
     <Description>Extensions for Microsoft.Extensions.Logging for xunit.</Description>
+    <EnablePackageValidation>true</EnablePackageValidation>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn)</NoWarn>
     <OutputType>Library</OutputType>
     <PackageId>MartinCostello.Logging.XUnit</PackageId>
+    <PackageValidationBaselineVersion>0.2.0</PackageValidationBaselineVersion>
     <RootNamespace>MartinCostello.Logging.XUnit</RootNamespace>
     <Summary>$(Description)</Summary>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>

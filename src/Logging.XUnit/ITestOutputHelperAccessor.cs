@@ -3,16 +3,15 @@
 
 using Xunit.Abstractions;
 
-namespace MartinCostello.Logging.XUnit
+namespace MartinCostello.Logging.XUnit;
+
+/// <summary>
+/// Defines a property for accessing an <see cref="ITestOutputHelper"/>.
+/// </summary>
+public interface ITestOutputHelperAccessor
 {
     /// <summary>
-    /// Defines a property for accessing an <see cref="ITestOutputHelper"/>.
+    /// Gets or sets the <see cref="ITestOutputHelper"/> to use.
     /// </summary>
-    public interface ITestOutputHelperAccessor
-    {
-        /// <summary>
-        /// Gets or sets the <see cref="ITestOutputHelper"/> to use.
-        /// </summary>
-        ITestOutputHelper? OutputHelper { get; set; }
-    }
+    ITestOutputHelper? OutputHelper { get; set; }
 }

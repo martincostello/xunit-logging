@@ -1,20 +1,20 @@
 ﻿// Copyright (c) Martin Costello, 2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+#pragma warning disable CA1812
 
-namespace SampleApp
-{
-    public static class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+var builder = WebApplication.CreateBuilder(args);
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults((p) => p.UseStartup<Startup>());
-    }
-}
+var app = builder.Build();
+
+app.MapGet("/api/values", () => Results.Json(new string[] { "a", "b", "c" }));
+
+app.MapGet("/api/values/{id}", (string id) => "value");
+
+app.MapPost("/api/values", (object value) => Results.NoContent());
+
+app.MapPut("/api/values/{id}", (string id) => Results.NoContent());
+
+app.MapDelete("/api/values/{id}", (string id) => Results.NoContent());
+
+app.Run();

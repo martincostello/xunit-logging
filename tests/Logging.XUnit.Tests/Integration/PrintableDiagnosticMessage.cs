@@ -3,18 +3,17 @@
 
 using Xunit.Sdk;
 
-namespace MartinCostello.Logging.XUnit.Integration
-{
-    /// <summary>
-    /// See https://github.com/xunit/xunit/pull/2148#issuecomment-839838421
-    /// </summary>
-    internal class PrintableDiagnosticMessage : DiagnosticMessage
-    {
-        public PrintableDiagnosticMessage(string message)
-            : base(message)
-        {
-        }
+namespace MartinCostello.Logging.XUnit.Integration;
 
-        public override string ToString() => Message;
+/// <summary>
+/// See https://github.com/xunit/xunit/pull/2148#issuecomment-839838421.
+/// </summary>
+internal class PrintableDiagnosticMessage : DiagnosticMessage
+{
+    public PrintableDiagnosticMessage(string message)
+        : base(message)
+    {
     }
+
+    public override string ToString() => Message;
 }

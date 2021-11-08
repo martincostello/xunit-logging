@@ -1,259 +1,255 @@
 ﻿// Copyright (c) Martin Costello, 2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
-using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Xunit;
-using Xunit.Abstractions;
 
-namespace MartinCostello.Logging.XUnit
+namespace MartinCostello.Logging.XUnit;
+
+public static class IntegrationTests
 {
-    public static class IntegrationTests
+    [Fact]
+    public static void Can_Configure_xunit_For_ILoggerBuilder_TestOutputHelper()
     {
-        [Fact]
-        public static void Can_Configure_xunit_For_ILoggerBuilder_TestOutputHelper()
-        {
-            // Arrange
-            var mock = new Mock<ITestOutputHelper>();
-            var logger = BootstrapBuilder((builder) => builder.AddXUnit(mock.Object));
+        // Arrange
+        var mock = new Mock<ITestOutputHelper>();
+        var logger = BootstrapBuilder((builder) => builder.AddXUnit(mock.Object));
 
-            // Act
-            logger.LogError("This is a brand new problem, a problem without any clues.");
-            logger.LogInformation("If you know the clues, it's easy to get through.");
+        // Act
+        logger.LogError("This is a brand new problem, a problem without any clues.");
+        logger.LogInformation("If you know the clues, it's easy to get through.");
 
-            // Assert
-            mock.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Exactly(2));
-        }
+        // Assert
+        mock.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Exactly(2));
+    }
 
-        [Fact]
-        public static void Can_Configure_xunit_For_ILoggerBuilder_TestOutputHelper_With_Configuration()
-        {
-            // Arrange
-            var mock = new Mock<ITestOutputHelper>();
+    [Fact]
+    public static void Can_Configure_xunit_For_ILoggerBuilder_TestOutputHelper_With_Configuration()
+    {
+        // Arrange
+        var mock = new Mock<ITestOutputHelper>();
 
-            var logger = BootstrapBuilder(
-                (builder) =>
-                {
-                    builder.AddXUnit(
-                        mock.Object,
-                        (options) => options.Filter = (_, level) => level >= LogLevel.Error);
-                });
-
-            // Act
-            logger.LogError("This is a brand new problem, a problem without any clues.");
-            logger.LogTrace("If you know the clues, it's easy to get through.");
-
-            // Assert
-            mock.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Once());
-        }
-
-        [Fact]
-        public static void Can_Configure_xunit_For_ILoggerBuilderAccessor_TestOutputHelper()
-        {
-            // Arrange
-            var mockOutputHelper = new Mock<ITestOutputHelper>();
-            var outputHelper = mockOutputHelper.Object;
-
-            var mockAccessor = new Mock<ITestOutputHelperAccessor>();
-
-            mockAccessor
-                .Setup((p) => p.OutputHelper)
-                .Returns(outputHelper);
-
-            var accessor = mockAccessor.Object;
-
-            var logger = BootstrapBuilder((builder) => builder.AddXUnit(accessor));
-
-            // Act
-            logger.LogError("This is a brand new problem, a problem without any clues.");
-            logger.LogInformation("If you know the clues, it's easy to get through.");
-
-            // Assert
-            mockOutputHelper.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Exactly(2));
-        }
-
-        [Fact]
-        public static void Can_Configure_xunit_For_ILoggerBuilder_TestOutputHelperAccessor_With_Configuration()
-        {
-            // Arrange
-            var mockOutputHelper = new Mock<ITestOutputHelper>();
-            var outputHelper = mockOutputHelper.Object;
-
-            var mockAccessor = new Mock<ITestOutputHelperAccessor>();
-
-            mockAccessor
-                .Setup((p) => p.OutputHelper)
-                .Returns(outputHelper);
-
-            var accessor = mockAccessor.Object;
-
-            var logger = BootstrapBuilder(
-                (builder) =>
-                {
-                    builder.AddXUnit(
-                        mockOutputHelper.Object,
-                        (options) => options.Filter = (_, level) => level >= LogLevel.Error);
-                });
-
-            // Act
-            logger.LogError("This is a brand new problem, a problem without any clues.");
-            logger.LogTrace("If you know the clues, it's easy to get through.");
-
-            // Assert
-            mockOutputHelper.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Once());
-        }
-
-        [Fact]
-        public static void Can_Configure_xunit_For_ILoggerFactory()
-        {
-            // Arrange
-            var mock = new Mock<ITestOutputHelper>();
-            var logger = BootstrapFactory((builder) => builder.AddXUnit(mock.Object));
-
-            // Act
-            logger.LogError("This is a brand new problem, a problem without any clues.");
-            logger.LogInformation("If you know the clues, it's easy to get through.");
-
-            // Assert
-            mock.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Exactly(2));
-        }
-
-        [Fact]
-        public static void Can_Configure_xunit_For_ILoggerFactory_With_Filter()
-        {
-            // Arrange
-            var mock = new Mock<ITestOutputHelper>();
-            var logger = BootstrapFactory((builder) => builder.AddXUnit(mock.Object, (_, level) => level >= LogLevel.Error));
-
-            // Act
-            logger.LogError("This is a brand new problem, a problem without any clues.");
-            logger.LogWarning("If you know the clues, it's easy to get through.");
-
-            // Assert
-            mock.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Once());
-        }
-
-        [Fact]
-        public static void Can_Configure_xunit_For_ILoggerFactory_With_Minimum_Level()
-        {
-            // Arrange
-            var mock = new Mock<ITestOutputHelper>();
-            var logger = BootstrapFactory((builder) => builder.AddXUnit(mock.Object, LogLevel.Information));
-
-            // Act
-            logger.LogError("This is a brand new problem, a problem without any clues.");
-            logger.LogTrace("If you know the clues, it's easy to get through.");
-
-            // Assert
-            mock.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Once());
-        }
-
-        [Fact]
-        public static void Can_Configure_xunit_For_ILoggerFactory_With_Options()
-        {
-            // Arrange
-            var mock = new Mock<ITestOutputHelper>();
-
-            var options = new XUnitLoggerOptions()
+        var logger = BootstrapBuilder(
+            (builder) =>
             {
-                Filter = (_, level) => level >= LogLevel.Error,
-            };
+                builder.AddXUnit(
+                    mock.Object,
+                    (options) => options.Filter = (_, level) => level >= LogLevel.Error);
+            });
 
-            var logger = BootstrapFactory((builder) => builder.AddXUnit(mock.Object, options));
+        // Act
+        logger.LogError("This is a brand new problem, a problem without any clues.");
+        logger.LogTrace("If you know the clues, it's easy to get through.");
 
-            // Act
-            logger.LogError("This is a brand new problem, a problem without any clues.");
-            logger.LogWarning("If you know the clues, it's easy to get through.");
+        // Assert
+        mock.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Once());
+    }
 
-            // Assert
-            mock.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Once());
-        }
+    [Fact]
+    public static void Can_Configure_xunit_For_ILoggerBuilderAccessor_TestOutputHelper()
+    {
+        // Arrange
+        var mockOutputHelper = new Mock<ITestOutputHelper>();
+        var outputHelper = mockOutputHelper.Object;
 
-        [Fact]
-        public static void Can_Configure_xunit_For_ILoggerFactory_With_Options_Factory()
-        {
-            // Arrange
-            var mock = new Mock<ITestOutputHelper>();
+        var mockAccessor = new Mock<ITestOutputHelperAccessor>();
 
-            var options = new XUnitLoggerOptions()
+        mockAccessor
+            .Setup((p) => p.OutputHelper)
+            .Returns(outputHelper);
+
+        var accessor = mockAccessor.Object;
+
+        var logger = BootstrapBuilder((builder) => builder.AddXUnit(accessor));
+
+        // Act
+        logger.LogError("This is a brand new problem, a problem without any clues.");
+        logger.LogInformation("If you know the clues, it's easy to get through.");
+
+        // Assert
+        mockOutputHelper.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Exactly(2));
+    }
+
+    [Fact]
+    public static void Can_Configure_xunit_For_ILoggerBuilder_TestOutputHelperAccessor_With_Configuration()
+    {
+        // Arrange
+        var mockOutputHelper = new Mock<ITestOutputHelper>();
+        var outputHelper = mockOutputHelper.Object;
+
+        var mockAccessor = new Mock<ITestOutputHelperAccessor>();
+
+        mockAccessor
+            .Setup((p) => p.OutputHelper)
+            .Returns(outputHelper);
+
+        var accessor = mockAccessor.Object;
+
+        var logger = BootstrapBuilder(
+            (builder) =>
             {
-                Filter = (_, level) => level >= LogLevel.Error,
-            };
+                builder.AddXUnit(
+                    mockOutputHelper.Object,
+                    (options) => options.Filter = (_, level) => level >= LogLevel.Error);
+            });
 
-            var logger = BootstrapFactory((builder) => builder.AddXUnit(mock.Object, () => options));
+        // Act
+        logger.LogError("This is a brand new problem, a problem without any clues.");
+        logger.LogTrace("If you know the clues, it's easy to get through.");
 
-            // Act
-            logger.LogError("This is a brand new problem, a problem without any clues.");
-            logger.LogWarning("If you know the clues, it's easy to get through.");
+        // Assert
+        mockOutputHelper.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Once());
+    }
 
-            // Assert
-            mock.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Once());
-        }
+    [Fact]
+    public static void Can_Configure_xunit_For_ILoggerFactory()
+    {
+        // Arrange
+        var mock = new Mock<ITestOutputHelper>();
+        var logger = BootstrapFactory((builder) => builder.AddXUnit(mock.Object));
 
-        [Fact]
-        public static void Can_Configure_xunit_For_ILoggerFactory_With_Configure_Options()
+        // Act
+        logger.LogError("This is a brand new problem, a problem without any clues.");
+        logger.LogInformation("If you know the clues, it's easy to get through.");
+
+        // Assert
+        mock.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Exactly(2));
+    }
+
+    [Fact]
+    public static void Can_Configure_xunit_For_ILoggerFactory_With_Filter()
+    {
+        // Arrange
+        var mock = new Mock<ITestOutputHelper>();
+        var logger = BootstrapFactory((builder) => builder.AddXUnit(mock.Object, (_, level) => level >= LogLevel.Error));
+
+        // Act
+        logger.LogError("This is a brand new problem, a problem without any clues.");
+        logger.LogWarning("If you know the clues, it's easy to get through.");
+
+        // Assert
+        mock.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Once());
+    }
+
+    [Fact]
+    public static void Can_Configure_xunit_For_ILoggerFactory_With_Minimum_Level()
+    {
+        // Arrange
+        var mock = new Mock<ITestOutputHelper>();
+        var logger = BootstrapFactory((builder) => builder.AddXUnit(mock.Object, LogLevel.Information));
+
+        // Act
+        logger.LogError("This is a brand new problem, a problem without any clues.");
+        logger.LogTrace("If you know the clues, it's easy to get through.");
+
+        // Assert
+        mock.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Once());
+    }
+
+    [Fact]
+    public static void Can_Configure_xunit_For_ILoggerFactory_With_Options()
+    {
+        // Arrange
+        var mock = new Mock<ITestOutputHelper>();
+
+        var options = new XUnitLoggerOptions()
         {
-            // Arrange
-            var mock = new Mock<ITestOutputHelper>();
-            var logger = BootstrapFactory(
-                (builder) =>
-                {
-                    builder.AddXUnit(
-                        mock.Object,
-                        (options) => options.Filter = (_, level) => level >= LogLevel.Error);
-                });
+            Filter = (_, level) => level >= LogLevel.Error,
+        };
 
-            // Act
-            logger.LogError("This is a brand new problem, a problem without any clues.");
-            logger.LogWarning("If you know the clues, it's easy to get through.");
+        var logger = BootstrapFactory((builder) => builder.AddXUnit(mock.Object, options));
 
-            // Assert
-            mock.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Once());
-        }
+        // Act
+        logger.LogError("This is a brand new problem, a problem without any clues.");
+        logger.LogWarning("If you know the clues, it's easy to get through.");
 
-        [Fact]
-        public static void Can_Configure_xunit_For_ILoggerBuilder()
+        // Assert
+        mock.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Once());
+    }
+
+    [Fact]
+    public static void Can_Configure_xunit_For_ILoggerFactory_With_Options_Factory()
+    {
+        // Arrange
+        var mock = new Mock<ITestOutputHelper>();
+
+        var options = new XUnitLoggerOptions()
         {
-            // Arrange
-            var serviceProvider = new ServiceCollection()
-                .AddLogging((builder) => builder.AddXUnit())
-                .BuildServiceProvider();
+            Filter = (_, level) => level >= LogLevel.Error,
+        };
 
-            var mock = new Mock<ITestOutputHelper>();
+        var logger = BootstrapFactory((builder) => builder.AddXUnit(mock.Object, () => options));
 
-            serviceProvider.GetRequiredService<ITestOutputHelperAccessor>().OutputHelper = mock.Object;
+        // Act
+        logger.LogError("This is a brand new problem, a problem without any clues.");
+        logger.LogWarning("If you know the clues, it's easy to get through.");
 
-            var logger = serviceProvider.GetRequiredService<ILogger<XUnitLogger>>();
+        // Assert
+        mock.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Once());
+    }
 
-            // Act
-            logger.LogError("This is a brand new problem, a problem without any clues.");
-            logger.LogInformation("If you know the clues, it's easy to get through.");
+    [Fact]
+    public static void Can_Configure_xunit_For_ILoggerFactory_With_Configure_Options()
+    {
+        // Arrange
+        var mock = new Mock<ITestOutputHelper>();
+        var logger = BootstrapFactory(
+            (builder) =>
+            {
+                builder.AddXUnit(
+                    mock.Object,
+                    (options) => options.Filter = (_, level) => level >= LogLevel.Error);
+            });
 
-            // Assert
-            mock.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Exactly(2));
-        }
+        // Act
+        logger.LogError("This is a brand new problem, a problem without any clues.");
+        logger.LogWarning("If you know the clues, it's easy to get through.");
 
-        private static ILogger BootstrapBuilder(Action<ILoggingBuilder> configure)
-        {
-            return new ServiceCollection()
-                .AddLogging(configure)
-                .BuildServiceProvider()
-                .GetRequiredService<ILogger<XUnitLogger>>();
-        }
+        // Assert
+        mock.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Once());
+    }
 
-        private static ILogger BootstrapFactory(Action<ILoggerFactory> configure)
-        {
-            var services = new ServiceCollection()
-                .AddLogging()
-                .BuildServiceProvider();
+    [Fact]
+    public static void Can_Configure_xunit_For_ILoggerBuilder()
+    {
+        // Arrange
+        var serviceProvider = new ServiceCollection()
+            .AddLogging((builder) => builder.AddXUnit())
+            .BuildServiceProvider();
 
-            var factory = services.GetRequiredService<ILoggerFactory>();
+        var mock = new Mock<ITestOutputHelper>();
 
-            configure(factory);
+        serviceProvider.GetRequiredService<ITestOutputHelperAccessor>().OutputHelper = mock.Object;
 
-            return factory.CreateLogger<XUnitLogger>();
-        }
+        var logger = serviceProvider.GetRequiredService<ILogger<XUnitLogger>>();
+
+        // Act
+        logger.LogError("This is a brand new problem, a problem without any clues.");
+        logger.LogInformation("If you know the clues, it's easy to get through.");
+
+        // Assert
+        mock.Verify((p) => p.WriteLine(It.IsNotNull<string>()), Times.Exactly(2));
+    }
+
+    private static ILogger BootstrapBuilder(Action<ILoggingBuilder> configure)
+    {
+        return new ServiceCollection()
+            .AddLogging(configure)
+            .BuildServiceProvider()
+            .GetRequiredService<ILogger<XUnitLogger>>();
+    }
+
+    private static ILogger BootstrapFactory(Action<ILoggerFactory> configure)
+    {
+        var services = new ServiceCollection()
+            .AddLogging()
+            .BuildServiceProvider();
+
+        var factory = services.GetRequiredService<ILoggerFactory>();
+
+        configure(factory);
+
+        return factory.CreateLogger<XUnitLogger>();
     }
 }

@@ -5,30 +5,28 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Logging;
 using SampleApp;
-using Xunit.Abstractions;
 
-namespace MartinCostello.Logging.XUnit.Integration
+namespace MartinCostello.Logging.XUnit.Integration;
+
+/// <summary>
+/// A test fixture representing an HTTP server hosting the sample application. This class cannot be inherited.
+/// </summary>
+public sealed class HttpServerFixture : WebApplicationFactory<FakeEntrypoint>, ITestOutputHelperAccessor
 {
     /// <summary>
-    /// A test fixture representing an HTTP server hosting the sample application. This class cannot be inherited.
+    /// Initializes a new instance of the <see cref="HttpServerFixture"/> class.
     /// </summary>
-    public sealed class HttpServerFixture : WebApplicationFactory<Startup>, ITestOutputHelperAccessor
+    public HttpServerFixture()
+        : base()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HttpServerFixture"/> class.
-        /// </summary>
-        public HttpServerFixture()
-            : base()
-        {
-        }
+    }
 
-        /// <inheritdoc />
-        public ITestOutputHelper? OutputHelper { get; set; }
+    /// <inheritdoc />
+    public ITestOutputHelper? OutputHelper { get; set; }
 
-        /// <inheritdoc />
-        protected override void ConfigureWebHost(IWebHostBuilder builder)
-        {
-            builder.ConfigureLogging((p) => p.AddXUnit(this));
-        }
+    /// <inheritdoc />
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        builder.ConfigureLogging((p) => p.AddXUnit(this));
     }
 }

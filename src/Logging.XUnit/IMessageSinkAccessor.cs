@@ -3,16 +3,15 @@
 
 using Xunit.Abstractions;
 
-namespace MartinCostello.Logging.XUnit
+namespace MartinCostello.Logging.XUnit;
+
+/// <summary>
+/// Defines a property for accessing an <see cref="IMessageSink"/>.
+/// </summary>
+public interface IMessageSinkAccessor
 {
     /// <summary>
-    /// Defines a property for accessing an <see cref="IMessageSink"/>.
+    /// Gets or sets the <see cref="IMessageSink"/> to use.
     /// </summary>
-    public interface IMessageSinkAccessor
-    {
-        /// <summary>
-        /// Gets or sets the <see cref="IMessageSink"/> to use.
-        /// </summary>
-        IMessageSink? MessageSink { get; set; }
-    }
+    IMessageSink? MessageSink { get; set; }
 }

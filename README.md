@@ -25,54 +25,53 @@ using Microsoft.Extensions.Logging;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace MyApp.Calculator
+namespace MyApp.Calculator;
+
+public class CalculatorTests
 {
-    public class CalculatorTests
+    public CalculatorTests(ITestOutputHelper outputHelper)
     {
-        public CalculatorTests(ITestOutputHelper outputHelper)
-        {
-            OutputHelper = outputHelper;
-        }
-
-        private ITestOutputHelper OutputHelper { get; }
-
-        [Fact]
-        public void Calculator_Sums_Two_Integers()
-        {
-            // Arrange
-            var services = new ServiceCollection()
-                .AddLogging((builder) => builder.AddXUnit(OutputHelper))
-                .AddSingleton<Calculator>();
-
-            var calculator = services
-                .BuildServiceProvider()
-                .GetRequiredService<Calculator>();
-
-            // Act
-            int actual = calculator.Sum(1, 2);
-
-            // Assert
-            Assert.AreEqual(3, actual);
-        }
+        OutputHelper = outputHelper;
     }
 
-    public sealed class Calculator
+    private ITestOutputHelper OutputHelper { get; }
+
+    [Fact]
+    public void Calculator_Sums_Two_Integers()
     {
-        private readonly ILogger _logger;
+        // Arrange
+        var services = new ServiceCollection()
+            .AddLogging((builder) => builder.AddXUnit(OutputHelper))
+            .AddSingleton<Calculator>();
 
-        public Calculator(ILogger<Calculator> logger)
-        {
-            _logger = logger;
-        }
+        var calculator = services
+            .BuildServiceProvider()
+            .GetRequiredService<Calculator>();
 
-        public int Sum(int x, int y)
-        {
-            int sum = x + y;
+        // Act
+        int actual = calculator.Sum(1, 2);
 
-            _logger.LogInformation("The sum of {x} and {y} is {sum}.", x, y, sum);
+        // Assert
+        Assert.AreEqual(3, actual);
+    }
+}
 
-            return sum;
-        }
+public sealed class Calculator
+{
+    private readonly ILogger _logger;
+
+    public Calculator(ILogger<Calculator> logger)
+    {
+        _logger = logger;
+    }
+
+    public int Sum(int x, int y)
+    {
+        int sum = x + y;
+
+        _logger.LogInformation("The sum of {x} and {y} is {sum}.", x, y, sum);
+
+        return sum;
     }
 }
 ```
@@ -95,7 +94,7 @@ This project is licensed under the [Apache 2.0](http://www.apache.org/licenses/L
 
 ## Building and Testing
 
-Compiling the library yourself requires Git and the [.NET SDK](https://www.microsoft.com/net/download/core "Download the .NET SDK") to be installed (version `5.0.100` or later).
+Compiling the library yourself requires Git and the [.NET SDK](https://www.microsoft.com/net/download/core "Download the .NET SDK") to be installed (version `6.0.100` or later).
 
 To build and test the library locally from a terminal/command-line, run one of the following set of commands:
 
