@@ -1,4 +1,8 @@
 #! /usr/bin/env pwsh
+
+#Requires -PSEdition Core
+#Requires -Version 7
+
 param(
     [Parameter(Mandatory = $false)][string] $Configuration = "Release",
     [Parameter(Mandatory = $false)][string] $VersionSuffix = "",
@@ -124,7 +128,14 @@ function DotNetTest {
     $coverageOutput = Join-Path $OutputPath "coverage.*.cobertura.xml"
     $reportOutput = Join-Path $OutputPath "coverage"
 
-    & $dotnet test $Project --output $OutputPath
+    $additionalArgs = @()
+
+    if (![string]::IsNullOrEmpty($env:GITHUB_SHA)) {
+        $additionalArgs += "--logger"
+        $additionalArgs += "GitHubActions;report-warnings=false"
+    }
+
+    & $dotnet test $Project --output $OutputPath --configuration $Configuration $additionalArgs
 
     $dotNetTestExitCode = $LASTEXITCODE
 
