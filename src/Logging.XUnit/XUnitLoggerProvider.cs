@@ -8,6 +8,7 @@ namespace MartinCostello.Logging.XUnit;
 /// <summary>
 /// A class representing an <see cref="ILoggerProvider"/> to use with xunit.
 /// </summary>
+[ProviderAlias("XUnit")]
 public partial class XUnitLoggerProvider : ILoggerProvider
 {
     /// <summary>
