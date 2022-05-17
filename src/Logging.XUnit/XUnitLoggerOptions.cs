@@ -33,4 +33,12 @@ public class XUnitLoggerOptions
     /// Gets or sets a value indicating whether to include scopes.
     /// </summary>
     public bool IncludeScopes { get; set; }
+
+    /// <summary>
+    /// Gets or sets format string used to format the timestamp in log messages. Defaults to <c>u</c>.
+    /// </summary>
+#if NET7_0_OR_GREATER
+    [StringSyntax(StringSyntaxAttribute.DateTimeFormat)]
+#endif
+    public string? TimestampFormat { get; set; }
 }
