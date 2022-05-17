@@ -38,7 +38,7 @@ public class XUnitLoggerOptions
     /// Gets or sets format string used to format the timestamp in log messages. Defaults to <c>u</c>.
     /// </summary>
 #if NET7_0_OR_GREATER
-    [StringSyntax(StringSyntaxAttribute.DateTimeFormat)]
+    [StringSyntax(StringSyntaxAttribute.DateTimeFormat)] // TODO Light up after .NET 7 ships https://github.com/martincostello/xunit-logging/issues/315
 #endif
     public string? TimestampFormat { get; set; }
 }
