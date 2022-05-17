@@ -50,7 +50,7 @@ public partial class XUnitLogger : ILogger
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));
 
-        _filter = options?.Filter ?? ((_, _) => true);
+        _filter = options?.Filter ?? (static (_, _) => true);
         _messageSinkMessageFactory = options?.MessageSinkMessageFactory ?? (message => new DiagnosticMessage(message));
         IncludeScopes = options?.IncludeScopes ?? false;
     }
@@ -80,7 +80,7 @@ public partial class XUnitLogger : ILogger
     /// <summary>
     /// Gets or sets a delegate representing the system clock.
     /// </summary>
-    internal Func<DateTimeOffset> Clock { get; set; } = () => DateTimeOffset.Now;
+    internal Func<DateTimeOffset> Clock { get; set; } = static () => DateTimeOffset.Now;
 
     /// <inheritdoc />
     public IDisposable BeginScope<TState>(TState state)

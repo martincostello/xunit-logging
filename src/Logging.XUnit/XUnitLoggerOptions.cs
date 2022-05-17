@@ -22,12 +22,12 @@ public class XUnitLoggerOptions
     /// <summary>
     /// Gets or sets the category filter to apply to logs.
     /// </summary>
-    public Func<string?, LogLevel, bool> Filter { get; set; } = (c, l) => true; // By default log everything
+    public Func<string?, LogLevel, bool> Filter { get; set; } = static (c, l) => true; // By default log everything
 
     /// <summary>
     /// Gets or sets the message sink message factory to use when writing to a <see cref="IMessageSink"/>.
     /// </summary>
-    public Func<string, IMessageSinkMessage> MessageSinkMessageFactory { get; set; } = m => new DiagnosticMessage(m);
+    public Func<string, IMessageSinkMessage> MessageSinkMessageFactory { get; set; } = static (m) => new DiagnosticMessage(m);
 
     /// <summary>
     /// Gets or sets a value indicating whether to include scopes.
