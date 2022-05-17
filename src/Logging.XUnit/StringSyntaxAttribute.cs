@@ -10,6 +10,7 @@ namespace System.Diagnostics.CodeAnalysis;
 #pragma warning disable SA1600
 
 [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
+[ExcludeFromCodeCoverage]
 internal sealed class StringSyntaxAttribute : Attribute
 {
     public const string Uri = nameof(Uri);
