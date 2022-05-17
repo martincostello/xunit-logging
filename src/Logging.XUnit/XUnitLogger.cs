@@ -63,8 +63,8 @@ public partial class XUnitLogger : ILogger
     /// </exception>
     public Func<string?, LogLevel, bool> Filter
     {
-        get { return _filter; }
-        set { _filter = value ?? throw new ArgumentNullException(nameof(value)); }
+        get => _filter;
+        set => _filter = value ?? throw new ArgumentNullException(nameof(value));
     }
 
     /// <summary>
@@ -228,17 +228,11 @@ public partial class XUnitLogger : ILogger
         return logLevel switch
         {
             LogLevel.Critical => "crit",
-
             LogLevel.Debug => "dbug",
-
             LogLevel.Error => "fail",
-
             LogLevel.Information => "info",
-
             LogLevel.Trace => "trce",
-
             LogLevel.Warning => "warn",
-
             _ => throw new ArgumentOutOfRangeException(nameof(logLevel)),
         };
     }
@@ -267,10 +261,10 @@ public partial class XUnitLogger : ILogger
             foreach (var property in StringifyScope(elem))
             {
                 builder.Append(MessagePadding)
-                        .Append(DepthPadding(depth))
-                        .Append("=> ")
-                        .Append(property)
-                        .AppendLine();
+                       .Append(DepthPadding(depth))
+                       .Append("=> ")
+                       .Append(property)
+                       .AppendLine();
             }
 
             depth++;
@@ -288,7 +282,7 @@ public partial class XUnitLogger : ILogger
         {
             foreach (var pair in pairs)
             {
-                yield return pair.Key + ": " + pair.Value;
+                yield return $"{pair.Key}: {pair.Value}";
             }
         }
         else if (scope.State is IEnumerable<string> entries)
