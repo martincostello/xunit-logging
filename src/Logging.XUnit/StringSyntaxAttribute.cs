@@ -13,7 +13,7 @@ namespace System.Diagnostics.CodeAnalysis;
 [ExcludeFromCodeCoverage]
 internal sealed class StringSyntaxAttribute : Attribute
 {
-    public const string Uri = nameof(Uri);
+    public const string DateTimeFormat = nameof(DateTimeFormat);
 
     public StringSyntaxAttribute(string syntax)
     {
