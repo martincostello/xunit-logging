@@ -13,7 +13,7 @@ namespace MartinCostello.Logging.XUnit;
 /// </summary>
 public partial class XUnitLogger : ILogger
 {
-    //// Based on https://github.com/aspnet/Logging/blob/master/src/Microsoft.Extensions.Logging.Console/ConsoleLogger.cs
+    //// Based on https://github.com/dotnet/runtime/blob/65067052e433eda400c5e7cc9f7b21c84640f901/src/libraries/Microsoft.Extensions.Logging.Console/src/ConsoleLogger.cs#L41-L66
 
     /// <summary>
     /// The padding to use for log levels.
@@ -37,6 +37,11 @@ public partial class XUnitLogger : ILogger
     private static StringBuilder? _logBuilder;
 
     /// <summary>
+    /// The format string used to format the timestamp in log messages.
+    /// </summary>
+    private readonly string _timestampFormat;
+
+    /// <summary>
     /// Gets or sets the filter to use.
     /// </summary>
     private Func<string?, LogLevel, bool> _filter;
@@ -50,8 +55,9 @@ public partial class XUnitLogger : ILogger
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));
 
-        _filter = options?.Filter ?? ((_, _) => true);
+        _filter = options?.Filter ?? (static (_, _) => true);
         _messageSinkMessageFactory = options?.MessageSinkMessageFactory ?? (message => new DiagnosticMessage(message));
+        _timestampFormat = options?.TimestampFormat ?? "u";
         IncludeScopes = options?.IncludeScopes ?? false;
     }
 
@@ -63,8 +69,8 @@ public partial class XUnitLogger : ILogger
     /// </exception>
     public Func<string?, LogLevel, bool> Filter
     {
-        get { return _filter; }
-        set { _filter = value ?? throw new ArgumentNullException(nameof(value)); }
+        get => _filter;
+        set => _filter = value ?? throw new ArgumentNullException(nameof(value));
     }
 
     /// <summary>
@@ -80,7 +86,7 @@ public partial class XUnitLogger : ILogger
     /// <summary>
     /// Gets or sets a delegate representing the system clock.
     /// </summary>
-    internal Func<DateTimeOffset> Clock { get; set; } = () => DateTimeOffset.Now;
+    internal Func<DateTimeOffset> Clock { get; set; } = static () => DateTimeOffset.Now;
 
     /// <inheritdoc />
     public IDisposable BeginScope<TState>(TState state)
@@ -156,7 +162,8 @@ public partial class XUnitLogger : ILogger
         logBuilder.Append(Name);
         logBuilder.Append('[');
         logBuilder.Append(eventId);
-        logBuilder.AppendLine("]");
+        logBuilder.Append(']');
+        logBuilder.AppendLine();
 
         if (IncludeScopes)
         {
@@ -184,11 +191,17 @@ public partial class XUnitLogger : ILogger
             logBuilder.Append(exception.ToString());
         }
 
-        string formatted = logBuilder.ToString();
+        // Prefix the formatted message so it renders like this:
+        // [{timestamp}] {logLevelString}{message}
+        logBuilder.Insert(0, logLevelString);
+        logBuilder.Insert(0, "] ");
+        logBuilder.Insert(0, Clock().ToString(_timestampFormat, CultureInfo.CurrentCulture));
+        logBuilder.Insert(0, '[');
+
+        string line = logBuilder.ToString();
 
         try
         {
-            var line = $"[{Clock():u}] {logLevelString}{formatted}";
             if (outputHelper != null)
             {
                 outputHelper.WriteLine(line);
@@ -228,17 +241,11 @@ public partial class XUnitLogger : ILogger
         return logLevel switch
         {
             LogLevel.Critical => "crit",
-
             LogLevel.Debug => "dbug",
-
             LogLevel.Error => "fail",
-
             LogLevel.Information => "info",
-
             LogLevel.Trace => "trce",
-
             LogLevel.Warning => "warn",
-
             _ => throw new ArgumentOutOfRangeException(nameof(logLevel)),
         };
     }
@@ -267,10 +274,10 @@ public partial class XUnitLogger : ILogger
             foreach (var property in StringifyScope(elem))
             {
                 builder.Append(MessagePadding)
-                        .Append(DepthPadding(depth))
-                        .Append("=> ")
-                        .Append(property)
-                        .AppendLine();
+                       .Append(DepthPadding(depth))
+                       .Append("=> ")
+                       .Append(property)
+                       .AppendLine();
             }
 
             depth++;
@@ -288,7 +295,7 @@ public partial class XUnitLogger : ILogger
         {
             foreach (var pair in pairs)
             {
-                yield return pair.Key + ": " + pair.Value;
+                yield return $"{pair.Key}: {pair.Value}";
             }
         }
         else if (scope.State is IEnumerable<string> entries)

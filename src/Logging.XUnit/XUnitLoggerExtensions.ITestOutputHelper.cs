@@ -31,7 +31,7 @@ public static partial class XUnitLoggerExtensions
             throw new ArgumentNullException(nameof(builder));
         }
 
-        return builder.AddXUnit(new AmbientTestOutputHelperAccessor(), (_) => { });
+        return builder.AddXUnit(new AmbientTestOutputHelperAccessor(), static (_) => { });
     }
 
     /// <summary>
@@ -57,7 +57,7 @@ public static partial class XUnitLoggerExtensions
             throw new ArgumentNullException(nameof(accessor));
         }
 
-        return builder.AddXUnit(accessor, (_) => { });
+        return builder.AddXUnit(accessor, static (_) => { });
     }
 
     /// <summary>
@@ -125,7 +125,7 @@ public static partial class XUnitLoggerExtensions
             throw new ArgumentNullException(nameof(outputHelper));
         }
 
-        return builder.AddXUnit(outputHelper, (_) => { });
+        return builder.AddXUnit(outputHelper, static (_) => { });
     }
 
     /// <summary>
@@ -248,7 +248,7 @@ public static partial class XUnitLoggerExtensions
             throw new ArgumentNullException(nameof(outputHelper));
         }
 
-        return factory.AddXUnit(outputHelper, (_) => { });
+        return factory.AddXUnit(outputHelper, static (_) => { });
     }
 
     /// <summary>

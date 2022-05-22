@@ -36,7 +36,7 @@ public static partial class XUnitLoggerExtensions
             throw new ArgumentNullException(nameof(accessor));
         }
 
-        return builder.AddXUnit(accessor, (_) => { });
+        return builder.AddXUnit(accessor, static (_) => { });
     }
 
     /// <summary>
@@ -104,7 +104,7 @@ public static partial class XUnitLoggerExtensions
             throw new ArgumentNullException(nameof(messageSink));
         }
 
-        return builder.AddXUnit(messageSink, (_) => { });
+        return builder.AddXUnit(messageSink, static (_) => { });
     }
 
     /// <summary>
@@ -227,7 +227,7 @@ public static partial class XUnitLoggerExtensions
             throw new ArgumentNullException(nameof(messageSink));
         }
 
-        return factory.AddXUnit(messageSink, (_) => { });
+        return factory.AddXUnit(messageSink, static (_) => { });
     }
 
     /// <summary>
