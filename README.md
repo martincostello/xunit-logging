@@ -8,6 +8,8 @@
 
 `MartinCostello.Logging.XUnit` provides extensions to hook into the `ILogger` infrastructure to output logs from your xunit tests to the test output.
 
+> ℹ️ This library is designed for the Microsoft logging implementation of `ILoggerFactory`. For other logging implementations, such as [Serilog](https://serilog.net/), consider using packages such as [Serilog.Sinks.XUnit](https://github.com/trbenning/serilog-sinks-xunit) instead.
+
 ### Installation
 
 To install the library from [NuGet](https://www.nuget.org/packages/MartinCostello.Logging.XUnit/ "MartinCostello.Logging.XUnit on NuGet.org") using the .NET SDK run:
