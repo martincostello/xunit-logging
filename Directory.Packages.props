@@ -7,7 +7,7 @@
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
     <PackageVersion Include="Moq" Version="4.18.2" />
     <PackageVersion Include="ReportGenerator" Version="5.1.9" />
-    <PackageVersion Include="Shouldly" Version="4.0.3" />
+    <PackageVersion Include="Shouldly" Version="4.1.0" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.435" />
   </ItemGroup>
   <ItemGroup Condition=" '$(IsTestProject)' != 'true' ">
