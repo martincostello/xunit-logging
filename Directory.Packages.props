@@ -2,7 +2,7 @@
   <ItemGroup>
     <PackageVersion Include="coverlet.msbuild" Version="3.1.2" />
     <PackageVersion Include="GitHubActionsTestLogger" Version="2.0.1" />
-    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.0-rc.2.22476.2" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
     <PackageVersion Include="Moq" Version="4.18.2" />
@@ -16,7 +16,7 @@
     <PackageVersion Include="xunit.extensibility.execution" Version="2.4.0" />
   </ItemGroup>
   <ItemGroup Condition=" '$(IsTestProject)' == 'true' ">
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="7.0.0-rc.2.22472.3" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="7.0.0" />
     <PackageVersion Include="xunit" Version="2.4.2" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.5" />
   </ItemGroup>
