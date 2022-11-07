@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Martin Costello, 2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 using Xunit.Sdk;
@@ -37,8 +38,6 @@ public class XUnitLoggerOptions
     /// <summary>
     /// Gets or sets format string used to format the timestamp in log messages. Defaults to <c>u</c>.
     /// </summary>
-#if NET7_0_OR_GREATER
-    [StringSyntax(StringSyntaxAttribute.DateTimeFormat)] // TODO Light up after .NET 7 ships https://github.com/martincostello/xunit-logging/issues/315
-#endif
+    [StringSyntax(StringSyntaxAttribute.DateTimeFormat)]
     public string? TimestampFormat { get; set; }
 }
