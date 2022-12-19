@@ -6,7 +6,7 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
     <PackageVersion Include="Moq" Version="4.18.3" />
-    <PackageVersion Include="ReportGenerator" Version="5.1.12" />
+    <PackageVersion Include="ReportGenerator" Version="5.1.13" />
     <PackageVersion Include="Shouldly" Version="4.1.0" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.435" />
   </ItemGroup>
