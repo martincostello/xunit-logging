@@ -91,10 +91,10 @@ function DotNetBuild {
     param([string]$Project)
 
     if ($VersionSuffix) {
-        & $dotnet build $Project --output $OutputPath --configuration $Configuration --version-suffix "$VersionSuffix"
+        & $dotnet build $Project --configuration $Configuration --version-suffix "$VersionSuffix"
     }
     else {
-        & $dotnet build $Project --output $OutputPath --configuration $Configuration
+        & $dotnet build $Project --configuration $Configuration
     }
     if ($LASTEXITCODE -ne 0) {
         throw "dotnet build failed with exit code $LASTEXITCODE"
