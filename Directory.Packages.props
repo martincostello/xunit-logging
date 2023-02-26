@@ -11,12 +11,12 @@
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.435" />
   </ItemGroup>
   <ItemGroup Condition=" '$(IsTestProject)' != 'true' ">
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="2.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="2.2.0" />
     <PackageVersion Include="xunit.abstractions" Version="2.0.2" />
     <PackageVersion Include="xunit.extensibility.execution" Version="2.4.0" />
   </ItemGroup>
   <ItemGroup Condition=" '$(IsTestProject)' == 'true' ">
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="7.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="2.2.0" />
     <PackageVersion Include="xunit" Version="2.4.2" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.5" />
   </ItemGroup>
