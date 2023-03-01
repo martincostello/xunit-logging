@@ -202,7 +202,7 @@ public static class XUnitLoggerExtensionsTests
     public static void AddXUnit_IMessageSink_With_LogLevel_Works()
     {
         // Arrange
-        ILoggerFactory factory = NullLoggerFactory.Instance;
+        var factory = NullLoggerFactory.Instance;
         var messageSink = Mock.Of<IMessageSink>();
         var minLevel = LogLevel.Debug;
 
@@ -218,7 +218,7 @@ public static class XUnitLoggerExtensionsTests
     public static void AddXUnit_IMessageSink_With_Filter_Works()
     {
         // Arrange
-        ILoggerFactory factory = NullLoggerFactory.Instance;
+        var factory = NullLoggerFactory.Instance;
         var messageSink = Mock.Of<IMessageSink>();
 
         // Act
@@ -233,7 +233,7 @@ public static class XUnitLoggerExtensionsTests
     public static void AddXUnit_IMessageSink_With_Options_Works()
     {
         // Arrange
-        ILoggerFactory factory = NullLoggerFactory.Instance;
+        var factory = NullLoggerFactory.Instance;
         var messageSink = Mock.Of<IMessageSink>();
         var options = new XUnitLoggerOptions();
 
