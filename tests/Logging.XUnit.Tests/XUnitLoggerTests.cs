@@ -681,7 +681,7 @@ public static class XUnitLoggerTests
 
     private static DateTimeOffset StaticClock() => new(2018, 08, 19, 17, 12, 16, TimeSpan.FromHours(1));
 
-    private static IMessageSinkMessage DiagnosticMessageFactory(string message) => new DiagnosticMessage(message);
+    private static DiagnosticMessage DiagnosticMessageFactory(string message) => new(message);
 
     private static bool FilterTrue(string? categoryName, LogLevel level) => true;
 
