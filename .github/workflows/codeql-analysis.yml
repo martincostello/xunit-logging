@@ -9,13 +9,20 @@ on:
     - cron: '0 6 * * MON'
   workflow_dispatch:
 
-permissions:
-  contents: read
-
 jobs:
   code-ql:
 
     runs-on: ubuntu-latest
+
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'csharp' ]
 
     steps:
     - name: Checkout repository
@@ -34,10 +41,12 @@ jobs:
     - name: Initialize CodeQL
       uses: github/codeql-action/init@d186a2a36cc67bfa1b860e6170d37fb9634742c7 # v2.2.11
       with:
-        languages: csharp
+        languages: ${{ matrix.language }}
 
     - name: Autobuild
       uses: github/codeql-action/autobuild@d186a2a36cc67bfa1b860e6170d37fb9634742c7 # v2.2.11
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@d186a2a36cc67bfa1b860e6170d37fb9634742c7 # v2.2.11
+      with:
+        category: "/language:${{ matrix.language }}"
