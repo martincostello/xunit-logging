@@ -9,6 +9,9 @@ on:
     - cron:  '00 19 * * TUE'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   update-dotnet-sdk:
     name: Update .NET SDK
@@ -18,13 +21,13 @@ jobs:
     steps:
 
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3 # v3.5.0
       with:
         token: ${{ secrets.ACCESS_TOKEN }}
 
     - name: Update .NET SDK
       id: update-dotnet-sdk
-      uses: martincostello/update-dotnet-sdk@v2
+      uses: martincostello/update-dotnet-sdk@8d99db1db36692f0d5c5bf3ef91fb654c2d4e298 # v2.1.0
       with:
         labels: "dependencies,.NET"
         repo-token: ${{ secrets.ACCESS_TOKEN }}
@@ -32,7 +35,7 @@ jobs:
         user-name: ${{ vars.GIT_COMMIT_USER_NAME }}
 
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@607fce577a46308457984d59e4954e075820f10a # v3.0.3
       if : ${{ steps.update-dotnet-sdk.outputs.sdk-updated == 'true' }}
 
     - name: Update NuGet packages
@@ -51,7 +54,7 @@ jobs:
 
         $tempPath = [System.IO.Path]::GetTempPath()
         $updatesPath = (Join-Path $tempPath "dotnet-outdated.json")
-        
+
         Write-Host "Checking for .NET NuGet package(s) to update..."
 
         dotnet outdated `
@@ -113,11 +116,11 @@ jobs:
 
           git config user.email "${{ vars.GIT_COMMIT_USER_EMAIL }}"
           git config user.name "${{ vars.GIT_COMMIT_USER_NAME }}"
-          
+
           git add .
           git commit -m $commitMessage
           git push
-          
+
           Write-Host "Pushed update to $($dependencies.Count) NuGet package(s)." -ForegroundColor Green
         }
         else {
