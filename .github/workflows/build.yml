@@ -8,6 +8,9 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   build:
     name: ${{ matrix.os }}
@@ -28,10 +31,10 @@ jobs:
     steps:
 
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3 # v3.5.0
 
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@607fce577a46308457984d59e4954e075820f10a # v3.0.3
 
     - name: Build, Test and Package
       shell: pwsh
@@ -43,20 +46,20 @@ jobs:
         NUGET_XMLDOC_MODE: skip
         TERM: xterm
 
-    - uses: codecov/codecov-action@v3
+    - uses: codecov/codecov-action@d9f34f8cd5cb3b3eb79b3e4b5dae3a16df499a70 # v3.1.1
       name: Upload coverage to Codecov
       with:
         file: ./artifacts/coverage.net7.0.cobertura.xml
         flags: ${{ matrix.os_name }}
 
     - name: Publish artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
       with:
         name: artifacts-${{ matrix.os_name }}
         path: ./artifacts
 
     - name: Publish NuGet packages
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
       with:
         name: packages-${{ matrix.os_name }}
         path: ./artifacts/packages
