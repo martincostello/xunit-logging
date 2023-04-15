@@ -3,6 +3,8 @@
 [![NuGet](https://buildstats.info/nuget/MartinCostello.Logging.XUnit?includePreReleases=true)](http://www.nuget.org/packages/MartinCostello.Logging.XUnit "Download MartinCostello.Logging.XUnit from NuGet")
 
 [![Build status](https://github.com/martincostello/xunit-logging/workflows/build/badge.svg?branch=main&event=push)](https://github.com/martincostello/xunit-logging/actions?query=workflow%3Abuild+branch%3Amain+event%3Apush)
+[![codecov](https://codecov.io/gh/martincostello/xunit-logging/branch/main/graph/badge.svg)](https://codecov.io/gh/martincostello/xunit-logging)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/martincostello/xunit-logging/badge)](https://api.securityscorecards.dev/projects/github.com/martincostello/xunit-logging)
 
 ## Introduction
 
