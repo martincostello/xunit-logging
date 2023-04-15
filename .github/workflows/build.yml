@@ -131,4 +131,4 @@ jobs:
       uses: actions/setup-dotnet@607fce577a46308457984d59e4954e075820f10a # v3.0.3
 
     - name: Push NuGet packages to NuGet.org
-      run: dotnet nuget push "artifacts\packages\*.nupkg" --api-key ${{ secrets.NUGET_TOKEN }} --skip-duplicate --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push "*.nupkg" --api-key ${{ secrets.NUGET_TOKEN }} --skip-duplicate --source https://api.nuget.org/v3/index.json
