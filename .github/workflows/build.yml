@@ -64,8 +64,37 @@ jobs:
         name: packages-${{ matrix.os_name }}
         path: ./artifacts/packages
 
-  publish-myget:
+  validate-packages:
     needs: build
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Download packages
+      uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # v3.0.2
+      with:
+        name: packages-windows
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@607fce577a46308457984d59e4954e075820f10a # v3.0.3
+
+    - name: Validate NuGet packages
+      shell: pwsh
+      run: |
+        dotnet tool install --global dotnet-validate --version 0.0.1-preview.304
+        $packages = Get-ChildItem -Filter "*.nupkg" | ForEach-Object { $_.FullName }
+        $invalidPackages = 0
+        foreach ($package in $packages) {
+          dotnet validate package local $package
+          if ($LASTEXITCODE -ne 0) {
+            $invalidPackages++
+          }
+        }
+        if ($invalidPackages -gt 0) {
+          Write-Output "::error::$invalidPackages NuGet package(s) failed validation."
+        }
+
+  publish-myget:
+    needs: validate-packages
     runs-on: ubuntu-latest
     if: |
       github.event.repository.fork == false &&
@@ -85,7 +114,7 @@ jobs:
       run: dotnet nuget push "*.nupkg" --api-key ${{ secrets.MYGET_TOKEN }} --skip-duplicate --source https://www.myget.org/F/martincostello/api/v2/package
 
   publish-nuget:
-    needs: build
+    needs: validate-packages
     runs-on: ubuntu-latest
     if: |
       github.event.repository.fork == false &&
