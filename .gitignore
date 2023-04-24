@@ -1,3 +1,4 @@
+.artifacts/
 .DS_Store
 .dotnetcli
 .idea
