@@ -68,7 +68,7 @@ jobs:
 
   validate-packages:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
 
     - name: Download packages
@@ -93,6 +93,53 @@ jobs:
         }
         if ($invalidPackages -gt 0) {
           Write-Output "::error::$invalidPackages NuGet package(s) failed validation."
+        }
+
+    - name: Checkout vcsjones/AuthenticodeLint
+      uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+      with:
+        path: AuthenticodeLint
+        ref: ccfaec53ee5c1b14f029cb8156e0653c530f8b65
+        repository: vcsjones/AuthenticodeLint
+
+    - name: Build AuthenticodeLint and validate NuGet package contents
+      shell: pwsh
+      run: |
+        $authlintSource = Join-Path "." "AuthenticodeLint"
+        $authLintProject = Join-Path $authlintSource "AuthenticodeLint.csproj"
+        $artifacts = Join-Path $authlintSource "artifacts"
+        $authlint = Join-Path $artifacts "authlint.exe"
+
+        dotnet publish $authLintProject --configuration Release --output $artifacts --runtime win-x64 --self-contained false
+
+        if ($LASTEXITCODE -ne 0) {
+          throw "Failed to publish AuthenticodeLint."
+        }
+
+        $packages = Get-ChildItem -Filter "*.nupkg" | ForEach-Object { $_.FullName }
+        $invalidPackages = 0
+        foreach ($package in $packages) {
+          $packageName = Split-Path $package -Leaf
+          $extractedNupkg = Join-Path "." "extracted" $packageName
+          Expand-Archive -Path $package -DestinationPath $extractedNupkg -Force
+
+          $dlls = Get-ChildItem -Path $extractedNupkg -Filter "*.dll" -Recurse | ForEach-Object { $_.FullName }
+
+          $invalidDlls = 0
+          foreach ($dll in $dlls) {
+            $authlint -in $dll -verbose
+            if ($LASTEXITCODE -ne 0) {
+              Write-Output "::warning::$dll in NuGet package $package failed signature validation."
+              $invalidDlls++
+            }
+          }
+
+          if ($invalidDlls -gt 0) {
+            $invalidPackages++
+          }
+        }
+        if ($invalidPackages -gt 0) {
+          Write-Output "::error::$invalidPackages NuGet package(s) failed signature validation."
         }
 
   publish-myget:
