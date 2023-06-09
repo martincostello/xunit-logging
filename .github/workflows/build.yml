@@ -133,15 +133,22 @@ jobs:
             if ($authlintProcess.ExitCode -ne 0) {
               Write-Output "::warning::$dll in NuGet package $package failed signature validation."
               $invalidDlls++
+            } else {
+              Write-Output "$dll in NuGet package $package has a valid signature."
             }
           }
 
           if ($invalidDlls -gt 0) {
             $invalidPackages++
+          } else {
+            Write-Output "All $($dlls.Length) DLLs in NuGet package $package have valid signatures."
           }
         }
         if ($invalidPackages -gt 0) {
           Write-Output "::error::$invalidPackages NuGet package(s) failed signature validation."
+          throw "One or more NuGet packages failed signature validation."
+        } else {
+          Write-Output "All $($packages.Length) NuGet packages have valid signatures."
         }
 
   publish-myget:
