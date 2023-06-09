@@ -106,7 +106,7 @@ jobs:
       shell: pwsh
       run: |
         $authlintSource = Join-Path "." "AuthenticodeLint"
-        $authLintProject = Join-Path $authlintSource "AuthenticodeLint.csproj"
+        $authLintProject = Join-Path $authlintSource "AuthenticodeLint" "AuthenticodeLint.csproj"
         $artifacts = Join-Path $authlintSource "artifacts"
         $authlint = Join-Path $artifacts "authlint.exe"
 
