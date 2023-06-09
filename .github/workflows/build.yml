@@ -127,9 +127,10 @@ jobs:
 
           $invalidDlls = 0
           foreach ($dll in $dlls) {
-            & $authlint "-in" $dll "-verbose"
-            Write-Output "authlint exited with $LASTEXITCODE"
-            if ($LASTEXITCODE -ne 0) {
+            $authlintProcess = Start-Process -FilePath $authlint -ArgumentList @("-in", $dll, "-verbose") -PassThru
+            $authlintProcess.WaitForExit()
+
+            if ($authlintProcess.ExitCode -ne 0) {
               Write-Output "::warning::$dll in NuGet package $package failed signature validation."
               $invalidDlls++
             }
