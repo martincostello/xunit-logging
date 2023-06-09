@@ -110,7 +110,7 @@ jobs:
         $artifacts = Join-Path $authlintSource "artifacts"
         $authlint = Join-Path $artifacts "authlint.exe"
 
-        dotnet publish $authLintProject --configuration Release --output $artifacts --runtime win-x64 --self-contained false
+        dotnet publish $authLintProject --configuration Release --output $artifacts --runtime win-x64 --self-contained false /p:NoWarn=CS8604
 
         if ($LASTEXITCODE -ne 0) {
           throw "Failed to publish AuthenticodeLint."
@@ -128,6 +128,7 @@ jobs:
           $invalidDlls = 0
           foreach ($dll in $dlls) {
             & $authlint "-in" $dll "-verbose"
+            Write-Output "authlint exited with $LASTEXITCODE"
             if ($LASTEXITCODE -ne 0) {
               Write-Output "::warning::$dll in NuGet package $package failed signature validation."
               $invalidDlls++
