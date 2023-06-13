@@ -2,7 +2,7 @@
   <ItemGroup>
     <PackageVersion Include="coverlet.msbuild" Version="6.0.0" />
     <PackageVersion Include="GitHubActionsTestLogger" Version="2.3.2" />
-    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.5" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.7" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.6.2" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
     <PackageVersion Include="Moq" Version="4.18.4" />
