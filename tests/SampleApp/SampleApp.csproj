@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <IsPackable>false</IsPackable>
-    <NoWarn>$(NoWarn);CA1801;CA1822;SA1600</NoWarn>
+    <NoWarn>$(NoWarn);CA1801;CA1822;CA1861;SA1600</NoWarn>
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 </Project>
