@@ -8,7 +8,7 @@
     <PackageVersion Include="Moq" Version="4.18.4" />
     <PackageVersion Include="ReportGenerator" Version="5.1.22" />
     <PackageVersion Include="Shouldly" Version="4.2.1" />
-    <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.435" />
+    <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.507" />
   </ItemGroup>
   <ItemGroup Condition=" '$(IsTestProject)' != 'true' ">
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="2.2.0" />
