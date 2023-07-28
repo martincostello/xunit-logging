@@ -108,7 +108,7 @@ jobs:
 
     environment:
       name: feedz.io
-      url: https://feedz.io/org/${{ github.repository_owner }}/repository/xunit-logging
+      url: https://feedz.io/org/${{ github.repository_owner }}/repository/xunit-logging/packages/MartinCostello.Logging.XUnit
 
     steps:
 
