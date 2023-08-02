@@ -32,9 +32,7 @@ jobs:
 
     - name: Lint workflows
       shell: bash
-      env:
-        ACTIONLINT_VERSION: '7b75d16d41920ec126e6f3269db0c6f3ab613c38' # v1.6.25
       run: |
         echo "::add-matcher::.github/actionlint-matcher.json"
-        bash <(curl --silent --show-error "https://raw.githubusercontent.com/rhysd/actionlint/${ACTIONLINT_VERSION}/scripts/download-actionlint.bash")
+        bash <(curl --silent --show-error "https://raw.githubusercontent.com/rhysd/actionlint/7b75d16d41920ec126e6f3269db0c6f3ab613c38/scripts/download-actionlint.bash")
         ./actionlint -color
