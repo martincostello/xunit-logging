@@ -2,7 +2,7 @@
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using Microsoft.Extensions.Logging;
-using Moq;
+using NSubstitute;
 
 namespace MartinCostello.Logging.XUnit;
 
@@ -12,8 +12,8 @@ public static class XUnitLoggerProviderTests
     public static void XUnitLoggerProvider_TestOutputHelper_Constructor_Validates_Parameters()
     {
         // Arrange
-        var outputHelper = Mock.Of<ITestOutputHelper>();
-        var accessor = Mock.Of<ITestOutputHelperAccessor>();
+        var outputHelper = Substitute.For<ITestOutputHelper>();
+        var accessor = Substitute.For<ITestOutputHelperAccessor>();
         var options = new XUnitLoggerOptions();
 
         // Act and Assert
@@ -27,8 +27,8 @@ public static class XUnitLoggerProviderTests
     public static void XUnitLoggerProvider_MessageSink_Constructor_Validates_Parameters()
     {
         // Arrange
-        var messageSink = Mock.Of<IMessageSink>();
-        var accessor = Mock.Of<IMessageSinkAccessor>();
+        var messageSink = Substitute.For<IMessageSink>();
+        var accessor = Substitute.For<IMessageSinkAccessor>();
         var options = new XUnitLoggerOptions();
 
         // Act and Assert
@@ -44,8 +44,8 @@ public static class XUnitLoggerProviderTests
     public static void XUnitLoggerProvider_Creates_Logger(Constructor constructor)
     {
         // Arrange
-        var testOutputHelper = Mock.Of<ITestOutputHelper>();
-        var messageSink = Mock.Of<IMessageSink>();
+        var testOutputHelper = Substitute.For<ITestOutputHelper>();
+        var messageSink = Substitute.For<IMessageSink>();
         var options = new XUnitLoggerOptions();
 
         string categoryName = "MyLogger";

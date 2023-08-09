@@ -4,7 +4,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using Moq;
+using NSubstitute;
 
 namespace MartinCostello.Logging.XUnit;
 
@@ -14,9 +14,9 @@ public static class XUnitLoggerExtensionsTests
     public static void AddXUnit_TestOutputHelper_For_ILoggerBuilder_Validates_Parameters()
     {
         // Arrange
-        var builder = Mock.Of<ILoggingBuilder>();
-        var outputHelper = Mock.Of<ITestOutputHelper>();
-        var accessor = Mock.Of<ITestOutputHelperAccessor>();
+        var builder = Substitute.For<ILoggingBuilder>();
+        var outputHelper = Substitute.For<ITestOutputHelper>();
+        var accessor = Substitute.For<ITestOutputHelperAccessor>();
 
         // Act and Assert
         Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder)!.AddXUnit());
@@ -36,9 +36,9 @@ public static class XUnitLoggerExtensionsTests
     public static void AddXUnit_MessageSink_For_ILoggerBuilder_Validates_Parameters()
     {
         // Arrange
-        var builder = Mock.Of<ILoggingBuilder>();
-        var messageSink = Mock.Of<IMessageSink>();
-        var accessor = Mock.Of<IMessageSinkAccessor>();
+        var builder = Substitute.For<ILoggingBuilder>();
+        var messageSink = Substitute.For<IMessageSink>();
+        var accessor = Substitute.For<IMessageSinkAccessor>();
 
         // Act and Assert
         Assert.Throws<ArgumentNullException>("builder", () => (null as ILoggingBuilder)!.AddXUnit(messageSink));
@@ -59,7 +59,7 @@ public static class XUnitLoggerExtensionsTests
         // Arrange
         ILoggerFactory factory = NullLoggerFactory.Instance;
         var logLevel = LogLevel.Information;
-        var outputHelper = Mock.Of<ITestOutputHelper>();
+        var outputHelper = Substitute.For<ITestOutputHelper>();
         var options = new XUnitLoggerOptions();
 
         // Act and Assert
@@ -87,7 +87,7 @@ public static class XUnitLoggerExtensionsTests
         // Arrange
         ILoggerFactory factory = NullLoggerFactory.Instance;
         var logLevel = LogLevel.Information;
-        var messageSink = Mock.Of<IMessageSink>();
+        var messageSink = Substitute.For<IMessageSink>();
         var options = new XUnitLoggerOptions();
 
         // Act and Assert
@@ -141,7 +141,7 @@ public static class XUnitLoggerExtensionsTests
     {
         // Arrange
         var services = new ServiceCollection();
-        var accessor = Mock.Of<ITestOutputHelperAccessor>();
+        var accessor = Substitute.For<ITestOutputHelperAccessor>();
 
         // Act
         services.AddLogging(c => c.AddXUnit(accessor));
@@ -157,7 +157,7 @@ public static class XUnitLoggerExtensionsTests
     {
         // Arrange
         var services = new ServiceCollection();
-        var accessor = Mock.Of<IMessageSinkAccessor>();
+        var accessor = Substitute.For<IMessageSinkAccessor>();
 
         // Act
         services.AddLogging(c => c.AddXUnit(accessor));
@@ -173,7 +173,7 @@ public static class XUnitLoggerExtensionsTests
     {
         // Arrange
         var services = new ServiceCollection();
-        var testOutputHelper = Mock.Of<ITestOutputHelper>();
+        var testOutputHelper = Substitute.For<ITestOutputHelper>();
 
         // Act
         services.AddLogging(c => c.AddXUnit(testOutputHelper));
@@ -188,7 +188,7 @@ public static class XUnitLoggerExtensionsTests
     {
         // Arrange
         var services = new ServiceCollection();
-        var messageSink = Mock.Of<IMessageSink>();
+        var messageSink = Substitute.For<IMessageSink>();
 
         // Act
         services.AddLogging(c => c.AddXUnit(messageSink));
@@ -203,7 +203,7 @@ public static class XUnitLoggerExtensionsTests
     {
         // Arrange
         var factory = NullLoggerFactory.Instance;
-        var messageSink = Mock.Of<IMessageSink>();
+        var messageSink = Substitute.For<IMessageSink>();
         var minLevel = LogLevel.Debug;
 
         // Act
@@ -219,7 +219,7 @@ public static class XUnitLoggerExtensionsTests
     {
         // Arrange
         var factory = NullLoggerFactory.Instance;
-        var messageSink = Mock.Of<IMessageSink>();
+        var messageSink = Substitute.For<IMessageSink>();
 
         // Act
         factory.AddXUnit(messageSink, (_) => { });
@@ -234,7 +234,7 @@ public static class XUnitLoggerExtensionsTests
     {
         // Arrange
         var factory = NullLoggerFactory.Instance;
-        var messageSink = Mock.Of<IMessageSink>();
+        var messageSink = Substitute.For<IMessageSink>();
         var options = new XUnitLoggerOptions();
 
         // Act
