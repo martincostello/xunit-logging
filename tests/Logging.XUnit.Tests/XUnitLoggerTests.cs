@@ -2,7 +2,7 @@
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using Microsoft.Extensions.Logging;
-using Moq;
+using NSubstitute;
 using Xunit.Sdk;
 
 namespace MartinCostello.Logging.XUnit;
@@ -14,7 +14,7 @@ public static class XUnitLoggerTests
     {
         // Arrange
         string name = "MyName";
-        var outputHelper = Mock.Of<ITestOutputHelper>();
+        var outputHelper = Substitute.For<ITestOutputHelper>();
 
         var options = new XUnitLoggerOptions()
         {
@@ -52,8 +52,8 @@ public static class XUnitLoggerTests
     {
         // Arrange
         string name = "MyName";
-        var testOutputHelper = Mock.Of<ITestOutputHelper>();
-        var messageSink = Mock.Of<IMessageSink>();
+        var testOutputHelper = Substitute.For<ITestOutputHelper>();
+        var messageSink = Substitute.For<IMessageSink>();
         var options = new XUnitLoggerOptions()
         {
             Filter = FilterTrue,
@@ -97,7 +97,7 @@ public static class XUnitLoggerTests
     {
         // Arrange
         string name = "MyName";
-        var outputHelper = Mock.Of<ITestOutputHelper>();
+        var outputHelper = Substitute.For<ITestOutputHelper>();
         var options = new XUnitLoggerOptions();
         var logger = new XUnitLogger(name, outputHelper, options);
 
@@ -113,7 +113,7 @@ public static class XUnitLoggerTests
     {
         // Arrange
         string name = "MyName";
-        var outputHelper = Mock.Of<ITestOutputHelper>();
+        var outputHelper = Substitute.For<ITestOutputHelper>();
         var options = new XUnitLoggerOptions();
         var logger = new XUnitLogger(name, outputHelper, options);
 
@@ -133,7 +133,7 @@ public static class XUnitLoggerTests
     {
         // Arrange
         string name = "MyName";
-        var outputHelper = Mock.Of<ITestOutputHelper>();
+        var outputHelper = Substitute.For<ITestOutputHelper>();
 
         bool CustomFilter(string? categoryName, LogLevel level)
         {
@@ -161,7 +161,7 @@ public static class XUnitLoggerTests
     {
         // Arrange
         string name = "MyName";
-        var outputHelper = Mock.Of<ITestOutputHelper>();
+        var outputHelper = Substitute.For<ITestOutputHelper>();
         var options = new XUnitLoggerOptions();
 
         var logger = new XUnitLogger(name, outputHelper, options);
@@ -175,7 +175,7 @@ public static class XUnitLoggerTests
     {
         // Arrange
         string name = "MyName";
-        var outputHelper = Mock.Of<ITestOutputHelper>();
+        var outputHelper = Substitute.For<ITestOutputHelper>();
         var options = new XUnitLoggerOptions();
 
         var logger = new XUnitLogger(name, outputHelper, options);
@@ -188,10 +188,8 @@ public static class XUnitLoggerTests
     public static void XUnitLogger_Log_Does_Nothing_If_Not_Enabled()
     {
         // Arrange
-        var mock = new Mock<ITestOutputHelper>();
-
+        var outputHelper = Substitute.For<ITestOutputHelper>();
         string name = "MyName";
-        var outputHelper = mock.Object;
 
         var options = new XUnitLoggerOptions()
         {
@@ -204,17 +202,15 @@ public static class XUnitLoggerTests
         logger.Log(LogLevel.Information, new EventId(2), "state", null, Formatter);
 
         // Assert
-        mock.Verify((p) => p.WriteLine(It.IsAny<string>()), Times.Never());
+        outputHelper.DidNotReceiveWithAnyArgs().WriteLine(default);
     }
 
     [Fact]
     public static void XUnitLogger_Log_Does_Nothing_If_Null_Message_And_No_Exception()
     {
         // Arrange
-        var mock = new Mock<ITestOutputHelper>();
-
+        var outputHelper = Substitute.For<ITestOutputHelper>();
         string name = "MyName";
-        var outputHelper = mock.Object;
 
         var options = new XUnitLoggerOptions()
         {
@@ -227,17 +223,15 @@ public static class XUnitLoggerTests
         logger.Log(LogLevel.Information, new EventId(2), "state", null, FormatterNull);
 
         // Assert
-        mock.Verify((p) => p.WriteLine(It.IsAny<string>()), Times.Never());
+        outputHelper.DidNotReceiveWithAnyArgs().WriteLine(default);
     }
 
     [Fact]
     public static void XUnitLogger_Log_Does_Nothing_If_Empty_Message_And_No_Exception()
     {
         // Arrange
-        var mock = new Mock<ITestOutputHelper>();
-
+        var outputHelper = Substitute.For<ITestOutputHelper>();
         string name = "MyName";
-        var outputHelper = mock.Object;
 
         var options = new XUnitLoggerOptions()
         {
@@ -250,7 +244,7 @@ public static class XUnitLoggerTests
         logger.Log(LogLevel.Information, new EventId(2), "state", null, FormatterEmpty);
 
         // Assert
-        mock.Verify((p) => p.WriteLine(It.IsAny<string>()), Times.Never());
+        outputHelper.DidNotReceiveWithAnyArgs().WriteLine(default);
     }
 
     [Fact]
@@ -258,7 +252,7 @@ public static class XUnitLoggerTests
     {
         // Arrange
         string name = "MyName";
-        var accessor = Mock.Of<ITestOutputHelperAccessor>();
+        var accessor = Substitute.For<ITestOutputHelperAccessor>();
 
         var options = new XUnitLoggerOptions()
         {
@@ -275,10 +269,8 @@ public static class XUnitLoggerTests
     public static void XUnitLogger_Log_Logs_Message_If_Only_Exception()
     {
         // Arrange
-        var mock = new Mock<ITestOutputHelper>();
-
+        var outputHelper = Substitute.For<ITestOutputHelper>();
         string name = "MyName";
-        var outputHelper = mock.Object;
 
         var options = new XUnitLoggerOptions()
         {
@@ -300,17 +292,15 @@ public static class XUnitLoggerTests
         logger.Log(LogLevel.Information, new EventId(2), "state", exception, FormatterNull);
 
         // Assert
-        mock.Verify((p) => p.WriteLine(expected), Times.Once());
+        outputHelper.Received(1).WriteLine(expected);
     }
 
     [Fact]
     public static void XUnitLogger_Log_Logs_Message_If_Message_And_Exception()
     {
         // Arrange
-        var mock = new Mock<ITestOutputHelper>();
-
+        var outputHelper = Substitute.For<ITestOutputHelper>();
         string name = "MyName";
-        var outputHelper = mock.Object;
 
         var options = new XUnitLoggerOptions()
         {
@@ -332,17 +322,15 @@ public static class XUnitLoggerTests
         logger.Log<string>(LogLevel.Warning, new EventId(3), null, exception, Formatter);
 
         // Assert
-        mock.Verify((p) => p.WriteLine(expected), Times.Once());
+        outputHelper.Received(1).WriteLine(expected);
     }
 
     [Fact]
     public static void XUnitLogger_Log_Logs_Message_If_Message_And_No_Exception()
     {
         // Arrange
-        var mock = new Mock<ITestOutputHelper>();
-
+        var outputHelper = Substitute.For<ITestOutputHelper>();
         string name = "MyName";
-        var outputHelper = mock.Object;
 
         var options = new XUnitLoggerOptions()
         {
@@ -362,7 +350,7 @@ public static class XUnitLoggerTests
         logger.Log<string>(LogLevel.Error, new EventId(4), null, null, Formatter);
 
         // Assert
-        mock.Verify((p) => p.WriteLine(expected), Times.Once());
+        outputHelper.Received(1).WriteLine(expected);
     }
 
     [Theory]
@@ -375,10 +363,8 @@ public static class XUnitLoggerTests
     public static void XUnitLogger_Log_Logs_Messages(LogLevel logLevel, string shortLevel)
     {
         // Arrange
-        var mock = new Mock<ITestOutputHelper>();
-
+        var outputHelper = Substitute.For<ITestOutputHelper>();
         string name = "Your Name";
-        var outputHelper = mock.Object;
 
         var options = new XUnitLoggerOptions()
         {
@@ -398,17 +384,15 @@ public static class XUnitLoggerTests
         logger.Log(logLevel, new EventId(85), "Martin", null, Formatter);
 
         // Assert
-        mock.Verify((p) => p.WriteLine(expected), Times.Once());
+        outputHelper.Received(1).WriteLine(expected);
     }
 
     [Fact]
     public static void XUnitLogger_Log_Logs_Very_Long_Messages()
     {
         // Arrange
-        var mock = new Mock<ITestOutputHelper>();
-
+        var outputHelper = Substitute.For<ITestOutputHelper>();
         string name = "MyName";
-        var outputHelper = mock.Object;
 
         var options = new XUnitLoggerOptions()
         {
@@ -421,17 +405,15 @@ public static class XUnitLoggerTests
         logger.Log(LogLevel.Information, 1, "state", null, FormatterLong);
 
         // Assert
-        mock.Verify((p) => p.WriteLine(It.Is<string>((r) => r.Length > 1024)), Times.Once());
+        outputHelper.Received(1).WriteLine(Arg.Is<string>((r) => r.Length > 1024));
     }
 
     [Fact]
     public static void XUnitLogger_Log_Logs_Message_If_Scopes_Included_But_There_Are_No_Scopes()
     {
         // Arrange
-        var mock = new Mock<ITestOutputHelper>();
-
+        var outputHelper = Substitute.For<ITestOutputHelper>();
         string name = "MyName";
-        var outputHelper = mock.Object;
 
         var options = new XUnitLoggerOptions()
         {
@@ -452,17 +434,15 @@ public static class XUnitLoggerTests
         logger.Log<string>(LogLevel.Information, 0, null, null, Formatter);
 
         // Assert
-        mock.Verify((p) => p.WriteLine(expected), Times.Once());
+        outputHelper.Received(1).WriteLine(expected);
     }
 
     [Fact]
     public static void XUnitLogger_Log_Logs_Message_If_Scopes_Included_And_There_Are_Scopes()
     {
         // Arrange
-        var mock = new Mock<ITestOutputHelper>();
-
+        var outputHelper = Substitute.For<ITestOutputHelper>();
         string name = "MyName";
-        var outputHelper = mock.Object;
 
         var options = new XUnitLoggerOptions()
         {
@@ -502,17 +482,15 @@ public static class XUnitLoggerTests
         }
 
         // Assert
-        mock.Verify((p) => p.WriteLine(expected), Times.Once());
+        outputHelper.Received(1).WriteLine(expected);
     }
 
     [Fact]
     public static void XUnitLogger_Log_Logs_Message_If_Scopes_Included_And_There_Is_Scope_Of_KeyValuePair()
     {
         // Arrange
-        var mock = new Mock<ITestOutputHelper>();
-
+        var outputHelper = Substitute.For<ITestOutputHelper>();
         string name = "MyName";
-        var outputHelper = mock.Object;
 
         var options = new XUnitLoggerOptions()
         {
@@ -541,17 +519,15 @@ public static class XUnitLoggerTests
         }
 
         // Assert
-        mock.Verify((p) => p.WriteLine(expected), Times.Once());
+        outputHelper.Received(1).WriteLine(expected);
     }
 
     [Fact]
     public static void XUnitLogger_Log_Logs_Message_If_Scopes_Included_And_There_Is_Scope_Of_KeyValuePairs()
     {
         // Arrange
-        var mock = new Mock<ITestOutputHelper>();
-
+        var outputHelper = Substitute.For<ITestOutputHelper>();
         string name = "MyName";
-        var outputHelper = mock.Object;
 
         var options = new XUnitLoggerOptions()
         {
@@ -584,17 +560,15 @@ public static class XUnitLoggerTests
         }
 
         // Assert
-        mock.Verify((p) => p.WriteLine(expected), Times.Once());
+        outputHelper.Received(1).WriteLine(expected);
     }
 
     [Fact]
     public static void XUnitLogger_Log_Logs_Message_If_Scopes_Included_And_There_Are_Scopes_Of_KeyValuePairs()
     {
         // Arrange
-        var mock = new Mock<ITestOutputHelper>();
-
+        var outputHelper = Substitute.For<ITestOutputHelper>();
         string name = "MyName";
-        var outputHelper = mock.Object;
 
         var options = new XUnitLoggerOptions()
         {
@@ -638,17 +612,15 @@ public static class XUnitLoggerTests
         }
 
         // Assert
-        mock.Verify((p) => p.WriteLine(expected), Times.Once());
+        outputHelper.Received(1).WriteLine(expected);
     }
 
     [Fact]
     public static void XUnitLogger_Log_Logs_Message_If_Scopes_Included_And_There_Is_Scope_Of_IEnumerable()
     {
         // Arrange
-        var mock = new Mock<ITestOutputHelper>();
-
+        var outputHelper = Substitute.For<ITestOutputHelper>();
         string name = "MyName";
-        var outputHelper = mock.Object;
 
         var options = new XUnitLoggerOptions()
         {
@@ -676,7 +648,7 @@ public static class XUnitLoggerTests
         }
 
         // Assert
-        mock.Verify((p) => p.WriteLine(expected), Times.Once());
+        outputHelper.Received(1).WriteLine(expected);
     }
 
     private static DateTimeOffset StaticClock() => new(2018, 08, 19, 17, 12, 16, TimeSpan.FromHours(1));
