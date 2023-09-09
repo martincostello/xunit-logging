@@ -121,10 +121,11 @@ jobs:
       uses: actions/setup-dotnet@3447fd6a9f9e57506b15f895c5b76d3b197dc7c2 # v3.2.0
 
     - name: Push NuGet packages to feedz.io
+      shell: bash
       env:
         API_KEY: ${{ secrets.FEEDZ_IO_TOKEN }}
         SOURCE: "https://f.feedz.io/${{ github.repository }}/nuget/index.json"
-      run: dotnet nuget push "*.nupkg" --api-key "${env:API_KEY}" --skip-duplicate --source "${env:SOURCE}"
+      run: dotnet nuget push "*.nupkg" --api-key "${API_KEY}" --skip-duplicate --source "${SOURCE}"
 
   publish-nuget:
     needs: validate-packages
@@ -148,7 +149,8 @@ jobs:
       uses: actions/setup-dotnet@3447fd6a9f9e57506b15f895c5b76d3b197dc7c2 # v3.2.0
 
     - name: Push NuGet packages to NuGet.org
+      shell: bash
       env:
         API_KEY: ${{ secrets.NUGET_TOKEN }}
         SOURCE: https://api.nuget.org/v3/index.json
-      run: dotnet nuget push "*.nupkg" --api-key "${env:API_KEY}" --skip-duplicate --source "${env:SOURCE}"
+      run: dotnet nuget push "*.nupkg" --api-key "${API_KEY}" --skip-duplicate --source "${SOURCE}"
