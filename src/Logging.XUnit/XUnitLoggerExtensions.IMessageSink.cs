@@ -71,9 +71,7 @@ public static partial class XUnitLoggerExtensions
 
         configure(options);
 
-#pragma warning disable CA2000
         builder.AddProvider(new XUnitLoggerProvider(accessor, options));
-#pragma warning restore CA2000
 
         builder.Services.TryAddSingleton(accessor);
 
@@ -139,9 +137,7 @@ public static partial class XUnitLoggerExtensions
 
         configure(options);
 
-#pragma warning disable CA2000
         return builder.AddProvider(new XUnitLoggerProvider(messageSink, options));
-#pragma warning restore CA2000
     }
 
     /// <summary>
@@ -331,9 +327,7 @@ public static partial class XUnitLoggerExtensions
 
         var options = configure();
 
-#pragma warning disable CA2000
         factory.AddProvider(new XUnitLoggerProvider(messageSink, options));
-#pragma warning restore CA2000
 
         return factory;
     }

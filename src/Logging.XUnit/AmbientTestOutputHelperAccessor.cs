@@ -16,7 +16,6 @@ internal sealed class AmbientTestOutputHelperAccessor : ITestOutputHelperAccesso
     /// </summary>
     private static readonly AsyncLocal<ITestOutputHelper?> _current = new();
 
-#pragma warning disable CA1822
     /// <summary>
     /// Gets or sets the current <see cref="ITestOutputHelper"/>.
     /// </summary>
@@ -25,5 +24,4 @@ internal sealed class AmbientTestOutputHelperAccessor : ITestOutputHelperAccesso
         get { return _current.Value; }
         set { _current.Value = value; }
     }
-#pragma warning restore CA1822
 }

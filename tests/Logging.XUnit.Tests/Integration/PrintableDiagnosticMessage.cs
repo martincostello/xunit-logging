@@ -8,12 +8,7 @@ namespace MartinCostello.Logging.XUnit.Integration;
 /// <summary>
 /// See https://github.com/xunit/xunit/pull/2148#issuecomment-839838421.
 /// </summary>
-internal sealed class PrintableDiagnosticMessage : DiagnosticMessage
+internal sealed class PrintableDiagnosticMessage(string message) : DiagnosticMessage(message)
 {
-    public PrintableDiagnosticMessage(string message)
-        : base(message)
-    {
-    }
-
     public override string ToString() => Message;
 }

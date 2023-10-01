@@ -13,20 +13,10 @@ namespace MartinCostello.Logging.XUnit.Integration;
 /// </summary>
 public sealed class HttpServerFixture : WebApplicationFactory<FakeEntrypoint>, ITestOutputHelperAccessor
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="HttpServerFixture"/> class.
-    /// </summary>
-    public HttpServerFixture()
-        : base()
-    {
-    }
-
     /// <inheritdoc />
     public ITestOutputHelper? OutputHelper { get; set; }
 
     /// <inheritdoc />
     protected override void ConfigureWebHost(IWebHostBuilder builder)
-    {
-        builder.ConfigureLogging((p) => p.AddXUnit(this));
-    }
+        => builder.ConfigureLogging((p) => p.AddXUnit(this));
 }

@@ -6,20 +6,13 @@ using Microsoft.Extensions.Logging;
 
 namespace MartinCostello.Logging.XUnit;
 
-public class Examples
+public class Examples(ITestOutputHelper outputHelper)
 {
-    public Examples(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
-    private ITestOutputHelper OutputHelper { get; }
-
     [Fact]
     public void Calculator_Sums_Two_Equal_Integers()
     {
         // Arrange using conversion to a logger
-        var calculator = new Calculator(OutputHelper.ToLogger<Calculator>());
+        var calculator = new Calculator(outputHelper.ToLogger<Calculator>());
 
         // Act
         int actual = calculator.Sum(2, 2);
@@ -33,7 +26,7 @@ public class Examples
     {
         // Arrange using the logging provider
         var services = new ServiceCollection()
-            .AddLogging((builder) => builder.AddXUnit(OutputHelper))
+            .AddLogging((builder) => builder.AddXUnit(outputHelper))
             .AddSingleton<Calculator>();
 
         IServiceProvider provider = services.BuildServiceProvider();
@@ -47,20 +40,13 @@ public class Examples
         actual.ShouldBe(3);
     }
 
-    private sealed class Calculator
+    private sealed class Calculator(ILogger<Calculator> logger)
     {
-        private readonly ILogger _logger;
-
-        public Calculator(ILogger<Calculator> logger)
-        {
-            _logger = logger;
-        }
-
         public int Sum(int x, int y)
         {
             int sum = x + y;
 
-            _logger.LogInformation("The sum of {X} and {Y} is {Sum}.", x, y, sum);
+            logger.LogInformation("The sum of {X} and {Y} is {Sum}.", x, y, sum);
 
             return sum;
         }
