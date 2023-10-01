@@ -6,7 +6,11 @@ namespace MartinCostello.Logging.XUnit;
 /// <summary>
 /// A class representing a scope for logging. This class cannot be inherited.
 /// </summary>
-internal sealed class XUnitLogScope
+/// <remarks>
+/// Initializes a new instance of the <see cref="XUnitLogScope"/> class.
+/// </remarks>
+/// <param name="state">The state object for the scope.</param>
+internal sealed class XUnitLogScope(object state)
 {
     /// <summary>
     /// The scope for the current thread.
@@ -14,18 +18,9 @@ internal sealed class XUnitLogScope
     private static readonly AsyncLocal<XUnitLogScope?> _value = new();
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="XUnitLogScope"/> class.
-    /// </summary>
-    /// <param name="state">The state object for the scope.</param>
-    internal XUnitLogScope(object state)
-    {
-        State = state;
-    }
-
-    /// <summary>
     /// Gets the state object for the scope.
     /// </summary>
-    public object State { get; }
+    public object State { get; } = state;
 
     /// <summary>
     /// Gets or sets the current scope.

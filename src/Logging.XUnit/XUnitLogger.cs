@@ -151,10 +151,7 @@ public partial class XUnitLogger : ILogger
         StringBuilder? logBuilder = _logBuilder;
         _logBuilder = null;
 
-        if (logBuilder == null)
-        {
-            logBuilder = new StringBuilder();
-        }
+        logBuilder ??= new StringBuilder();
 
         string logLevelString = GetLogLevelString(logLevel);
 
@@ -202,10 +199,7 @@ public partial class XUnitLogger : ILogger
 
         try
         {
-            if (outputHelper != null)
-            {
-                outputHelper.WriteLine(line);
-            }
+            outputHelper?.WriteLine(line);
 
             if (messageSink != null)
             {
