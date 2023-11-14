@@ -23,7 +23,6 @@ dotnet add package MartinCostello.Logging.XUnit
 ### Usage
 
 ```csharp
-using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Xunit;
@@ -31,26 +30,18 @@ using Xunit.Abstractions;
 
 namespace MyApp.Calculator;
 
-public class CalculatorTests
+public class CalculatorTests(ITestOutputHelper outputHelper)
 {
-    public CalculatorTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
-    private ITestOutputHelper OutputHelper { get; }
-
     [Fact]
     public void Calculator_Sums_Two_Integers()
     {
         // Arrange
-        var services = new ServiceCollection()
-            .AddLogging((builder) => builder.AddXUnit(OutputHelper))
-            .AddSingleton<Calculator>();
+        using var serviceProvider = new ServiceCollection()
+            .AddLogging((builder) => builder.AddXUnit(outputHelper))
+            .AddSingleton<Calculator>()
+            .BuildServiceProvider();
 
-        var calculator = services
-            .BuildServiceProvider()
-            .GetRequiredService<Calculator>();
+        var calculator = services.GetRequiredService<Calculator>();
 
         // Act
         int actual = calculator.Sum(1, 2);
@@ -60,20 +51,13 @@ public class CalculatorTests
     }
 }
 
-public sealed class Calculator
+public sealed class Calculator(ILogger<Calculator> logger)
 {
-    private readonly ILogger _logger;
-
-    public Calculator(ILogger<Calculator> logger)
-    {
-        _logger = logger;
-    }
-
     public int Sum(int x, int y)
     {
         int sum = x + y;
 
-        _logger.LogInformation("The sum of {x} and {y} is {sum}.", x, y, sum);
+        logger.LogInformation("The sum of {x} and {y} is {sum}.", x, y, sum);
 
         return sum;
     }
@@ -98,7 +82,7 @@ This project is licensed under the [Apache 2.0](http://www.apache.org/licenses/L
 
 ## Building and Testing
 
-Compiling the library yourself requires Git and the [.NET SDK](https://www.microsoft.com/net/download/core "Download the .NET SDK") to be installed (version `7.0.100` or later).
+Compiling the library yourself requires Git and the [.NET SDK](https://www.microsoft.com/net/download/core "Download the .NET SDK") to be installed (version `8.0.100` or later).
 
 To build and test the library locally from a terminal/command-line, run one of the following set of commands:
 

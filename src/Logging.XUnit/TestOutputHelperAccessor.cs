@@ -8,22 +8,17 @@ namespace MartinCostello.Logging.XUnit;
 /// <summary>
 /// A class representing the default implementation of <see cref="ITestOutputHelperAccessor"/>. This class cannot be inherited.
 /// </summary>
-internal sealed class TestOutputHelperAccessor : ITestOutputHelperAccessor
+/// <remarks>
+/// Initializes a new instance of the <see cref="TestOutputHelperAccessor"/> class.
+/// </remarks>
+/// <param name="outputHelper">The <see cref="ITestOutputHelper"/> to use.</param>
+/// <exception cref="ArgumentNullException">
+/// <paramref name="outputHelper"/> is <see langword="null"/>.
+/// </exception>
+internal sealed class TestOutputHelperAccessor(ITestOutputHelper outputHelper) : ITestOutputHelperAccessor
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="TestOutputHelperAccessor"/> class.
-    /// </summary>
-    /// <param name="outputHelper">The <see cref="ITestOutputHelper"/> to use.</param>
-    /// <exception cref="ArgumentNullException">
-    /// <paramref name="outputHelper"/> is <see langword="null"/>.
-    /// </exception>
-    internal TestOutputHelperAccessor(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
-    }
-
     /// <summary>
     /// Gets or sets the current <see cref="ITestOutputHelper"/>.
     /// </summary>
-    public ITestOutputHelper? OutputHelper { get; set; }
+    public ITestOutputHelper? OutputHelper { get; set; } = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
 }

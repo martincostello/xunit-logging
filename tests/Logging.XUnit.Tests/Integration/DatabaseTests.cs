@@ -3,14 +3,9 @@
 
 namespace MartinCostello.Logging.XUnit.Integration;
 
-public class DatabaseTests : IClassFixture<DatabaseFixture>
+public class DatabaseTests(DatabaseFixture databaseFixture) : IClassFixture<DatabaseFixture>
 {
-    public DatabaseTests(DatabaseFixture databaseFixture)
-    {
-        DatabaseFixture = databaseFixture;
-    }
-
-    public DatabaseFixture DatabaseFixture { get; }
+    public DatabaseFixture DatabaseFixture { get; } = databaseFixture;
 
     [Fact]
     public void Run_Database_Test()
