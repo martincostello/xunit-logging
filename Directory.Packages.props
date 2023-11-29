@@ -3,20 +3,15 @@
     <PackageVersion Include="coverlet.msbuild" Version="6.0.0" />
     <PackageVersion Include="GitHubActionsTestLogger" Version="2.3.3" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="2.2.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageVersion Include="NSubstitute" Version="5.1.0" />
     <PackageVersion Include="ReportGenerator" Version="5.2.0" />
     <PackageVersion Include="Shouldly" Version="4.2.1" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.507" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(IsTestProject)' != 'true' ">
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="2.2.0" />
+    <PackageVersion Include="xunit" Version="2.6.2" />
     <PackageVersion Include="xunit.abstractions" Version="2.0.2" />
     <PackageVersion Include="xunit.extensibility.execution" Version="2.4.0" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(IsTestProject)' == 'true' ">
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="2.2.0" />
-    <PackageVersion Include="xunit" Version="2.6.2" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.4" />
   </ItemGroup>
   <ItemGroup>
