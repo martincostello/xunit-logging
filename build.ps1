@@ -11,16 +11,20 @@ param(
 $env:DOTNET_SKIP_FIRST_TIME_EXPERIENCE = "true"
 $env:NUGET_XMLDOC_MODE = "skip"
 
+if ($null -eq $env:MSBUILDTERMINALLOGGER) {
+    $env:MSBUILDTERMINALLOGGER = "auto"
+}
+
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
 $solutionPath = $PSScriptRoot
 $sdkFile = Join-Path $solutionPath "global.json"
 
-$libraryProject = Join-Path $solutionPath "src\Logging.XUnit\MartinCostello.Logging.XUnit.csproj"
+$libraryProject = Join-Path $solutionPath "src" "Logging.XUnit" "MartinCostello.Logging.XUnit.csproj"
 
 $testProjects = @(
-    (Join-Path $solutionPath "tests\Logging.XUnit.Tests\MartinCostello.Logging.XUnit.Tests.csproj")
+    (Join-Path $solutionPath "tests" "Logging.XUnit.Tests" "MartinCostello.Logging.XUnit.Tests.csproj")
 )
 
 $dotnetVersion = (Get-Content $sdkFile | Out-String | ConvertFrom-Json).sdk.version
@@ -48,7 +52,7 @@ else {
 if ($installDotNetSdk -eq $true) {
 
     $env:DOTNET_INSTALL_DIR = Join-Path $PSScriptRoot ".dotnetcli"
-    $sdkPath = Join-Path $env:DOTNET_INSTALL_DIR "sdk\$dotnetVersion"
+    $sdkPath = Join-Path $env:DOTNET_INSTALL_DIR "sdk" $dotnetVersion
 
     if (!(Test-Path $sdkPath)) {
         if (!(Test-Path $env:DOTNET_INSTALL_DIR)) {
@@ -82,7 +86,7 @@ if ($installDotNetSdk -eq $true) {
 function DotNetPack {
     param([string]$Project)
 
-    & $dotnet pack $Project --include-symbols --include-source --tl
+    & $dotnet pack $Project --include-symbols --include-source
 
     if ($LASTEXITCODE -ne 0) {
         throw "dotnet pack failed with exit code $LASTEXITCODE"
@@ -99,7 +103,7 @@ function DotNetTest {
         $additionalArgs += "GitHubActions;report-warnings=false"
     }
 
-    & $dotnet test $Project --configuration "Release" --tl $additionalArgs
+    & $dotnet test $Project --configuration "Release" $additionalArgs
 
     if ($LASTEXITCODE -ne 0) {
         throw "dotnet test failed with exit code $LASTEXITCODE"
