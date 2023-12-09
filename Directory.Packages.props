@@ -10,8 +10,8 @@
     <PackageVersion Include="Shouldly" Version="4.2.1" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.507" />
     <PackageVersion Include="xunit" Version="2.6.3" />
-    <PackageVersion Include="xunit.abstractions" Version="2.0.3" />
-    <PackageVersion Include="xunit.extensibility.execution" Version="2.6.3" />
+    <PackageVersion Include="xunit.abstractions" Version="2.0.2" />
+    <PackageVersion Include="xunit.extensibility.execution" Version="2.4.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.5" />
   </ItemGroup>
   <ItemGroup>
