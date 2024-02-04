@@ -1,3 +1,5 @@
+# Contributing
+
 To contribute changes (source code, scripts, configuration) to this repository please follow the steps below. These steps are a guideline for contributing and do not necessarily need to be followed for all changes.
 
 1. If you intend to fix a bug please create an issue before forking the repository.

@@ -2,7 +2,6 @@
 name: Bug report
 about: Create a bug report to help us improve the library
 labels: bug
-
 ---
 
 ### Describe the bug
@@ -32,11 +31,11 @@ A clear and concise description of what actually happened. If an exception occur
 ### System information
 
 <!--
- - OS: [e.g. Windows 10]
- - Library Version [e.g. 0.2.1]
+ - OS: [e.g. Windows 11]
+ - Library Version [e.g. 0.4.0]
  - xunit version [e.g. 2.4.0]
  - .NET version (e.g. output from `dotnet --info`)
- - IDE and version [e.g. Visual Studio 17.2.0]
+ - IDE and version [e.g. Visual Studio 17.8.0]
 -->
 
 ### Additional context
