@@ -44,8 +44,8 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <UseArtifactsOutput>true</UseArtifactsOutput>
-    <AssemblyVersion>0.3.0.0</AssemblyVersion>
-    <VersionPrefix>0.3.1</VersionPrefix>
+    <AssemblyVersion>0.4.0.0</AssemblyVersion>
+    <VersionPrefix>0.4.0</VersionPrefix>
     <VersionSuffix Condition=" '$(VersionSuffix)' == '' AND '$(GITHUB_ACTIONS)' != '' ">beta$([System.Convert]::ToInt32(`$(GITHUB_RUN_NUMBER)`).ToString(`0000`))</VersionSuffix>
     <VersionPrefix Condition=" $(GITHUB_REF.StartsWith(`refs/tags/v`)) ">$(GITHUB_REF.Replace('refs/tags/v', ''))</VersionPrefix>
     <VersionSuffix Condition=" $(GITHUB_REF.StartsWith(`refs/tags/v`)) "></VersionSuffix>

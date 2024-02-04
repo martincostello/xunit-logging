@@ -102,7 +102,7 @@ public static class XUnitLoggerTests
         var logger = new XUnitLogger(name, outputHelper, options);
 
         // Act
-        using IDisposable actual = logger.BeginScope(true);
+        using var actual = logger.BeginScope(true);
 
         // Assert
         actual.ShouldNotBeNull();
@@ -116,9 +116,10 @@ public static class XUnitLoggerTests
         var outputHelper = Substitute.For<ITestOutputHelper>();
         var options = new XUnitLoggerOptions();
         var logger = new XUnitLogger(name, outputHelper, options);
+        string state = null!;
 
         // Act
-        Assert.Throws<ArgumentNullException>("state", () => logger.BeginScope(null as string));
+        Assert.Throws<ArgumentNullException>("state", () => logger.BeginScope(state));
     }
 
     [Theory]
@@ -319,7 +320,7 @@ public static class XUnitLoggerTests
             new[] { "[2018-08-19 16:12:16Z] warn: MyName[3]", "      Message|False|True", "System.InvalidOperationException: Invalid" });
 
         // Act
-        logger.Log<string>(LogLevel.Warning, new EventId(3), null, exception, Formatter);
+        logger.Log<string?>(LogLevel.Warning, new EventId(3), null, exception, Formatter);
 
         // Assert
         outputHelper.Received(1).WriteLine(expected);
@@ -347,7 +348,7 @@ public static class XUnitLoggerTests
             new[] { "[2018-08-19 16:12:16Z] fail: MyName[4]", "      Message|False|False" });
 
         // Act
-        logger.Log<string>(LogLevel.Error, new EventId(4), null, null, Formatter);
+        logger.Log<string?>(LogLevel.Error, new EventId(4), null, null, Formatter);
 
         // Assert
         outputHelper.Received(1).WriteLine(expected);
@@ -431,7 +432,7 @@ public static class XUnitLoggerTests
             new[] { "[2018-08-19 16:12:16Z] info: MyName[0]", "      Message|False|False" });
 
         // Act
-        logger.Log<string>(LogLevel.Information, 0, null, null, Formatter);
+        logger.Log<string?>(LogLevel.Information, 0, null, null, Formatter);
 
         // Assert
         outputHelper.Received(1).WriteLine(expected);
@@ -475,7 +476,7 @@ public static class XUnitLoggerTests
                     using (logger.BeginScope(null!))
 #pragma warning restore CA2254
                     {
-                        logger.Log<string>(LogLevel.Information, 0, null, null, Formatter);
+                        logger.Log<string?>(LogLevel.Information, 0, null, null, Formatter);
                     }
                 }
             }
@@ -515,7 +516,7 @@ public static class XUnitLoggerTests
             new KeyValuePair<string, object>("ScopeKey", "ScopeValue"),
         }))
         {
-            logger.Log<string>(LogLevel.Information, 0, null, null, Formatter);
+            logger.Log<string?>(LogLevel.Information, 0, null, null, Formatter);
         }
 
         // Assert
@@ -556,7 +557,7 @@ public static class XUnitLoggerTests
             new KeyValuePair<string, object>("ScopeKeyThree", "ScopeValueThree"),
         }))
         {
-            logger.Log<string>(LogLevel.Information, 0, null, null, Formatter);
+            logger.Log<string?>(LogLevel.Information, 0, null, null, Formatter);
         }
 
         // Assert
@@ -607,7 +608,7 @@ public static class XUnitLoggerTests
                 new KeyValuePair<string, object>("ScopeKeySix", "ScopeValueSix"),
             }))
             {
-                logger.Log<string>(LogLevel.Information, 0, null, null, Formatter);
+                logger.Log<string?>(LogLevel.Information, 0, null, null, Formatter);
             }
         }
 
@@ -644,7 +645,7 @@ public static class XUnitLoggerTests
         // Act
         using (logger.BeginScope(new[] { "ScopeKeyOne", "ScopeKeyTwo", "ScopeKeyThree" }))
         {
-            logger.Log<string>(LogLevel.Information, 0, null, null, Formatter);
+            logger.Log<string?>(LogLevel.Information, 0, null, null, Formatter);
         }
 
         // Assert

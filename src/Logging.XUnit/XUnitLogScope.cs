@@ -37,7 +37,7 @@ internal sealed class XUnitLogScope(object state)
     internal XUnitLogScope? Parent { get; private set; }
 
     /// <inheritdoc />
-    public override string ToString()
+    public override string? ToString()
         => State.ToString();
 
     /// <summary>

@@ -26,10 +26,14 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder)
     {
+#if NET8_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(builder);
+#else
         if (builder == null)
         {
             throw new ArgumentNullException(nameof(builder));
         }
+#endif
 
         return builder.AddXUnit(new AmbientTestOutputHelperAccessor(), static (_) => { });
     }
@@ -47,6 +51,10 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, ITestOutputHelperAccessor accessor)
     {
+#if NET8_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(accessor);
+#else
         if (builder == null)
         {
             throw new ArgumentNullException(nameof(builder));
@@ -56,6 +64,7 @@ public static partial class XUnitLoggerExtensions
         {
             throw new ArgumentNullException(nameof(accessor));
         }
+#endif
 
         return builder.AddXUnit(accessor, static (_) => { });
     }
@@ -74,6 +83,11 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, ITestOutputHelperAccessor accessor, Action<XUnitLoggerOptions> configure)
     {
+#if NET8_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(accessor);
+        ArgumentNullException.ThrowIfNull(configure);
+#else
         if (builder == null)
         {
             throw new ArgumentNullException(nameof(builder));
@@ -88,12 +102,15 @@ public static partial class XUnitLoggerExtensions
         {
             throw new ArgumentNullException(nameof(configure));
         }
+#endif
 
         var options = new XUnitLoggerOptions();
 
         configure(options);
 
+#pragma warning disable CA2000
         builder.AddProvider(new XUnitLoggerProvider(accessor, options));
+#pragma warning restore CA2000
 
         builder.Services.TryAddSingleton(accessor);
 
@@ -113,6 +130,10 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, ITestOutputHelper outputHelper)
     {
+#if NET8_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(outputHelper);
+#else
         if (builder == null)
         {
             throw new ArgumentNullException(nameof(builder));
@@ -122,6 +143,7 @@ public static partial class XUnitLoggerExtensions
         {
             throw new ArgumentNullException(nameof(outputHelper));
         }
+#endif
 
         return builder.AddXUnit(outputHelper, static (_) => { });
     }
@@ -140,6 +162,11 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, ITestOutputHelper outputHelper, Action<XUnitLoggerOptions> configure)
     {
+#if NET8_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(outputHelper);
+        ArgumentNullException.ThrowIfNull(configure);
+#else
         if (builder == null)
         {
             throw new ArgumentNullException(nameof(builder));
@@ -154,12 +181,15 @@ public static partial class XUnitLoggerExtensions
         {
             throw new ArgumentNullException(nameof(configure));
         }
+#endif
 
         var options = new XUnitLoggerOptions();
 
         configure(options);
 
+#pragma warning disable CA2000
         return builder.AddProvider(new XUnitLoggerProvider(outputHelper, options));
+#pragma warning restore CA2000
     }
 
     /// <summary>
@@ -176,6 +206,10 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, ITestOutputHelper outputHelper, LogLevel minLevel)
     {
+#if NET8_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(factory);
+        ArgumentNullException.ThrowIfNull(outputHelper);
+#else
         if (factory == null)
         {
             throw new ArgumentNullException(nameof(factory));
@@ -185,6 +219,7 @@ public static partial class XUnitLoggerExtensions
         {
             throw new ArgumentNullException(nameof(outputHelper));
         }
+#endif
 
         return factory.AddXUnit(outputHelper, (_, level) => level >= minLevel);
     }
@@ -203,6 +238,11 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, ITestOutputHelper outputHelper, Func<string?, LogLevel, bool> filter)
     {
+#if NET8_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(factory);
+        ArgumentNullException.ThrowIfNull(outputHelper);
+        ArgumentNullException.ThrowIfNull(filter);
+#else
         if (factory == null)
         {
             throw new ArgumentNullException(nameof(factory));
@@ -217,6 +257,7 @@ public static partial class XUnitLoggerExtensions
         {
             throw new ArgumentNullException(nameof(filter));
         }
+#endif
 
         return factory.AddXUnit(outputHelper, (options) => options.Filter = filter);
     }
@@ -234,6 +275,10 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, ITestOutputHelper outputHelper)
     {
+#if NET8_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(factory);
+        ArgumentNullException.ThrowIfNull(outputHelper);
+#else
         if (factory == null)
         {
             throw new ArgumentNullException(nameof(factory));
@@ -243,6 +288,7 @@ public static partial class XUnitLoggerExtensions
         {
             throw new ArgumentNullException(nameof(outputHelper));
         }
+#endif
 
         return factory.AddXUnit(outputHelper, static (_) => { });
     }
@@ -261,6 +307,11 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, ITestOutputHelper outputHelper, XUnitLoggerOptions options)
     {
+#if NET8_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(factory);
+        ArgumentNullException.ThrowIfNull(outputHelper);
+        ArgumentNullException.ThrowIfNull(options);
+#else
         if (factory == null)
         {
             throw new ArgumentNullException(nameof(factory));
@@ -275,6 +326,7 @@ public static partial class XUnitLoggerExtensions
         {
             throw new ArgumentNullException(nameof(options));
         }
+#endif
 
         return factory.AddXUnit(outputHelper, () => options);
     }
@@ -293,6 +345,11 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, ITestOutputHelper outputHelper, Action<XUnitLoggerOptions> configure)
     {
+#if NET8_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(factory);
+        ArgumentNullException.ThrowIfNull(outputHelper);
+        ArgumentNullException.ThrowIfNull(configure);
+#else
         if (factory == null)
         {
             throw new ArgumentNullException(nameof(factory));
@@ -307,15 +364,14 @@ public static partial class XUnitLoggerExtensions
         {
             throw new ArgumentNullException(nameof(configure));
         }
+#endif
 
-        return factory.AddXUnit(
-            outputHelper,
-            () =>
-            {
-                var options = new XUnitLoggerOptions();
-                configure(options);
-                return options;
-            });
+        return factory.AddXUnit(outputHelper, () =>
+        {
+            var options = new XUnitLoggerOptions();
+            configure(options);
+            return options;
+        });
     }
 
     /// <summary>
@@ -332,6 +388,11 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, ITestOutputHelper outputHelper, Func<XUnitLoggerOptions> configure)
     {
+#if NET8_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(factory);
+        ArgumentNullException.ThrowIfNull(outputHelper);
+        ArgumentNullException.ThrowIfNull(configure);
+#else
         if (factory == null)
         {
             throw new ArgumentNullException(nameof(factory));
@@ -346,10 +407,13 @@ public static partial class XUnitLoggerExtensions
         {
             throw new ArgumentNullException(nameof(configure));
         }
+#endif
 
         var options = configure();
 
+#pragma warning disable CA2000
         factory.AddProvider(new XUnitLoggerProvider(outputHelper, options));
+#pragma warning restore CA2000
 
         return factory;
     }

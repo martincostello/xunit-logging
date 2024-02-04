@@ -24,10 +24,14 @@ public static class IMessageSinkExtensions
     /// </exception>
     public static ILoggerFactory ToLoggerFactory(this IMessageSink messageSink)
     {
+#if NET8_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(messageSink);
+#else
         if (messageSink == null)
         {
             throw new ArgumentNullException(nameof(messageSink));
         }
+#endif
 
         return new LoggerFactory().AddXUnit(messageSink);
     }
