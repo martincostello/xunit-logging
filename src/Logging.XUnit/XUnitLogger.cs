@@ -56,7 +56,7 @@ public partial class XUnitLogger : ILogger
         Name = name ?? throw new ArgumentNullException(nameof(name));
 
         _filter = options?.Filter ?? (static (_, _) => true);
-        _messageSinkMessageFactory = options?.MessageSinkMessageFactory ?? (message => new DiagnosticMessage(message));
+        _messageSinkMessageFactory = options?.MessageSinkMessageFactory ?? (static (message) => new DiagnosticMessage(message));
         _timestampFormat = options?.TimestampFormat ?? "u";
         IncludeScopes = options?.IncludeScopes ?? false;
     }
@@ -89,12 +89,17 @@ public partial class XUnitLogger : ILogger
     internal Func<DateTimeOffset> Clock { get; set; } = static () => DateTimeOffset.Now;
 
     /// <inheritdoc />
-    public IDisposable BeginScope<TState>(TState state)
+    public IDisposable? BeginScope<TState>(TState state)
+         where TState : notnull
     {
+#if NET8_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(state);
+#else
         if (state == null)
         {
             throw new ArgumentNullException(nameof(state));
         }
+#endif
 
         return XUnitLogScope.Push(state);
     }
@@ -111,17 +116,21 @@ public partial class XUnitLogger : ILogger
     }
 
     /// <inheritdoc />
-    public void Log<TState>(LogLevel logLevel, EventId eventId, TState? state, Exception? exception, Func<TState?, Exception?, string?> formatter)
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
     {
         if (!IsEnabled(logLevel))
         {
             return;
         }
 
+#if NET8_0_OR_GREATER
+        ArgumentNullException.ThrowIfNull(formatter);
+#else
         if (formatter == null)
         {
             throw new ArgumentNullException(nameof(formatter));
         }
+#endif
 
         string? message = formatter(state, exception);
 
@@ -283,7 +292,7 @@ public partial class XUnitLogger : ILogger
     /// </summary>
     /// <param name="scope">The <see cref="XUnitLogScope"/> to stringify.</param>
     /// <returns>An enumeration of scope properties from the current scope.</returns>
-    private static IEnumerable<string> StringifyScope(XUnitLogScope scope)
+    private static IEnumerable<string?> StringifyScope(XUnitLogScope scope)
     {
         if (scope.State is IEnumerable<KeyValuePair<string, object>> pairs)
         {
