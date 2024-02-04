@@ -16,3 +16,11 @@ app.MapPut("/api/values/{id}", (string id) => Results.NoContent());
 app.MapDelete("/api/values/{id}", (string id) => Results.NoContent());
 
 app.Run();
+
+namespace SampleApp
+{
+    public partial class Program
+    {
+        // Expose the Program class for use with WebApplicationFactory<T>
+    }
+}

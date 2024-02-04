@@ -4,14 +4,13 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Logging;
-using SampleApp;
 
 namespace MartinCostello.Logging.XUnit.Integration;
 
 /// <summary>
 /// A test fixture representing an HTTP server hosting the sample application. This class cannot be inherited.
 /// </summary>
-public sealed class HttpServerFixture : WebApplicationFactory<FakeEntrypoint>, ITestOutputHelperAccessor
+public sealed class HttpServerFixture : WebApplicationFactory<SampleApp.Program>, ITestOutputHelperAccessor
 {
     /// <inheritdoc />
     public ITestOutputHelper? OutputHelper { get; set; }
