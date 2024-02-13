@@ -2,6 +2,7 @@
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Time.Testing;
 using NSubstitute;
 using Xunit.Sdk;
 
@@ -9,6 +10,8 @@ namespace MartinCostello.Logging.XUnit;
 
 public static class XUnitLoggerTests
 {
+    private static readonly TimeProvider StaticClock = new FakeTimeProvider(new(2018, 08, 19, 17, 12, 16, TimeSpan.FromHours(1)));
+
     [Fact]
     public static void XUnitLogger_Validates_Parameters()
     {
@@ -58,7 +61,10 @@ public static class XUnitLoggerTests
         {
             Filter = FilterTrue,
             MessageSinkMessageFactory = DiagnosticMessageFactory,
-            IncludeScopes = true,
+            Formatter = new DefaultXUnitLogFormatter(new()
+            {
+                IncludeScopes = true,
+            }),
         };
 
         XUnitLogger CreateLogger(XUnitLoggerOptions? opts)
@@ -77,7 +83,6 @@ public static class XUnitLoggerTests
         // Assert
         actual.Filter.ShouldBeSameAs(options.Filter);
         actual.MessageSinkMessageFactory.ShouldBeSameAs(options.MessageSinkMessageFactory);
-        actual.IncludeScopes.ShouldBeTrue();
         actual.Name.ShouldBe(name);
 
         // Act
@@ -88,7 +93,6 @@ public static class XUnitLoggerTests
         actual.Filter(null, LogLevel.None).ShouldBeTrue();
         actual.MessageSinkMessageFactory.ShouldNotBeNull();
         actual.MessageSinkMessageFactory("message").ShouldBeOfType<DiagnosticMessage>();
-        actual.IncludeScopes.ShouldBeFalse();
         actual.Name.ShouldBe(name);
     }
 
@@ -276,12 +280,10 @@ public static class XUnitLoggerTests
         var options = new XUnitLoggerOptions()
         {
             Filter = FilterTrue,
+            Formatter = new DefaultXUnitLogFormatter(new() { TimeProvider = StaticClock }),
         };
 
-        var logger = new XUnitLogger(name, outputHelper, options)
-        {
-            Clock = StaticClock,
-        };
+        var logger = new XUnitLogger(name, outputHelper, options);
 
         var exception = new InvalidOperationException("Invalid");
 
@@ -306,12 +308,10 @@ public static class XUnitLoggerTests
         var options = new XUnitLoggerOptions()
         {
             Filter = FilterTrue,
+            Formatter = new DefaultXUnitLogFormatter(new() { TimeProvider = StaticClock }),
         };
 
-        var logger = new XUnitLogger(name, outputHelper, options)
-        {
-            Clock = StaticClock,
-        };
+        var logger = new XUnitLogger(name, outputHelper, options);
 
         var exception = new InvalidOperationException("Invalid");
 
@@ -336,12 +336,10 @@ public static class XUnitLoggerTests
         var options = new XUnitLoggerOptions()
         {
             Filter = FilterTrue,
+            Formatter = new DefaultXUnitLogFormatter(new() { TimeProvider = StaticClock }),
         };
 
-        var logger = new XUnitLogger(name, outputHelper, options)
-        {
-            Clock = StaticClock,
-        };
+        var logger = new XUnitLogger(name, outputHelper, options);
 
         string expected = string.Join(
             Environment.NewLine,
@@ -370,12 +368,10 @@ public static class XUnitLoggerTests
         var options = new XUnitLoggerOptions()
         {
             Filter = FilterTrue,
+            Formatter = new DefaultXUnitLogFormatter(new() { TimeProvider = StaticClock }),
         };
 
-        var logger = new XUnitLogger(name, outputHelper, options)
-        {
-            Clock = StaticClock,
-        };
+        var logger = new XUnitLogger(name, outputHelper, options);
 
         string expected = string.Join(
             Environment.NewLine,
@@ -419,13 +415,14 @@ public static class XUnitLoggerTests
         var options = new XUnitLoggerOptions()
         {
             Filter = FilterTrue,
-            IncludeScopes = true,
+            Formatter = new DefaultXUnitLogFormatter(new()
+            {
+                IncludeScopes = true,
+                TimeProvider = StaticClock,
+            }),
         };
 
-        var logger = new XUnitLogger(name, outputHelper, options)
-        {
-            Clock = StaticClock,
-        };
+        var logger = new XUnitLogger(name, outputHelper, options);
 
         string expected = string.Join(
             Environment.NewLine,
@@ -448,13 +445,14 @@ public static class XUnitLoggerTests
         var options = new XUnitLoggerOptions()
         {
             Filter = FilterTrue,
-            IncludeScopes = true,
+            Formatter = new DefaultXUnitLogFormatter(new()
+            {
+                IncludeScopes = true,
+                TimeProvider = StaticClock,
+            }),
         };
 
-        var logger = new XUnitLogger(name, outputHelper, options)
-        {
-            Clock = StaticClock,
-        };
+        var logger = new XUnitLogger(name, outputHelper, options);
 
         string expected = string.Join(
             Environment.NewLine,
@@ -496,13 +494,14 @@ public static class XUnitLoggerTests
         var options = new XUnitLoggerOptions()
         {
             Filter = FilterTrue,
-            IncludeScopes = true,
+            Formatter = new DefaultXUnitLogFormatter(new()
+            {
+                IncludeScopes = true,
+                TimeProvider = StaticClock,
+            }),
         };
 
-        var logger = new XUnitLogger(name, outputHelper, options)
-        {
-            Clock = StaticClock,
-        };
+        var logger = new XUnitLogger(name, outputHelper, options);
 
         string expected = string.Join(
             Environment.NewLine,
@@ -533,13 +532,14 @@ public static class XUnitLoggerTests
         var options = new XUnitLoggerOptions()
         {
             Filter = FilterTrue,
-            IncludeScopes = true,
+            Formatter = new DefaultXUnitLogFormatter(new()
+            {
+                IncludeScopes = true,
+                TimeProvider = StaticClock,
+            }),
         };
 
-        var logger = new XUnitLogger(name, outputHelper, options)
-        {
-            Clock = StaticClock,
-        };
+        var logger = new XUnitLogger(name, outputHelper, options);
 
         string expected = string.Join(
             Environment.NewLine,
@@ -574,13 +574,14 @@ public static class XUnitLoggerTests
         var options = new XUnitLoggerOptions()
         {
             Filter = FilterTrue,
-            IncludeScopes = true,
+            Formatter = new DefaultXUnitLogFormatter(new()
+            {
+                IncludeScopes = true,
+                TimeProvider = StaticClock,
+            }),
         };
 
-        var logger = new XUnitLogger(name, outputHelper, options)
-        {
-            Clock = StaticClock,
-        };
+        var logger = new XUnitLogger(name, outputHelper, options);
 
         string expected = string.Join(
             Environment.NewLine,
@@ -626,13 +627,14 @@ public static class XUnitLoggerTests
         var options = new XUnitLoggerOptions()
         {
             Filter = FilterTrue,
-            IncludeScopes = true,
+            Formatter = new DefaultXUnitLogFormatter(new()
+            {
+                IncludeScopes = true,
+                TimeProvider = StaticClock,
+            }),
         };
 
-        var logger = new XUnitLogger(name, outputHelper, options)
-        {
-            Clock = StaticClock,
-        };
+        var logger = new XUnitLogger(name, outputHelper, options);
 
         string expected = string.Join(
             Environment.NewLine,
@@ -651,8 +653,6 @@ public static class XUnitLoggerTests
         // Assert
         outputHelper.Received(1).WriteLine(expected);
     }
-
-    private static DateTimeOffset StaticClock() => new(2018, 08, 19, 17, 12, 16, TimeSpan.FromHours(1));
 
     private static DiagnosticMessage DiagnosticMessageFactory(string message) => new(message);
 

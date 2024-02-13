@@ -40,7 +40,7 @@ public partial class XUnitLogger
     /// <paramref name="name"/> or <paramref name="accessor"/> is <see langword="null"/>.
     /// </exception>
     public XUnitLogger(string name, ITestOutputHelperAccessor accessor, XUnitLoggerOptions? options)
-        : this(name, options)
+        : this(name, null as IExternalScopeProvider, options)
     {
         _outputHelperAccessor = accessor ?? throw new ArgumentNullException(nameof(accessor));
     }

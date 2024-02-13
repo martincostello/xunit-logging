@@ -22,6 +22,7 @@ updates:
     - "martincostello"
   open-pull-requests-limit: 99
   ignore:
-  - dependency-name: Microsoft.Extensions.Logging
-  - dependency-name: xunit.abstractions
-  - dependency-name: xunit.extensibility.execution
+    - dependency-name: Microsoft.Bcl.TimeProvider
+    - dependency-name: Microsoft.Extensions.Logging
+    - dependency-name: xunit.abstractions
+    - dependency-name: xunit.extensibility.execution

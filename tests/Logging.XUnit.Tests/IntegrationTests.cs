@@ -165,7 +165,10 @@ public static class IntegrationTests
         var options = new XUnitLoggerOptions()
         {
             Filter = (_, level) => level >= LogLevel.Error,
-            TimestampFormat = "yyyy-MM-dd HH:mm:ss.fff",
+            Formatter = new DefaultXUnitLogFormatter(new()
+            {
+                TimestampFormat = "yyyy-MM-dd HH:mm:ss.fff",
+            }),
         };
 
         var logger = BootstrapFactory((builder) => builder.AddXUnit(outputHelper, () => options));

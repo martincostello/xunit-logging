@@ -10,7 +10,7 @@ namespace MartinCostello.Logging.XUnit;
 /// Initializes a new instance of the <see cref="XUnitLogScope"/> class.
 /// </remarks>
 /// <param name="state">The state object for the scope.</param>
-internal sealed class XUnitLogScope(object state)
+internal sealed class XUnitLogScope(object? state)
 {
     /// <summary>
     /// The scope for the current thread.
@@ -20,7 +20,7 @@ internal sealed class XUnitLogScope(object state)
     /// <summary>
     /// Gets the state object for the scope.
     /// </summary>
-    public object State { get; } = state;
+    public object? State { get; } = state;
 
     /// <summary>
     /// Gets or sets the current scope.
@@ -38,7 +38,7 @@ internal sealed class XUnitLogScope(object state)
 
     /// <inheritdoc />
     public override string? ToString()
-        => State.ToString();
+        => State?.ToString();
 
     /// <summary>
     /// Pushes a new value into the scope.
@@ -47,7 +47,7 @@ internal sealed class XUnitLogScope(object state)
     /// <returns>
     /// An <see cref="IDisposable"/> that pops the scope.
     /// </returns>
-    internal static IDisposable Push(object state)
+    internal static IDisposable Push(object? state)
     {
         var temp = Current;
 

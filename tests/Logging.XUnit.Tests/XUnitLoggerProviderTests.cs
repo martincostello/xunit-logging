@@ -67,6 +67,5 @@ public static class XUnitLoggerProviderTests
         xunit.Name.ShouldBe(categoryName);
         xunit.Filter.ShouldBeSameAs(options.Filter);
         xunit.MessageSinkMessageFactory.ShouldBeSameAs(options.MessageSinkMessageFactory);
-        xunit.IncludeScopes.ShouldBeFalse();
     }
 }
