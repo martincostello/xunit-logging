@@ -57,7 +57,7 @@ jobs:
     - uses: codecov/codecov-action@54bcd8715eee62d40e33596ef5e8f0f48dbbccab # v4.1.0
       name: Upload coverage to Codecov
       with:
-        file: ./artifacts/coverage/coverage.net8.0.cobertura.xml
+        file: ./artifacts/coverage/coverage.net9.0.cobertura.xml
         flags: ${{ matrix.os_name }}
         token: ${{ secrets.CODECOV_TOKEN }}
 
