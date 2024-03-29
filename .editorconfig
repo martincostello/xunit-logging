@@ -22,6 +22,17 @@ charset = utf-8-bom
 # .NET Coding Conventions     #
 ###############################
 [*.{cs,vb}]
+
+# Enable style analyzers
+dotnet_analyzer_diagnostic.category-Style.severity = warning
+
+dotnet_diagnostic.IDE0005.severity = silent
+dotnet_diagnostic.IDE0045.severity = silent
+dotnet_diagnostic.IDE0046.severity = silent
+dotnet_diagnostic.IDE0058.severity = silent
+dotnet_diagnostic.IDE0072.severity = silent
+dotnet_diagnostic.IDE0079.severity = silent
+
 # Organize usings
 dotnet_sort_system_directives_first = true
 
@@ -81,6 +92,7 @@ csharp_style_expression_bodied_operators = false:none
 csharp_style_expression_bodied_properties = true:none
 csharp_style_expression_bodied_indexers = true:none
 csharp_style_expression_bodied_accessors = true:none
+csharp_style_expression_bodied_local_functions = when_on_single_line
 
 # Pattern matching preferences
 csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion

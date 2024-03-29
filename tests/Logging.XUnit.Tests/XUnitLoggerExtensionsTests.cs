@@ -28,8 +28,8 @@ public static class XUnitLoggerExtensionsTests
         Assert.Throws<ArgumentNullException>("accessor", () => builder.AddXUnit((null as ITestOutputHelperAccessor)!, ConfigureAction));
         Assert.Throws<ArgumentNullException>("outputHelper", () => builder.AddXUnit((null as ITestOutputHelper)!));
         Assert.Throws<ArgumentNullException>("outputHelper", () => builder.AddXUnit((null as ITestOutputHelper)!, ConfigureAction));
-        Assert.Throws<ArgumentNullException>("configure", () => builder.AddXUnit(outputHelper, (null as Action<XUnitLoggerOptions>)!));
-        Assert.Throws<ArgumentNullException>("configure", () => builder.AddXUnit(accessor, (null as Action<XUnitLoggerOptions>)!));
+        Assert.Throws<ArgumentNullException>("configure", () => builder.AddXUnit(outputHelper, null!));
+        Assert.Throws<ArgumentNullException>("configure", () => builder.AddXUnit(accessor, null!));
     }
 
     [Fact]
@@ -49,8 +49,8 @@ public static class XUnitLoggerExtensionsTests
         Assert.Throws<ArgumentNullException>("accessor", () => builder.AddXUnit((null as IMessageSinkAccessor)!, ConfigureAction));
         Assert.Throws<ArgumentNullException>("messageSink", () => builder.AddXUnit((null as IMessageSink)!));
         Assert.Throws<ArgumentNullException>("messageSink", () => builder.AddXUnit((null as IMessageSink)!, ConfigureAction));
-        Assert.Throws<ArgumentNullException>("configure", () => builder.AddXUnit(messageSink, (null as Action<XUnitLoggerOptions>)!));
-        Assert.Throws<ArgumentNullException>("configure", () => builder.AddXUnit(accessor, (null as Action<XUnitLoggerOptions>)!));
+        Assert.Throws<ArgumentNullException>("configure", () => builder.AddXUnit(messageSink, null!));
+        Assert.Throws<ArgumentNullException>("configure", () => builder.AddXUnit(accessor, null!));
     }
 
     [Fact]
