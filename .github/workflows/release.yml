@@ -56,7 +56,6 @@ jobs:
               name,
               draft: true,
               generate_release_notes: true,
-              prerelease: true,
             });
 
             const release_id = release.id;
