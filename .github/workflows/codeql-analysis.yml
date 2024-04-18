@@ -42,6 +42,7 @@ jobs:
       uses: github/codeql-action/init@c7f9125735019aa87cfc361530512d50ea439c71 # v3.25.1
       with:
         languages: 'csharp'
+        queries: security-and-quality
 
     - name: Autobuild
       uses: github/codeql-action/autobuild@c7f9125735019aa87cfc361530512d50ea439c71 # v3.25.1
