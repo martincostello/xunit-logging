@@ -27,14 +27,9 @@ public partial class XUnitLoggerProvider : ILoggerProvider
     /// <inheritdoc />
     public virtual ILogger CreateLogger(string categoryName)
     {
-        if (_outputHelperAccessor is not null)
-        {
-            return new XUnitLogger(categoryName, _outputHelperAccessor, _options);
-        }
-        else
-        {
-            return new XUnitLogger(categoryName, _messageSinkAccessor!, _options);
-        }
+        return _outputHelperAccessor is not null ?
+            new XUnitLogger(categoryName, _outputHelperAccessor, _options) :
+            new XUnitLogger(categoryName, _messageSinkAccessor!, _options);
     }
 
     /// <inheritdoc />
