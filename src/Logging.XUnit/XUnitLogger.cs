@@ -194,7 +194,7 @@ public partial class XUnitLogger : ILogger
                 logBuilder.AppendLine();
             }
 
-            logBuilder.Append(exception.ToString());
+            logBuilder.Append(exception);
         }
 
         // Prefix the formatted message so it renders like this:
