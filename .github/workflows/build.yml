@@ -70,21 +70,21 @@ jobs:
         flags: ${{ matrix.os_name }}
         token: ${{ secrets.CODECOV_TOKEN }}
 
-    - name: Generate SBOM for binaries
+    - name: Generate SBOM
       uses: anchore/sbom-action@7ccf588e3cf3cc2611714c2eeae48550fbc17552 # v0.15.11
       if: env.ATTEST == 'true'
       with:
         path: ./artifacts
         output-file: ./artifacts/sbom.spdx.json
 
-    - name: Attest SBOM for binaries
+    - name: Attest binaries
       uses: actions/attest-sbom@c168f2354d9bf9a30b63bd0c532cdf3f3bbd6dc3 # v1.0.0
       if: env.ATTEST == 'true'
       with:
         sbom-path: ./artifacts/sbom.spdx.json
         subject-path: ./artifacts/bin/**/*.dll
 
-    - name: Attest SBOM for packages
+    - name: Attest packages
       uses: actions/attest-sbom@c168f2354d9bf9a30b63bd0c532cdf3f3bbd6dc3 # v1.0.0
       if: env.ATTEST == 'true'
       with:
