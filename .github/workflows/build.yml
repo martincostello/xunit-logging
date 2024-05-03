@@ -82,14 +82,14 @@ jobs:
       if: env.ATTEST == 'true'
       with:
         sbom-path: ./artifacts/sbom.spdx.json
-        subject-path: ./artifacts/package/bin/**/*.dll
+        subject-path: ./artifacts/bin/**/*.dll
 
     - name: Attest SBOM for packages
       uses: actions/attest-sbom@c168f2354d9bf9a30b63bd0c532cdf3f3bbd6dc3 # v1.0.0
       if: env.ATTEST == 'true'
       with:
         sbom-path: ./artifacts/sbom.spdx.json
-        subject-path: './artifacts/package/release/**/*'
+        subject-path: ./artifacts/package/release/**/*
 
     - name: Publish artifacts
       uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
