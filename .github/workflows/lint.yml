@@ -29,11 +29,12 @@ jobs:
 
     - name: Checkout code
       uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
-      
+
     - name: Add actionlint problem matcher
       run: echo "::add-matcher::.github/actionlint-matcher.json"
 
     - name: Lint workflows
       uses: docker://rhysd/actionlint@sha256:daa1edae4a6366f320b68abb60b74fb59a458c17b61938d3c62709d92b231558 # v1.6.27
       with:
-        args: -color
+        # Remove -ignore once v1.6.28 released - see https://github.com/rhysd/actionlint/pull/418#issuecomment-2089713941
+        args: -color -ignore "attestations"

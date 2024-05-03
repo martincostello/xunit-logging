@@ -26,9 +26,17 @@ jobs:
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
 
+    env:
+      ATTEST: ${{ matrix.os_name == 'windows' }}
+
     outputs:
       dotnet-sdk-version: ${{ steps.setup-dotnet.outputs.dotnet-version }}
       dotnet-validate-version: ${{ steps.get-dotnet-validate-version.outputs.dotnet-validate-version }}
+
+    permissions:
+      attestations: write
+      contents: read
+      id-token: write
 
     strategy:
       fail-fast: false
@@ -61,6 +69,27 @@ jobs:
         file: ./artifacts/coverage/coverage.net8.0.cobertura.xml
         flags: ${{ matrix.os_name }}
         token: ${{ secrets.CODECOV_TOKEN }}
+
+    - name: Generate SBOM for binaries
+      uses: anchore/sbom-action@7ccf588e3cf3cc2611714c2eeae48550fbc17552 # v0.15.11
+      if: env.ATTEST == 'true'
+      with:
+        path: ./artifacts/publish
+        output-file: ./artifacts/sbom.spdx.json
+
+    - name: Attest SBOM for binaries
+      uses: actions/attest-sbom@c168f2354d9bf9a30b63bd0c532cdf3f3bbd6dc3 # v1.0.0
+      if: env.ATTEST == 'true'
+      with:
+        sbom-path: ./artifacts/sbom.spdx.json
+        subject-path: ./artifacts/package/bin/**/*.dll
+
+    - name: Attest SBOM for packages
+      uses: actions/attest-sbom@c168f2354d9bf9a30b63bd0c532cdf3f3bbd6dc3 # v1.0.0
+      if: env.ATTEST == 'true'
+      with:
+        sbom-path: ./artifacts/sbom.spdx.json
+        subject-path: ./artifacts/package/release/**/*.nupkg
 
     - name: Publish artifacts
       uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
