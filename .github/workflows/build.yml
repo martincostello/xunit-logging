@@ -74,7 +74,7 @@ jobs:
       uses: anchore/sbom-action@7ccf588e3cf3cc2611714c2eeae48550fbc17552 # v0.15.11
       if: env.ATTEST == 'true'
       with:
-        path: ./artifacts/publish
+        path: ./artifacts
         output-file: ./artifacts/sbom.spdx.json
 
     - name: Attest SBOM for binaries
