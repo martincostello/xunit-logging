@@ -82,7 +82,7 @@ jobs:
       if: env.ATTEST == 'true'
       with:
         sbom-path: ./artifacts/sbom.spdx.json
-        subject-path: ./artifacts/bin/**/*.dll
+        subject-path: ./artifacts/bin/MartinCostello.Logging.XUnit/**/*.dll
 
     - name: Attest packages
       uses: actions/attest-sbom@c168f2354d9bf9a30b63bd0c532cdf3f3bbd6dc3 # v1.0.0
