@@ -18,6 +18,7 @@ packages
 TestResults
 UpgradeLog*.htm
 UpgradeLog*.XML
+*.binlog
 *.coverage
 *.DotSettings
 *.GhostDoc.xml
