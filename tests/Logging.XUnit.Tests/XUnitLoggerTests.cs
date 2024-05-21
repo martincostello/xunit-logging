@@ -287,7 +287,8 @@ public static class XUnitLoggerTests
 
         string expected = string.Join(
             Environment.NewLine,
-            ["[2018-08-19 16:12:16Z] info: MyName[2]", "System.InvalidOperationException: Invalid"]);
+            "[2018-08-19 16:12:16Z] info: MyName[2]",
+            "System.InvalidOperationException: Invalid");
 
         // Act
         logger.Log(LogLevel.Information, new EventId(2), "state", exception, FormatterNull);
@@ -317,7 +318,9 @@ public static class XUnitLoggerTests
 
         string expected = string.Join(
             Environment.NewLine,
-            ["[2018-08-19 16:12:16Z] warn: MyName[3]", "      Message|False|True", "System.InvalidOperationException: Invalid"]);
+            "[2018-08-19 16:12:16Z] warn: MyName[3]",
+            "      Message|False|True",
+            "System.InvalidOperationException: Invalid");
 
         // Act
         logger.Log<string?>(LogLevel.Warning, new EventId(3), null, exception, Formatter);
@@ -345,7 +348,8 @@ public static class XUnitLoggerTests
 
         string expected = string.Join(
             Environment.NewLine,
-            ["[2018-08-19 16:12:16Z] fail: MyName[4]", "      Message|False|False"]);
+            "[2018-08-19 16:12:16Z] fail: MyName[4]",
+            "      Message|False|False");
 
         // Act
         logger.Log<string?>(LogLevel.Error, new EventId(4), null, null, Formatter);
@@ -379,7 +383,8 @@ public static class XUnitLoggerTests
 
         string expected = string.Join(
             Environment.NewLine,
-            [$"[2018-08-19 16:12:16Z] {shortLevel}: Your Name[85]", "      Message|True|False"]);
+            $"[2018-08-19 16:12:16Z] {shortLevel}: Your Name[85]",
+            "      Message|True|False");
 
         // Act
         logger.Log(logLevel, new EventId(85), "Martin", null, Formatter);
@@ -429,7 +434,8 @@ public static class XUnitLoggerTests
 
         string expected = string.Join(
             Environment.NewLine,
-            ["[2018-08-19 16:12:16Z] info: MyName[0]", "      Message|False|False"]);
+            "[2018-08-19 16:12:16Z] info: MyName[0]",
+            "      Message|False|False");
 
         // Act
         logger.Log<string?>(LogLevel.Information, 0, null, null, Formatter);
