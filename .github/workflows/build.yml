@@ -29,6 +29,8 @@ jobs:
     outputs:
       dotnet-sdk-version: ${{ steps.setup-dotnet.outputs.dotnet-version }}
       dotnet-validate-version: ${{ steps.get-dotnet-validate-version.outputs.dotnet-validate-version }}
+      package-names: ${{ steps.build.outputs.package-names }}
+      package-version: ${{ steps.build.outputs.package-version }}
 
     permissions:
       attestations: write
@@ -57,6 +59,7 @@ jobs:
       id: setup-dotnet
 
     - name: Build, Test and Package
+      id: build
       shell: pwsh
       run: ./build.ps1
 
@@ -199,3 +202,16 @@ jobs:
         API_KEY: ${{ secrets.NUGET_TOKEN }}
         SOURCE: https://api.nuget.org/v3/index.json
       run: dotnet nuget push "*.nupkg" --api-key "${API_KEY}" --skip-duplicate --source "${SOURCE}"
+
+    - name: Publish nuget_packages_published
+      uses: peter-evans/repository-dispatch@ff45666b9427631e3450c54a1bcbee4d9ff4d7c0 # v3.0.0
+      with:
+        event-type: nuget_packages_published
+        repository: ${{ github.repository_owner }}/github-automation
+        token: ${{ secrets.COSTELLOBOT_TOKEN }}
+        client-payload: |-
+          {
+            "repository": "${{ github.repository }}",
+            "packages": "${{ needs.build.outputs.package-names }}",
+            "version": "${{ needs.build.outputs.package-version }}"
+          }

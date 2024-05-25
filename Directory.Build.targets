@@ -39,4 +39,8 @@
     </PropertyGroup>
     <WriteLinesToFile Condition=" '$(ReportGeneratorOutputMarkdown)' == 'true' " ContinueOnError="WarnAndContinue" File="$(GITHUB_STEP_SUMMARY)" Lines="$(_ReportSummaryContent)" />
   </Target>
+  <Target Name="SetNuGetPackageOutputs" AfterTargets="Pack" Condition=" '$(GITHUB_OUTPUT)' != '' ">
+    <WriteLinesToFile File="$(GITHUB_OUTPUT)" Lines="package-names=$(PackageId)" />
+    <WriteLinesToFile File="$(GITHUB_OUTPUT)" Lines="package-version=$(Version)" />
+  </Target>
 </Project>
