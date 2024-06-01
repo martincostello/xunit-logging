@@ -16,7 +16,7 @@
 
 To install the library from [NuGet](https://www.nuget.org/packages/MartinCostello.Logging.XUnit/ "MartinCostello.Logging.XUnit on NuGet.org") using the .NET SDK run:
 
-```
+```console
 dotnet add package MartinCostello.Logging.XUnit
 ```
 
@@ -65,8 +65,9 @@ public sealed class Calculator(ILogger<Calculator> logger)
 ```
 
 See below for links to more examples:
-  1. [Unit tests](https://github.com/martincostello/xunit-logging/blob/main/tests/Logging.XUnit.Tests/Examples.cs "Unit test examples")
-  1. [Integration tests for an ASP.NET Core HTTP application](https://github.com/martincostello/xunit-logging/blob/main/tests/Logging.XUnit.Tests/Integration/HttpApplicationTests.cs "Integration test examples")
+
+- [Unit tests](https://github.com/martincostello/xunit-logging/blob/main/tests/Logging.XUnit.Tests/Examples.cs "Unit test examples")
+- [Integration tests for an ASP.NET Core HTTP application](https://github.com/martincostello/xunit-logging/blob/main/tests/Logging.XUnit.Tests/Integration/HttpApplicationTests.cs "Integration test examples")
 
 ## Feedback
 
@@ -74,7 +75,7 @@ Any feedback or issues can be added to the issues for this project in [GitHub](h
 
 ## Repository
 
-The repository is hosted in [GitHub](https://github.com/martincostello/xunit-logging "This project on GitHub.com"): https://github.com/martincostello/xunit-logging.git
+The repository is hosted in [GitHub](https://github.com/martincostello/xunit-logging "This project on GitHub.com"): <https://github.com/martincostello/xunit-logging.git>
 
 ## License
 
