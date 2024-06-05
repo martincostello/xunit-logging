@@ -101,8 +101,6 @@ function DotNetTest {
     if (![string]::IsNullOrEmpty($env:GITHUB_SHA)) {
         $additionalArgs += "--logger"
         $additionalArgs += "GitHubActions;report-warnings=false"
-        $additionalArgs += "-tl:false"
-        $additionalArgs += "-p:vstestusemsbuildoutput=false"
     }
 
     & $dotnet test $Project --configuration "Release" $additionalArgs
