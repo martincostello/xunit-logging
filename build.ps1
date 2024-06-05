@@ -79,6 +79,10 @@ if ($installDotNetSdk -eq $true) {
     $env:PATH = "$env:DOTNET_INSTALL_DIR;$env:PATH"
 }
 
+">>> $($env:DOTNET_ROOT)"
+
+$env:DOTNET_ROOT = $env:DOTNET_INSTALL_DIR
+
 function DotNetPack {
     param([string]$Project)
 
