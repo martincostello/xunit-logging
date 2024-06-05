@@ -18,7 +18,7 @@ public class Examples(ITestOutputHelper outputHelper)
         int actual = calculator.Sum(2, 2);
 
         // Assert
-        actual.ShouldBe(4);
+        actual.ShouldNotBe(4);
     }
 
     [Fact]
