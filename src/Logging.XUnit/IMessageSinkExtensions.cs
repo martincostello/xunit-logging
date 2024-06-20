@@ -24,7 +24,7 @@ public static class IMessageSinkExtensions
     /// </exception>
     public static ILoggerFactory ToLoggerFactory(this IMessageSink messageSink)
     {
-#if NET8_0_OR_GREATER
+#if NET
         ArgumentNullException.ThrowIfNull(messageSink);
 #else
         if (messageSink == null)

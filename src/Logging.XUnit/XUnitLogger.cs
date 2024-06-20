@@ -92,7 +92,7 @@ public partial class XUnitLogger : ILogger
     public IDisposable? BeginScope<TState>(TState state)
          where TState : notnull
     {
-#if NET8_0_OR_GREATER
+#if NET
         ArgumentNullException.ThrowIfNull(state);
 #else
         if (state == null)
@@ -123,7 +123,7 @@ public partial class XUnitLogger : ILogger
             return;
         }
 
-#if NET8_0_OR_GREATER
+#if NET
         ArgumentNullException.ThrowIfNull(formatter);
 #else
         if (formatter == null)

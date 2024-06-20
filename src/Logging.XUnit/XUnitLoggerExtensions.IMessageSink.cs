@@ -25,7 +25,7 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, IMessageSinkAccessor accessor)
     {
-#if NET8_0_OR_GREATER
+#if NET
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(accessor);
 #else
@@ -57,7 +57,7 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, IMessageSinkAccessor accessor, Action<XUnitLoggerOptions> configure)
     {
-#if NET8_0_OR_GREATER
+#if NET
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(accessor);
         ArgumentNullException.ThrowIfNull(configure);
@@ -104,7 +104,7 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, IMessageSink messageSink)
     {
-#if NET8_0_OR_GREATER
+#if NET
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(messageSink);
 #else
@@ -136,7 +136,7 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, IMessageSink messageSink, Action<XUnitLoggerOptions> configure)
     {
-#if NET8_0_OR_GREATER
+#if NET
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(messageSink);
         ArgumentNullException.ThrowIfNull(configure);
@@ -180,7 +180,7 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, IMessageSink messageSink, LogLevel minLevel)
     {
-#if NET8_0_OR_GREATER
+#if NET
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(messageSink);
 #else
@@ -212,7 +212,7 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, IMessageSink messageSink, Func<string?, LogLevel, bool> filter)
     {
-#if NET8_0_OR_GREATER
+#if NET
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(messageSink);
         ArgumentNullException.ThrowIfNull(filter);
@@ -249,7 +249,7 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, IMessageSink messageSink)
     {
-#if NET8_0_OR_GREATER
+#if NET
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(messageSink);
 #else
@@ -281,7 +281,7 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, IMessageSink messageSink, XUnitLoggerOptions options)
     {
-#if NET8_0_OR_GREATER
+#if NET
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(messageSink);
         ArgumentNullException.ThrowIfNull(options);
@@ -319,7 +319,7 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, IMessageSink messageSink, Action<XUnitLoggerOptions> configure)
     {
-#if NET8_0_OR_GREATER
+#if NET
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(messageSink);
         ArgumentNullException.ThrowIfNull(configure);
@@ -362,7 +362,7 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, IMessageSink messageSink, Func<XUnitLoggerOptions> configure)
     {
-#if NET8_0_OR_GREATER
+#if NET
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(messageSink);
         ArgumentNullException.ThrowIfNull(configure);
