@@ -26,7 +26,7 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder)
     {
-#if NET8_0_OR_GREATER
+#if NET
         ArgumentNullException.ThrowIfNull(builder);
 #else
         if (builder == null)
@@ -51,7 +51,7 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, ITestOutputHelperAccessor accessor)
     {
-#if NET8_0_OR_GREATER
+#if NET
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(accessor);
 #else
@@ -83,7 +83,7 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, ITestOutputHelperAccessor accessor, Action<XUnitLoggerOptions> configure)
     {
-#if NET8_0_OR_GREATER
+#if NET
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(accessor);
         ArgumentNullException.ThrowIfNull(configure);
@@ -130,7 +130,7 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, ITestOutputHelper outputHelper)
     {
-#if NET8_0_OR_GREATER
+#if NET
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(outputHelper);
 #else
@@ -162,7 +162,7 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, ITestOutputHelper outputHelper, Action<XUnitLoggerOptions> configure)
     {
-#if NET8_0_OR_GREATER
+#if NET
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(outputHelper);
         ArgumentNullException.ThrowIfNull(configure);
@@ -206,7 +206,7 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, ITestOutputHelper outputHelper, LogLevel minLevel)
     {
-#if NET8_0_OR_GREATER
+#if NET
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(outputHelper);
 #else
@@ -238,7 +238,7 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, ITestOutputHelper outputHelper, Func<string?, LogLevel, bool> filter)
     {
-#if NET8_0_OR_GREATER
+#if NET
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(outputHelper);
         ArgumentNullException.ThrowIfNull(filter);
@@ -275,7 +275,7 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, ITestOutputHelper outputHelper)
     {
-#if NET8_0_OR_GREATER
+#if NET
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(outputHelper);
 #else
@@ -307,7 +307,7 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, ITestOutputHelper outputHelper, XUnitLoggerOptions options)
     {
-#if NET8_0_OR_GREATER
+#if NET
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(outputHelper);
         ArgumentNullException.ThrowIfNull(options);
@@ -345,7 +345,7 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, ITestOutputHelper outputHelper, Action<XUnitLoggerOptions> configure)
     {
-#if NET8_0_OR_GREATER
+#if NET
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(outputHelper);
         ArgumentNullException.ThrowIfNull(configure);
@@ -388,7 +388,7 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, ITestOutputHelper outputHelper, Func<XUnitLoggerOptions> configure)
     {
-#if NET8_0_OR_GREATER
+#if NET
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(outputHelper);
         ArgumentNullException.ThrowIfNull(configure);
