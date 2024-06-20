@@ -3,7 +3,7 @@
 
 //// Based on https://github.com/dotnet/runtime/blob/65067052e433eda400c5e7cc9f7b21c84640f901/src/libraries/System.Private.CoreLib/src/System/Diagnostics/CodeAnalysis/StringSyntaxAttribute.cs
 
-#if !NET7_0_OR_GREATER
+#if NETSTANDARD
 
 namespace System.Diagnostics.CodeAnalysis;
 
