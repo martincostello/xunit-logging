@@ -5,9 +5,10 @@
 
 #if NETSTANDARD
 
-namespace System.Diagnostics.CodeAnalysis;
-
+#pragma warning disable IDE0130
 #pragma warning disable SA1600
+
+namespace System.Diagnostics.CodeAnalysis;
 
 [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
 [ExcludeFromCodeCoverage]

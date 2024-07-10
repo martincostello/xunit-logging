@@ -4,6 +4,7 @@
 using System.ComponentModel;
 using Microsoft.Extensions.Logging;
 
+#pragma warning disable IDE0130
 namespace Xunit.Abstractions;
 
 /// <summary>
