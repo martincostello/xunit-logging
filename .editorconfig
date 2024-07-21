@@ -1,4 +1,3 @@
-
 root = true
 
 [*]
@@ -14,6 +13,7 @@ indent_size = 2
 
 # Code files
 [*.{cs,csx,vb,vbx}]
+file_header_template = Copyright (c) Martin Costello, 2018. All rights reserved.\nLicensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 indent_size = 4
 insert_final_newline = true
 charset = utf-8-bom
