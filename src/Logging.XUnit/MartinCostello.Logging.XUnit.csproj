@@ -4,9 +4,10 @@
     <Description>Extensions for Microsoft.Extensions.Logging for xunit.</Description>
     <EnablePackageValidation>true</EnablePackageValidation>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsPackable>true</IsPackable>
     <OutputType>Library</OutputType>
     <PackageId>MartinCostello.Logging.XUnit</PackageId>
-    <PackageValidationBaselineVersion>0.3.0</PackageValidationBaselineVersion>
+    <PackageValidationBaselineVersion>0.4.0</PackageValidationBaselineVersion>
     <RootNamespace>MartinCostello.Logging.XUnit</RootNamespace>
     <Summary>$(Description)</Summary>
     <TargetFramework>net8.0</TargetFramework>
