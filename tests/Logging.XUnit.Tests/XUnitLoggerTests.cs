@@ -3,7 +3,7 @@
 
 using Microsoft.Extensions.Logging;
 using NSubstitute;
-using Xunit.Sdk;
+using Xunit.Runner.Common;
 
 namespace MartinCostello.Logging.XUnit;
 
@@ -87,7 +87,7 @@ public static class XUnitLoggerTests
         actual.Filter.ShouldNotBeNull();
         actual.Filter(null, LogLevel.None).ShouldBeTrue();
         actual.MessageSinkMessageFactory.ShouldNotBeNull();
-        actual.MessageSinkMessageFactory("message").ShouldBeOfType<DiagnosticMessage>();
+        actual.MessageSinkMessageFactory("message").ShouldBeOfType<Xunit.v3.DiagnosticMessage>();
         actual.IncludeScopes.ShouldBeFalse();
         actual.Name.ShouldBe(name);
     }
@@ -203,7 +203,7 @@ public static class XUnitLoggerTests
         logger.Log(LogLevel.Information, new EventId(2), "state", null, Formatter);
 
         // Assert
-        outputHelper.DidNotReceiveWithAnyArgs().WriteLine(default);
+        outputHelper.DidNotReceiveWithAnyArgs().WriteLine(Arg.Any<string>());
     }
 
     [Fact]
@@ -224,7 +224,7 @@ public static class XUnitLoggerTests
         logger.Log(LogLevel.Information, new EventId(2), "state", null, FormatterNull);
 
         // Assert
-        outputHelper.DidNotReceiveWithAnyArgs().WriteLine(default);
+        outputHelper.DidNotReceiveWithAnyArgs().WriteLine(Arg.Any<string>());
     }
 
     [Fact]
@@ -245,7 +245,7 @@ public static class XUnitLoggerTests
         logger.Log(LogLevel.Information, new EventId(2), "state", null, FormatterEmpty);
 
         // Assert
-        outputHelper.DidNotReceiveWithAnyArgs().WriteLine(default);
+        outputHelper.DidNotReceiveWithAnyArgs().WriteLine(string.Empty);
     }
 
     [Fact]

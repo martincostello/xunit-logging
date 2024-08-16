@@ -2,6 +2,7 @@
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
 using Microsoft.Extensions.Logging;
+using Xunit.Runner.Common;
 
 namespace MartinCostello.Logging.XUnit.Integration;
 
@@ -14,22 +15,22 @@ public sealed class DatabaseFixture : IAsyncLifetime
     public DatabaseFixture(IMessageSink messageSink)
     {
         using var loggerFactory = new LoggerFactory();
-        _initializeLogger = loggerFactory.AddXUnit(messageSink, c => c.MessageSinkMessageFactory = m => new PrintableDiagnosticMessage(m)).CreateLogger<DatabaseFixture>();
+        _initializeLogger = loggerFactory.AddXUnit(messageSink, c => c.MessageSinkMessageFactory = m => new DiagnosticMessage(m)).CreateLogger<DatabaseFixture>();
         _disposeLogger = messageSink.ToLogger<DatabaseFixture>();
     }
 
     public string ConnectionString => _connectionString ?? throw new InvalidOperationException("The connection string is only available after InitializeAsync has completed.");
 
-    Task IAsyncLifetime.InitializeAsync()
+    ValueTask IAsyncLifetime.InitializeAsync()
     {
         _initializeLogger.LogInformation("Initializing database");
         _connectionString = "Server=localhost";
-        return Task.CompletedTask;
+        return ValueTask.CompletedTask;
     }
 
-    Task IAsyncLifetime.DisposeAsync()
+    ValueTask IAsyncDisposable.DisposeAsync()
     {
         _disposeLogger.LogInformation("Disposing database");
-        return Task.CompletedTask;
+        return ValueTask.CompletedTask;
     }
 }
