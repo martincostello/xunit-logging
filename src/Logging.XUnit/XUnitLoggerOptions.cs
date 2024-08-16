@@ -3,7 +3,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
-using Xunit.Sdk;
 using Xunit.v3;
 
 namespace MartinCostello.Logging.XUnit;

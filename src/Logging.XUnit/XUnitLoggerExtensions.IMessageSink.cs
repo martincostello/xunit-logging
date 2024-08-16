@@ -3,7 +3,6 @@
 
 using MartinCostello.Logging.XUnit;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Xunit.Sdk;
 
 namespace Microsoft.Extensions.Logging;
 
