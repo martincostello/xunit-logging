@@ -10,7 +10,7 @@
     <PackageValidationBaselineVersion>0.4.0</PackageValidationBaselineVersion>
     <RootNamespace>MartinCostello.Logging.XUnit</RootNamespace>
     <Summary>$(Description)</Summary>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFrameworks>net472;net8.0</TargetFrameworks>
     <Title>xunit Logging Extensions</Title>
   </PropertyGroup>
   <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">
