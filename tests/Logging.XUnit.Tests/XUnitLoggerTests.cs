@@ -87,7 +87,7 @@ public static class XUnitLoggerTests
         actual.Filter.ShouldNotBeNull();
         actual.Filter(null, LogLevel.None).ShouldBeTrue();
         actual.MessageSinkMessageFactory.ShouldNotBeNull();
-        actual.MessageSinkMessageFactory("message").ShouldBeOfType<Xunit.v3.DiagnosticMessage>();
+        actual.MessageSinkMessageFactory("message").ShouldBeOfType<DiagnosticMessage>();
         actual.IncludeScopes.ShouldBeFalse();
         actual.Name.ShouldBe(name);
     }
