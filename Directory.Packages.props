@@ -15,7 +15,6 @@
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.0.0-pre.24" />
     <PackageVersion Include="xunit.v3" Version="0.2.0-pre.69" />
     <PackageVersion Include="xunit.v3.core" Version="0.2.0-pre.69" />
-    <PackageVersion Include="xunit.v3.extensibility.core" Version="0.2.0-pre.69" />
   </ItemGroup>
   <ItemGroup Condition=" '$(IsTestProject)' == 'true' ">
     <PackageReference Include="coverlet.msbuild" PrivateAssets="All" />
