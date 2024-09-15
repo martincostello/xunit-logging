@@ -1,6 +1,7 @@
 # xunit Logging
 
-[![NuGet](https://img.shields.io/nuget/v/MartinCostello.Logging.XUnit?logo=nuget&label=NuGet&color=blue)](https://www.nuget.org/packages/MartinCostello.Logging.XUnit "Download MartinCostello.Logging.XUnit from NuGet")
+[![NuGet](https://img.shields.io/nuget/v/MartinCostello.Logging.XUnit?logo=nuget&label=Latest&color=blue)](https://www.nuget.org/packages/MartinCostello.Logging.XUnit "Download MartinCostello.Logging.XUnit from NuGet")
+[![NuGet Downloads](https://img.shields.io/nuget/dt/MartinCostello.Logging.XUnit?logo=nuget&label=Downloads&color=blue)](https://www.nuget.org/packages/MartinCostello.Logging.XUnit "Download MartinCostello.Logging.XUnit from NuGet")
 
 [![Build status](https://github.com/martincostello/xunit-logging/workflows/build/badge.svg?branch=main&event=push)](https://github.com/martincostello/xunit-logging/actions?query=workflow%3Abuild+branch%3Amain+event%3Apush)
 [![codecov](https://codecov.io/gh/martincostello/xunit-logging/branch/main/graph/badge.svg)](https://codecov.io/gh/martincostello/xunit-logging)
