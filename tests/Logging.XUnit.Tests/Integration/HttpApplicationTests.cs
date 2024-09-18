@@ -30,7 +30,7 @@ public sealed class HttpApplicationTests : IDisposable
         using var httpClient = Fixture.CreateClient();
 
         // Act
-        using var response = await httpClient.GetAsync("api/values");
+        using var response = await httpClient.GetAsync("api/values", TestContext.Current.CancellationToken);
 
         // Assert
         response.IsSuccessStatusCode.ShouldBeTrue();
@@ -43,7 +43,7 @@ public sealed class HttpApplicationTests : IDisposable
         using var httpClient = Fixture.CreateClient();
 
         // Act
-        using var response = await httpClient.GetAsync("api/values/a");
+        using var response = await httpClient.GetAsync("api/values/a", TestContext.Current.CancellationToken);
 
         // Assert
         response.IsSuccessStatusCode.ShouldBeTrue();
@@ -56,7 +56,7 @@ public sealed class HttpApplicationTests : IDisposable
         using var httpClient = Fixture.CreateClient();
 
         // Act
-        using var response = await httpClient.PostAsJsonAsync("api/values", new { });
+        using var response = await httpClient.PostAsJsonAsync("api/values", new { }, TestContext.Current.CancellationToken);
 
         // Assert
         response.IsSuccessStatusCode.ShouldBeTrue();
@@ -70,7 +70,7 @@ public sealed class HttpApplicationTests : IDisposable
 
         // Act
         using var content = new StringContent(@"""d""", Encoding.UTF8, MediaTypeNames.Application.Json);
-        using var response = await httpClient.PutAsync("api/values/d", content);
+        using var response = await httpClient.PutAsync("api/values/d", content, TestContext.Current.CancellationToken);
 
         // Assert
         response.IsSuccessStatusCode.ShouldBeTrue();
@@ -83,7 +83,7 @@ public sealed class HttpApplicationTests : IDisposable
         using var httpClient = Fixture.CreateClient();
 
         // Act
-        using var response = await httpClient.DeleteAsync("api/values/d");
+        using var response = await httpClient.DeleteAsync("api/values/d", TestContext.Current.CancellationToken);
 
         // Assert
         response.IsSuccessStatusCode.ShouldBeTrue();

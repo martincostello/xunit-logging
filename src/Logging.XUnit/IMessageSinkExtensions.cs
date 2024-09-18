@@ -5,7 +5,7 @@ using System.ComponentModel;
 using Microsoft.Extensions.Logging;
 
 #pragma warning disable IDE0130
-namespace Xunit.Abstractions;
+namespace Xunit.Sdk;
 
 /// <summary>
 /// A class containing extension methods for the <see cref="IMessageSink"/> interface. This class cannot be inherited.
