@@ -7,15 +7,12 @@ param(
     [Parameter(Mandatory = $false)][switch] $SkipTests
 )
 
-# These make CI builds faster
-$env:DOTNET_SKIP_FIRST_TIME_EXPERIENCE = "true"
-$env:NUGET_XMLDOC_MODE = "skip"
-
 if ($null -eq $env:MSBUILDTERMINALLOGGER) {
     $env:MSBUILDTERMINALLOGGER = "auto"
 }
 
 $ErrorActionPreference = "Stop"
+$InformationPreference = "Continue"
 $ProgressPreference = "SilentlyContinue"
 
 $solutionPath = $PSScriptRoot
@@ -49,38 +46,37 @@ else {
     }
 }
 
-if ($installDotNetSdk -eq $true) {
+if ($installDotNetSdk) {
 
-    $env:DOTNET_INSTALL_DIR = Join-Path $PSScriptRoot ".dotnetcli"
-    $sdkPath = Join-Path $env:DOTNET_INSTALL_DIR "sdk" $dotnetVersion
+    ${env:DOTNET_INSTALL_DIR} = Join-Path $solutionPath ".dotnetcli"
+    $sdkPath = Join-Path ${env:DOTNET_INSTALL_DIR} "sdk" $dotnetVersion
 
     if (!(Test-Path $sdkPath)) {
-        if (!(Test-Path $env:DOTNET_INSTALL_DIR)) {
-            mkdir $env:DOTNET_INSTALL_DIR | Out-Null
+        if (!(Test-Path ${env:DOTNET_INSTALL_DIR})) {
+            mkdir ${env:DOTNET_INSTALL_DIR} | Out-Null
         }
         [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor "Tls12"
-
         if (($PSVersionTable.PSVersion.Major -ge 6) -And !$IsWindows) {
-            $installScript = Join-Path $env:DOTNET_INSTALL_DIR "install.sh"
+            $installScript = Join-Path ${env:DOTNET_INSTALL_DIR} "install.sh"
             Invoke-WebRequest "https://dot.net/v1/dotnet-install.sh" -OutFile $installScript -UseBasicParsing
             chmod +x $installScript
-            & $installScript --version $dotnetVersion --install-dir $env:DOTNET_INSTALL_DIR --no-path
+            & $installScript --jsonfile $sdkFile --install-dir ${env:DOTNET_INSTALL_DIR} --no-path --skip-non-versioned-files
         }
         else {
-            $installScript = Join-Path $env:DOTNET_INSTALL_DIR "install.ps1"
+            $installScript = Join-Path ${env:DOTNET_INSTALL_DIR} "install.ps1"
             Invoke-WebRequest "https://dot.net/v1/dotnet-install.ps1" -OutFile $installScript -UseBasicParsing
-            & $installScript -Version $dotnetVersion -InstallDir $env:DOTNET_INSTALL_DIR -NoPath
+            & $installScript -JsonFile $sdkFile -InstallDir ${env:DOTNET_INSTALL_DIR} -NoPath -SkipNonVersionedFiles
         }
     }
 }
 else {
-    $env:DOTNET_INSTALL_DIR = Split-Path -Path (Get-Command dotnet).Path
+    ${env:DOTNET_INSTALL_DIR} = Split-Path -Path (Get-Command dotnet).Path
 }
 
-$dotnet = Join-Path $env:DOTNET_INSTALL_DIR "dotnet"
+$dotnet = Join-Path ${env:DOTNET_INSTALL_DIR} "dotnet"
 
-if ($installDotNetSdk -eq $true) {
-    $env:PATH = "$env:DOTNET_INSTALL_DIR;$env:PATH"
+if ($installDotNetSdk) {
+    ${env:PATH} = "${env:DOTNET_INSTALL_DIR};${env:PATH}"
 }
 
 function DotNetPack {
