@@ -32,7 +32,7 @@ $dotnetVersion = (Get-Content $sdkFile | Out-String | ConvertFrom-Json).sdk.vers
 $installDotNetSdk = $false;
 
 if (($null -eq (Get-Command "dotnet" -ErrorAction SilentlyContinue)) -and ($null -eq (Get-Command "dotnet.exe" -ErrorAction SilentlyContinue))) {
-    Write-Host "The .NET SDK is not installed."
+    Write-Information "The .NET SDK is not installed."
     $installDotNetSdk = $true
 }
 else {
@@ -44,7 +44,7 @@ else {
     }
 
     if ($installedDotNetVersion -ne $dotnetVersion) {
-        Write-Host "The required version of the .NET SDK is not installed. Expected $dotnetVersion."
+        Write-Information "The required version of the .NET SDK is not installed. Expected $dotnetVersion."
         $installDotNetSdk = $true
     }
 }
@@ -64,12 +64,12 @@ if ($installDotNetSdk -eq $true) {
             $installScript = Join-Path $env:DOTNET_INSTALL_DIR "install.sh"
             Invoke-WebRequest "https://dot.net/v1/dotnet-install.sh" -OutFile $installScript -UseBasicParsing
             chmod +x $installScript
-            & $installScript --version "$dotnetVersion" --install-dir "$env:DOTNET_INSTALL_DIR" --no-path
+            & $installScript --version $dotnetVersion --install-dir $env:DOTNET_INSTALL_DIR --no-path
         }
         else {
             $installScript = Join-Path $env:DOTNET_INSTALL_DIR "install.ps1"
             Invoke-WebRequest "https://dot.net/v1/dotnet-install.ps1" -OutFile $installScript -UseBasicParsing
-            & $installScript -Version "$dotnetVersion" -InstallDir "$env:DOTNET_INSTALL_DIR" -NoPath
+            & $installScript -Version $dotnetVersion -InstallDir $env:DOTNET_INSTALL_DIR -NoPath
         }
     }
 }
@@ -77,7 +77,7 @@ else {
     $env:DOTNET_INSTALL_DIR = Split-Path -Path (Get-Command dotnet).Path
 }
 
-$dotnet = Join-Path "$env:DOTNET_INSTALL_DIR" "dotnet"
+$dotnet = Join-Path $env:DOTNET_INSTALL_DIR "dotnet"
 
 if ($installDotNetSdk -eq $true) {
     $env:PATH = "$env:DOTNET_INSTALL_DIR;$env:PATH"
@@ -110,10 +110,12 @@ function DotNetTest {
     }
 }
 
-Write-Host "Packaging library..." -ForegroundColor Green
+Write-Information "Packaging library..."
 DotNetPack $libraryProject
 
-Write-Host "Running tests..." -ForegroundColor Green
-ForEach ($testProject in $testProjects) {
-    DotNetTest $testProject
+if (-Not $SkipTests) {
+    Write-Information "Running tests..."
+    ForEach ($testProject in $testProjects) {
+        DotNetTest $testProject
+    }
 }

@@ -44,3 +44,7 @@ jobs:
         config: '.markdownlint.json'
         globs: |
           **/*.md
+
+    - name: Lint PowerShell
+      shell: pwsh
+      run: Invoke-ScriptAnalyzer -Path . -Recurse -IncludeDefaultRules -ReportSummary -Severity @('Error','Warning') -EnableExit
