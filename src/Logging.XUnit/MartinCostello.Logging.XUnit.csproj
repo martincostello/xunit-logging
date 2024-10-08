@@ -25,7 +25,7 @@
     <PackageReference Include="xunit.extensibility.execution" />
   </ItemGroup>
   <ItemGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">
-    <PackageReference Update="Microsoft.Extensions.Logging" VersionOverride="8.0.0" />
+    <PackageReference Update="Microsoft.Extensions.Logging" VersionOverride="8.0.1" />
   </ItemGroup>
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.InteropServices.GuidAttribute">
