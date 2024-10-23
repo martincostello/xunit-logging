@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Martin Costello, 2018. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
+using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
 
 namespace MartinCostello.Logging.XUnit;
@@ -11,6 +12,11 @@ namespace MartinCostello.Logging.XUnit;
 [ProviderAlias("XUnit")]
 public partial class XUnitLoggerProvider : ILoggerProvider
 {
+    /// <summary>
+    /// The cached loggers to use for each category. This field is readonly.
+    /// </summary>
+    private readonly ConcurrentDictionary<string, XUnitLogger> _loggers = [];
+
     /// <summary>
     /// The <see cref="XUnitLoggerOptions"/> to use. This field is readonly.
     /// </summary>
@@ -27,9 +33,10 @@ public partial class XUnitLoggerProvider : ILoggerProvider
     /// <inheritdoc />
     public virtual ILogger CreateLogger(string categoryName)
     {
-        return _outputHelperAccessor is not null ?
-            new XUnitLogger(categoryName, _outputHelperAccessor, _options) :
-            new XUnitLogger(categoryName, _messageSinkAccessor!, _options);
+        return _loggers.GetOrAdd(categoryName, (name) =>
+            _outputHelperAccessor is not null ?
+                new(name, _outputHelperAccessor, _options) :
+                new(name, _messageSinkAccessor!, _options));
     }
 
     /// <inheritdoc />
