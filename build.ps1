@@ -7,10 +7,6 @@ param(
     [Parameter(Mandatory = $false)][switch] $SkipTests
 )
 
-if ($null -eq $env:MSBUILDTERMINALLOGGER) {
-    $env:MSBUILDTERMINALLOGGER = "auto"
-}
-
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 $ProgressPreference = "SilentlyContinue"
