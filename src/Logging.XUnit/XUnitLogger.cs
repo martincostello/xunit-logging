@@ -3,8 +3,6 @@
 
 using System.Text;
 using Microsoft.Extensions.Logging;
-using Xunit.Abstractions;
-using Xunit.Sdk;
 
 namespace MartinCostello.Logging.XUnit;
 

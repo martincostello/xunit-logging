@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);XUNIT_V3</DefineConstants>
+    <Description>Tests for MartinCostello.Logging.XUnit.v3.</Description>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <NoWarn>$(NoWarn);CA1062;CA1707;CA1711;CA1861;CA2007;CA2234;SA1600;SA1602</NoWarn>
+    <OutputType>Exe</OutputType>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+    <RootNamespace>MartinCostello.Logging.XUnit</RootNamespace>
+    <Summary>$(Description)</Summary>
+    <TargetFramework>net9.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Logging.XUnit.Tests\Constructor.cs" Link="Constructor.cs" />
+    <Compile Include="..\Logging.XUnit.Tests\Examples.cs" Link="Examples.cs" />
+    <Compile Include="..\Logging.XUnit.Tests\IntegrationTests.cs" Link="IntegrationTests.cs" />
+    <Compile Include="..\Logging.XUnit.Tests\Integration\DatabaseFixture.cs" Link="Integration\DatabaseFixture.cs" />
+    <Compile Include="..\Logging.XUnit.Tests\Integration\DatabaseTests.cs" Link="Integration\DatabaseTests.cs" />
+    <Compile Include="..\Logging.XUnit.Tests\Integration\HttpApplicationTests.cs" Link="Integration\HttpApplicationTests.cs" />
+    <Compile Include="..\Logging.XUnit.Tests\Integration\HttpServerCollection.cs" Link="Integration\HttpServerCollection.cs" />
+    <Compile Include="..\Logging.XUnit.Tests\Integration\HttpServerFixture.cs" Link="Integration\HttpServerFixture.cs" />
+    <Compile Include="..\Logging.XUnit.Tests\Integration\PrintableDiagnosticMessage.cs" Link="Integration\PrintableDiagnosticMessage.cs" />
+    <Compile Include="..\Logging.XUnit.Tests\XUnitLoggerExtensionsTests.cs" Link="XUnitLoggerExtensionsTests.cs" />
+    <Compile Include="..\Logging.XUnit.Tests\XUnitLoggerProviderTests.cs" Link="XUnitLoggerProviderTests.cs" />
+    <Compile Include="..\Logging.XUnit.Tests\XUnitLoggerTests.cs" Link="XUnitLoggerTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Logging.XUnit.Tests\xunit.runner.json" Link="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Logging.XUnit.v3\MartinCostello.Logging.XUnit.v3.csproj" />
+    <ProjectReference Include="..\SampleApp\SampleApp.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="NSubstitute" />
+    <PackageReference Include="Shouldly" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="xunit.v3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="Shouldly" />
+    <Using Include="Xunit" />
+    <Using Include="Xunit.Sdk" />
+    <Using Include="Xunit.v3" />
+  </ItemGroup>
+  <!-- TODO Work out what properties are needed to correctly build the tests -->
+  <PropertyGroup>
+    <GenerateSelfRegisteredExtensions>false</GenerateSelfRegisteredExtensions>
+  </PropertyGroup>
+</Project>
