@@ -30,7 +30,11 @@ public sealed class HttpApplicationTests : IDisposable
         using var httpClient = Fixture.CreateClient();
 
         // Act
+#if XUNIT_V3
+        using var response = await httpClient.GetAsync("api/values", TestContext.Current.CancellationToken);
+#else
         using var response = await httpClient.GetAsync("api/values");
+#endif
 
         // Assert
         response.IsSuccessStatusCode.ShouldBeTrue();
@@ -43,7 +47,11 @@ public sealed class HttpApplicationTests : IDisposable
         using var httpClient = Fixture.CreateClient();
 
         // Act
+#if XUNIT_V3
+        using var response = await httpClient.GetAsync("api/values/a", TestContext.Current.CancellationToken);
+#else
         using var response = await httpClient.GetAsync("api/values/a");
+#endif
 
         // Assert
         response.IsSuccessStatusCode.ShouldBeTrue();
@@ -56,7 +64,11 @@ public sealed class HttpApplicationTests : IDisposable
         using var httpClient = Fixture.CreateClient();
 
         // Act
+#if XUNIT_V3
+        using var response = await httpClient.PostAsJsonAsync("api/values", new { }, TestContext.Current.CancellationToken);
+#else
         using var response = await httpClient.PostAsJsonAsync("api/values", new { });
+#endif
 
         // Assert
         response.IsSuccessStatusCode.ShouldBeTrue();
@@ -70,7 +82,11 @@ public sealed class HttpApplicationTests : IDisposable
 
         // Act
         using var content = new StringContent(@"""d""", Encoding.UTF8, MediaTypeNames.Application.Json);
+#if XUNIT_V3
+        using var response = await httpClient.PutAsync("api/values/d", content, TestContext.Current.CancellationToken);
+#else
         using var response = await httpClient.PutAsync("api/values/d", content);
+#endif
 
         // Assert
         response.IsSuccessStatusCode.ShouldBeTrue();
@@ -83,7 +99,11 @@ public sealed class HttpApplicationTests : IDisposable
         using var httpClient = Fixture.CreateClient();
 
         // Act
+#if XUNIT_V3
+        using var response = await httpClient.DeleteAsync("api/values/d", TestContext.Current.CancellationToken);
+#else
         using var response = await httpClient.DeleteAsync("api/values/d");
+#endif
 
         // Assert
         response.IsSuccessStatusCode.ShouldBeTrue();

@@ -14,12 +14,33 @@ public sealed class DatabaseFixture : IAsyncLifetime
     public DatabaseFixture(IMessageSink messageSink)
     {
         using var loggerFactory = new LoggerFactory();
-        _initializeLogger = loggerFactory.AddXUnit(messageSink, c => c.MessageSinkMessageFactory = m => new PrintableDiagnosticMessage(m)).CreateLogger<DatabaseFixture>();
+
+        _initializeLogger = loggerFactory.AddXUnit(messageSink, c => c.MessageSinkMessageFactory = CreateMessage).CreateLogger<DatabaseFixture>();
         _disposeLogger = messageSink.ToLogger<DatabaseFixture>();
+
+#if XUNIT_V3
+        static IMessageSinkMessage CreateMessage(string message) => new DiagnosticMessage() { Message = message };
+#else
+        static IMessageSinkMessage CreateMessage(string message) => new PrintableDiagnosticMessage(message);
+#endif
     }
 
     public string ConnectionString => _connectionString ?? throw new InvalidOperationException("The connection string is only available after InitializeAsync has completed.");
 
+#if XUNIT_V3
+    ValueTask IAsyncLifetime.InitializeAsync()
+    {
+        _initializeLogger.LogInformation("Initializing database");
+        _connectionString = "Server=localhost";
+        return ValueTask.CompletedTask;
+    }
+
+    ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        _disposeLogger.LogInformation("Disposing database");
+        return ValueTask.CompletedTask;
+    }
+#else
     Task IAsyncLifetime.InitializeAsync()
     {
         _initializeLogger.LogInformation("Initializing database");
@@ -32,4 +53,5 @@ public sealed class DatabaseFixture : IAsyncLifetime
         _disposeLogger.LogInformation("Disposing database");
         return Task.CompletedTask;
     }
+#endif
 }

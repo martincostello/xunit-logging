@@ -4,8 +4,12 @@
 using System.ComponentModel;
 using Microsoft.Extensions.Logging;
 
+#if XUNIT_V3
+namespace Xunit;
+#else
 #pragma warning disable IDE0130
 namespace Xunit.Abstractions;
+#endif
 
 /// <summary>
 /// A class containing extension methods for the <see cref="ITestOutputHelper"/> interface. This class cannot be inherited.

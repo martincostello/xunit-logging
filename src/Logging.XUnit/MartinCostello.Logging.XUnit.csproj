@@ -4,20 +4,17 @@
     <Description>Extensions for Microsoft.Extensions.Logging for xunit.</Description>
     <EnablePackageValidation>true</EnablePackageValidation>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsPackable>true</IsPackable>
     <OutputType>Library</OutputType>
     <PackageId>MartinCostello.Logging.XUnit</PackageId>
-    <PackageValidationBaselineVersion>0.3.0</PackageValidationBaselineVersion>
+    <PackageValidationBaselineVersion>0.4.0</PackageValidationBaselineVersion>
     <RootNamespace>MartinCostello.Logging.XUnit</RootNamespace>
     <Summary>$(Description)</Summary>
     <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
     <Title>xunit Logging Extensions</Title>
   </PropertyGroup>
   <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">
-    <EnableAotAnalyzer>true</EnableAotAnalyzer>
-    <EnableSingleFileAnalyzer>true</EnableSingleFileAnalyzer>
-    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
     <IsAotCompatible>true</IsAotCompatible>
-    <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging" />
@@ -32,5 +29,10 @@
       <_Parameter1>af808007-f06a-410b-886d-152b3f39c43f</_Parameter1>
     </AssemblyAttribute>
     <InternalsVisibleTo Include="MartinCostello.Logging.XUnit.Tests" PublicKey="$(StrongNamePublicKey)" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="Xunit" />
+    <Using Include="Xunit.Abstractions" />
+    <Using Include="Xunit.Sdk" />
   </ItemGroup>
 </Project>
