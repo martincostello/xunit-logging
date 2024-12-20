@@ -22,6 +22,9 @@
     <IsAotCompatible>true</IsAotCompatible>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\**\*.cs" Link="%(Link)" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging" VersionOverride="8.0.1" />
     <PackageReference Include="xunit.v3.extensibility.core" />
   </ItemGroup>
@@ -35,25 +38,5 @@
     <Using Include="Xunit" />
     <Using Include="Xunit.Sdk" />
     <Using Include="Xunit.v3" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\Logging.XUnit\AmbientTestOutputHelperAccessor.cs" Link="AmbientTestOutputHelperAccessor.cs" />
-    <Compile Include="..\Logging.XUnit\IMessageSinkAccessor.cs" Link="IMessageSinkAccessor.cs" />
-    <Compile Include="..\Logging.XUnit\IMessageSinkExtensions.cs" Link="IMessageSinkExtensions.cs" />
-    <Compile Include="..\Logging.XUnit\ITestOutputHelperAccessor.cs" Link="ITestOutputHelperAccessor.cs" />
-    <Compile Include="..\Logging.XUnit\ITestOutputHelperExtensions.cs" Link="ITestOutputHelperExtensions.cs" />
-    <Compile Include="..\Logging.XUnit\MessageSinkAccessor.cs" Link="MessageSinkAccessor.cs" />
-    <Compile Include="..\Logging.XUnit\StringSyntaxAttribute.cs" Link="StringSyntaxAttribute.cs" />
-    <Compile Include="..\Logging.XUnit\TestOutputHelperAccessor.cs" Link="TestOutputHelperAccessor.cs" />
-    <Compile Include="..\Logging.XUnit\XUnitLogger.cs" Link="XUnitLogger.cs" />
-    <Compile Include="..\Logging.XUnit\XUnitLogger.IMessageSink.cs" Link="XUnitLogger.IMessageSink.cs" />
-    <Compile Include="..\Logging.XUnit\XUnitLogger.ITestOutputHelper.cs" Link="XUnitLogger.ITestOutputHelper.cs" />
-    <Compile Include="..\Logging.XUnit\XUnitLoggerExtensions.IMessageSink.cs" Link="XUnitLoggerExtensions.IMessageSink.cs" />
-    <Compile Include="..\Logging.XUnit\XUnitLoggerExtensions.ITestOutputHelper.cs" Link="XUnitLoggerExtensions.ITestOutputHelper.cs" />
-    <Compile Include="..\Logging.XUnit\XUnitLoggerOptions.cs" Link="XUnitLoggerOptions.cs" />
-    <Compile Include="..\Logging.XUnit\XUnitLoggerProvider.cs" Link="XUnitLoggerProvider.cs" />
-    <Compile Include="..\Logging.XUnit\XUnitLoggerProvider.IMessageSink.cs" Link="XUnitLoggerProvider.IMessageSink.cs" />
-    <Compile Include="..\Logging.XUnit\XUnitLoggerProvider.ITestOutputHelper.cs" Link="XUnitLoggerProvider.ITestOutputHelper.cs" />
-    <Compile Include="..\Logging.XUnit\XUnitLogScope.cs" Link="XUnitLogScope.cs" />
   </ItemGroup>
 </Project>
