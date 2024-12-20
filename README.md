@@ -86,6 +86,23 @@ See below for links to more examples:
 - [Unit tests][example-unit-tests]
 - [Integration tests for an ASP.NET Core HTTP application][example-integration-tests]
 
+## Migrating to xunit v3
+
+[Xunit v3][xunit-v3-whats-new] contains many major architectural changes which means the same package
+that supports logging for xunit v2 cannot be used with xunit v3. The equivalent NuGet package to support
+logging for xunit v3 is the new [MartinCostello.Logging.XUnit.v3][package-download-v3] package.
+
+To migrate usage of `MartinCostello.Logging.XUnit` to `MartinCostello.Logging.XUnit.v3` for xunit v3:
+
+1. Follow the relevant steps to migrate any test projects from [xunit v2 to v3][xunit-v3-migration].
+    - The most relevant change in xunit v3 is that the `ITestOutputHelper` type has moved from the `Xunit.Abstractions` namespace to `Xunit`.
+1. Change any package references from `MartinCostello.Logging.XUnit` to `MartinCostello.Logging.XUnit.v3`.
+
+    ```diff
+    - <PackageReference Include="MartinCostello.Logging.XUnit" Version="0.5.0" />
+    + <PackageReference Include="MartinCostello.Logging.XUnit.v3" Version="0.5.0" />
+    ```
+
 ## Feedback
 
 Any feedback or issues can be added to the issues for this project in [GitHub][issues].
@@ -127,6 +144,8 @@ cd xunit-logging
 [package-badge-version-v3]: https://img.shields.io/nuget/v/MartinCostello.Logging.XUnit.v3?logo=nuget&label=Latest&color=blue
 [package-download-v2]: https://www.nuget.org/packages/MartinCostello.Logging.XUnit "Download MartinCostello.Logging.XUnit from NuGet"
 [package-download-v3]: https://www.nuget.org/packages/MartinCostello.Logging.XUnit.v3 "Download MartinCostello.Logging.XUnit.v3 from NuGet"
-[repo]: https://github.com/martincostello/xunit-loggingE "This project on GitHub.com"
+[repo]: https://github.com/martincostello/xunit-logging "This project on GitHub.com"
 [serilog]: https://serilog.net/ "Serilog website"
 [serilog-sinks-xunit]: https://github.com/trbenning/serilog-sinks-xunit "Serilog.Sinks.XUnit on GitHub"
+[xunit-v3-migration]: https://xunit.net/docs/getting-started/v3/migration "Migrating from xunit v2 to v3"
+[xunit-v3-whats-new]: https://xunit.net/docs/getting-started/v3/whats-new "What's New in v3"
