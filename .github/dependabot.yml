@@ -26,5 +26,4 @@ updates:
   - dependency-name: Microsoft.Extensions.Logging
   - dependency-name: xunit.abstractions
   - dependency-name: xunit.extensibility.execution
-  - dependency-name: xunit.v3.common
-  - dependency-name: xunit.v3.core
+  - dependency-name: xunit.v3.extensibility.core
