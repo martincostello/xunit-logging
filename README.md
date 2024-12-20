@@ -144,7 +144,7 @@ cd xunit-logging
 [package-badge-version-v3]: https://img.shields.io/nuget/v/MartinCostello.Logging.XUnit.v3?logo=nuget&label=Latest&color=blue
 [package-download-v2]: https://www.nuget.org/packages/MartinCostello.Logging.XUnit "Download MartinCostello.Logging.XUnit from NuGet"
 [package-download-v3]: https://www.nuget.org/packages/MartinCostello.Logging.XUnit.v3 "Download MartinCostello.Logging.XUnit.v3 from NuGet"
-[repo]: https://github.com/martincostello/xunit-loggingE "This project on GitHub.com"
+[repo]: https://github.com/martincostello/xunit-logging "This project on GitHub.com"
 [serilog]: https://serilog.net/ "Serilog website"
 [serilog-sinks-xunit]: https://github.com/trbenning/serilog-sinks-xunit "Serilog.Sinks.XUnit on GitHub"
 [xunit-v3-migration]: https://xunit.net/docs/getting-started/v3/migration "Migrating from xunit v2 to v3"
