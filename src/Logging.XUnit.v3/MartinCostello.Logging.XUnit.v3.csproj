@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <PackageId>MartinCostello.Logging.XUnit.v3</PackageId>
     <!--
-    <PackageValidationBaselineVersion>0.4.0</PackageValidationBaselineVersion>
+    <PackageValidationBaselineVersion>0.5.0</PackageValidationBaselineVersion>
     -->
     <RootNamespace>MartinCostello.Logging.XUnit</RootNamespace>
     <Summary>$(Description)</Summary>
