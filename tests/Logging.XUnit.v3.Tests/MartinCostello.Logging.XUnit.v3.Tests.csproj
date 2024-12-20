@@ -41,10 +41,4 @@
     <PackageReference Include="xunit.runner.visualstudio" />
     <PackageReference Include="xunit.v3" />
   </ItemGroup>
-  <ItemGroup>
-    <Using Include="Shouldly" />
-    <Using Include="Xunit" />
-    <Using Include="Xunit.Sdk" />
-    <Using Include="Xunit.v3" />
-  </ItemGroup>
 </Project>

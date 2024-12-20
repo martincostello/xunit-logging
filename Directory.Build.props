@@ -72,5 +72,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Using Include="System.Globalization" />
+    <Using Include="Xunit" />
+    <Using Include="Xunit.Sdk" />
+  </ItemGroup>
+  <ItemGroup Condition=" $(DefineConstants.Contains('XUNIT_V3')) ">
+    <Using Include="Xunit.v3" />
+  </ItemGroup>
+  <ItemGroup Condition=" !$(DefineConstants.Contains('XUNIT_V3')) ">
+    <Using Include="Xunit.Abstractions" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(IsTestProject)' == 'true' ">
+    <Using Include="Shouldly" />
   </ItemGroup>
 </Project>

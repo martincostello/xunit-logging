@@ -6,7 +6,6 @@
     <EnablePackageValidation>true</EnablePackageValidation>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
-    <IsTestProject>false</IsTestProject>
     <OutputType>Library</OutputType>
     <PackageId>MartinCostello.Logging.XUnit.v3</PackageId>
     <!--
@@ -14,8 +13,7 @@
     -->
     <RootNamespace>MartinCostello.Logging.XUnit</RootNamespace>
     <Summary>$(Description)</Summary>
-    <TargetFrameworks>net472;net8.0</TargetFrameworks>
-    <TestProject>false</TestProject>
+    <TargetFrameworks>net8.0;net472</TargetFrameworks>
     <Title>xunit v3 Logging Extensions</Title>
   </PropertyGroup>
   <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">
@@ -33,10 +31,5 @@
       <_Parameter1>ed8d1c5e-3ee7-45fe-8d1d-94257a71f02a</_Parameter1>
     </AssemblyAttribute>
     <InternalsVisibleTo Include="MartinCostello.Logging.XUnit.v3.Tests" PublicKey="$(StrongNamePublicKey)" />
-  </ItemGroup>
-  <ItemGroup>
-    <Using Include="Xunit" />
-    <Using Include="Xunit.Sdk" />
-    <Using Include="Xunit.v3" />
   </ItemGroup>
 </Project>
