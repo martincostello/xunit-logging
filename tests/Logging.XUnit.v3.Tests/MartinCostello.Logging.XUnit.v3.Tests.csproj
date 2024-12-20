@@ -47,8 +47,4 @@
     <Using Include="Xunit.Sdk" />
     <Using Include="Xunit.v3" />
   </ItemGroup>
-  <!-- TODO Work out what properties are needed to correctly build the tests -->
-  <PropertyGroup>
-    <GenerateSelfRegisteredExtensions>false</GenerateSelfRegisteredExtensions>
-  </PropertyGroup>
 </Project>
