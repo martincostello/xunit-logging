@@ -90,7 +90,7 @@ See below for links to more examples:
 
 [Xunit v3][xunit-v3-whats-new] contains many major architectural changes which means the same package
 that supports logging for xunit v2 cannot be used with xunit v3. The equivalent NuGet package to support
-logging for xunit v3 is the new `MartinCostello.Logging.XUnit.v3` package.
+logging for xunit v3 is the new [MartinCostello.Logging.XUnit.v3][package-download-v3] package.
 
 To migrate usage of `MartinCostello.Logging.XUnit` to `MartinCostello.Logging.XUnit.v3` for xunit v3:
 
@@ -147,5 +147,5 @@ cd xunit-logging
 [repo]: https://github.com/martincostello/xunit-loggingE "This project on GitHub.com"
 [serilog]: https://serilog.net/ "Serilog website"
 [serilog-sinks-xunit]: https://github.com/trbenning/serilog-sinks-xunit "Serilog.Sinks.XUnit on GitHub"
-[xunit-v3-migration]: https://xunit.net/docs/getting-started/v3/migration#migrating-to-v3-packages "Migrating from xunit v2 to v3"
+[xunit-v3-migration]: https://xunit.net/docs/getting-started/v3/migration "Migrating from xunit v2 to v3"
 [xunit-v3-whats-new]: https://xunit.net/docs/getting-started/v3/whats-new "What's New in v3"
