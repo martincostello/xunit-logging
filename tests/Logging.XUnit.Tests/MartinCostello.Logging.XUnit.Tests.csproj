@@ -10,7 +10,8 @@
     <TargetFramework>net9.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+    <Compile Include="..\Shared\**\*.cs" Link="%(Link)" />
+    <Content Include="..\Shared\xunit.runner.json" Link="%(Link)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Logging.XUnit\MartinCostello.Logging.XUnit.csproj" />

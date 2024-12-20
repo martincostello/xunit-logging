@@ -12,21 +12,8 @@
     <TargetFramework>net9.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Logging.XUnit.Tests\Constructor.cs" Link="Constructor.cs" />
-    <Compile Include="..\Logging.XUnit.Tests\Examples.cs" Link="Examples.cs" />
-    <Compile Include="..\Logging.XUnit.Tests\IntegrationTests.cs" Link="IntegrationTests.cs" />
-    <Compile Include="..\Logging.XUnit.Tests\Integration\DatabaseFixture.cs" Link="Integration\DatabaseFixture.cs" />
-    <Compile Include="..\Logging.XUnit.Tests\Integration\DatabaseTests.cs" Link="Integration\DatabaseTests.cs" />
-    <Compile Include="..\Logging.XUnit.Tests\Integration\HttpApplicationTests.cs" Link="Integration\HttpApplicationTests.cs" />
-    <Compile Include="..\Logging.XUnit.Tests\Integration\HttpServerCollection.cs" Link="Integration\HttpServerCollection.cs" />
-    <Compile Include="..\Logging.XUnit.Tests\Integration\HttpServerFixture.cs" Link="Integration\HttpServerFixture.cs" />
-    <Compile Include="..\Logging.XUnit.Tests\Integration\PrintableDiagnosticMessage.cs" Link="Integration\PrintableDiagnosticMessage.cs" />
-    <Compile Include="..\Logging.XUnit.Tests\XUnitLoggerExtensionsTests.cs" Link="XUnitLoggerExtensionsTests.cs" />
-    <Compile Include="..\Logging.XUnit.Tests\XUnitLoggerProviderTests.cs" Link="XUnitLoggerProviderTests.cs" />
-    <Compile Include="..\Logging.XUnit.Tests\XUnitLoggerTests.cs" Link="XUnitLoggerTests.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\Logging.XUnit.Tests\xunit.runner.json" Link="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+    <Compile Include="..\Shared\**\*.cs" Link="%(Link)" />
+    <Content Include="..\Shared\xunit.runner.json" Link="%(Link)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Logging.XUnit.v3\MartinCostello.Logging.XUnit.v3.csproj" />
