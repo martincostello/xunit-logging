@@ -28,7 +28,7 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <NuGetAuditMode>direct</NuGetAuditMode>
     <Nullable>enable</Nullable>
-    <PackageIcon></PackageIcon>
+    <PackageIcon>package-icon.png</PackageIcon>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/martincostello/xunit-logging</PackageProjectUrl>
     <PackageReadmeFile>package-readme.md</PackageReadmeFile>
