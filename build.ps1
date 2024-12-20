@@ -14,10 +14,14 @@ $ProgressPreference = "SilentlyContinue"
 $solutionPath = $PSScriptRoot
 $sdkFile = Join-Path $solutionPath "global.json"
 
-$libraryProject = Join-Path $solutionPath "src" "Logging.XUnit" "MartinCostello.Logging.XUnit.csproj"
+$libraryProjects = @(
+    (Join-Path $solutionPath "src" "Logging.XUnit" "MartinCostello.Logging.XUnit.csproj")
+    (Join-Path $solutionPath "src" "Logging.XUnit.v3" "MartinCostello.Logging.XUnit.v3.csproj")
+)
 
 $testProjects = @(
     (Join-Path $solutionPath "tests" "Logging.XUnit.Tests" "MartinCostello.Logging.XUnit.Tests.csproj")
+    (Join-Path $solutionPath "tests" "Logging.XUnit.v3.Tests" "MartinCostello.Logging.XUnit.v3.Tests.csproj")
 )
 
 $dotnetVersion = (Get-Content $sdkFile | Out-String | ConvertFrom-Json).sdk.version
@@ -102,8 +106,10 @@ function DotNetTest {
     }
 }
 
-Write-Information "Packaging library..."
-DotNetPack $libraryProject
+Write-Information "Packaging libraries..."
+ForEach ($libraryProject in $libraryProjects) {
+    DotNetPack $libraryProject
+}
 
 if (-Not $SkipTests) {
     Write-Information "Running tests..."

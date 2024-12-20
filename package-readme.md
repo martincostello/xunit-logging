@@ -2,7 +2,8 @@
 
 ## Introduction
 
-`MartinCostello.Logging.XUnit` provides extensions to hook into the `ILogger` infrastructure to output logs from your xunit tests to the test output.
+`MartinCostello.Logging.XUnit` and `MartinCostello.Logging.XUnit.v3` provide extensions to hook
+into the `ILogger` infrastructure to output logs from your xunit tests to the test output.
 
 ### Usage
 
@@ -10,7 +11,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Xunit;
-using Xunit.Abstractions;
+using Xunit.Abstractions; // For xunit v2 - not required for xunit v3
 
 namespace MyApp.Calculator;
 
@@ -50,8 +51,11 @@ public sealed class Calculator(ILogger<Calculator> logger)
 
 ## Feedback
 
-Any feedback or issues can be added to the issues for this project in [GitHub](https://github.com/martincostello/xunit-logging/issues "Issues for this project on GitHub.com").
+Any feedback or issues can be added to the issues for this project in [GitHub][issues].
 
 ## License
 
-This project is licensed under the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt "The Apache 2.0 license") license.
+This project is licensed under the [Apache 2.0][license] license.
+
+[issues]: https://github.com/martincostello/xunit-logging/issues "Issues for this package on GitHub.com"
+[license]: https://www.apache.org/licenses/LICENSE-2.0.txt "The Apache 2.0 license"

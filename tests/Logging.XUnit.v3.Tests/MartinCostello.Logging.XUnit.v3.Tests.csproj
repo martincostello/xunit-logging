@@ -1,9 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Description>Tests for MartinCostello.Logging.XUnit.</Description>
+    <DefineConstants>$(DefineConstants);XUNIT_V3</DefineConstants>
+    <Description>Tests for MartinCostello.Logging.XUnit.v3.</Description>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
     <NoWarn>$(NoWarn);CA1062;CA1707;CA1711;CA1861;CA2007;CA2234;SA1600;SA1602</NoWarn>
+    <OutputType>Exe</OutputType>
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <RootNamespace>MartinCostello.Logging.XUnit</RootNamespace>
     <Summary>$(Description)</Summary>
@@ -14,7 +16,7 @@
     <Content Include="..\Shared\xunit.runner.json" Link="%(Link)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Logging.XUnit\MartinCostello.Logging.XUnit.csproj" />
+    <ProjectReference Include="..\..\src\Logging.XUnit.v3\MartinCostello.Logging.XUnit.v3.csproj" />
     <ProjectReference Include="..\SampleApp\SampleApp.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -23,7 +25,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="NSubstitute" />
     <PackageReference Include="Shouldly" />
-    <PackageReference Include="xunit" />
     <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="xunit.v3" />
   </ItemGroup>
 </Project>

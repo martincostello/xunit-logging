@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyTitle>Logging Extensions for xunit v3</AssemblyTitle>
+    <DefineConstants>$(DefineConstants);XUNIT_V3</DefineConstants>
+    <Description>Extensions for Microsoft.Extensions.Logging for xunit v3.</Description>
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsPackable>true</IsPackable>
+    <OutputType>Library</OutputType>
+    <PackageId>MartinCostello.Logging.XUnit.v3</PackageId>
+    <!--
+    <PackageValidationBaselineVersion>0.5.0</PackageValidationBaselineVersion>
+    -->
+    <RootNamespace>MartinCostello.Logging.XUnit</RootNamespace>
+    <Summary>$(Description)</Summary>
+    <TargetFrameworks>net8.0;net472</TargetFrameworks>
+    <Title>xunit v3 Logging Extensions</Title>
+  </PropertyGroup>
+  <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared\**\*.cs" Link="%(Link)" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" VersionOverride="8.0.1" />
+    <PackageReference Include="xunit.v3.extensibility.core" />
+  </ItemGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.InteropServices.GuidAttribute">
+      <_Parameter1>ed8d1c5e-3ee7-45fe-8d1d-94257a71f02a</_Parameter1>
+    </AssemblyAttribute>
+    <InternalsVisibleTo Include="MartinCostello.Logging.XUnit.v3.Tests" PublicKey="$(StrongNamePublicKey)" />
+  </ItemGroup>
+</Project>
