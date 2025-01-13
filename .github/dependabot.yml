@@ -13,8 +13,8 @@ updates:
   groups:
     xunit:
       patterns:
-        - xunit
         - xunit.runner.visualstudio
+        - xunit.v3
   schedule:
     interval: daily
     time: "05:30"
