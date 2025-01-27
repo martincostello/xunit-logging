@@ -13,8 +13,9 @@ on:
 
 env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_NOLOGO: true
   DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: 1
+  FORCE_COLOR: 3
   NUGET_XMLDOC_MODE: skip
   TERM: xterm
 
@@ -23,8 +24,9 @@ permissions:
 
 jobs:
   build:
-    name: ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.os-name }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 20
 
     outputs:
       dotnet-sdk-version: ${{ steps.setup-dotnet.outputs.dotnet-version }}
@@ -39,15 +41,14 @@ jobs:
 
     strategy:
       fail-fast: false
-      matrix:
-        os: [ macos-latest, ubuntu-latest, windows-latest ]
+      matrix: 
         include:
-          - os: macos-latest
-            os-name: macos
-          - os: ubuntu-latest
-            os-name: linux
-          - os: windows-latest
-            os-name: windows
+          - os-name: macos
+            runner: macos-latest
+          - os-name: linux
+            runner: ubuntu-latest
+          - os-name: windows
+            runner: windows-latest
 
     steps:
 
