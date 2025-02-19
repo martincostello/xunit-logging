@@ -255,6 +255,7 @@ public static class XUnitLoggerTests
         // Arrange
         string name = "MyName";
         var accessor = Substitute.For<ITestOutputHelperAccessor>();
+        accessor.OutputHelper.Returns(default(ITestOutputHelper));
 
         var options = new XUnitLoggerOptions()
         {
