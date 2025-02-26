@@ -39,6 +39,7 @@ dotnet add package MartinCostello.Logging.XUnit.v3
 
 ### Usage
 
+#### Dependency Injection
 ```csharp
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -80,6 +81,51 @@ public sealed class Calculator(ILogger<Calculator> logger)
     }
 }
 ```
+
+#### Standalone Logging Components
+```csharp
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Xunit;
+using Xunit.Abstractions; // For xunit v2 - not required for xunit v3
+
+namespace MyApp.Calculator;
+
+public class CalculatorTests(ITestOutputHelper outputHelper)
+{
+    [Fact]
+    public void Calculator_Sums_Two_Integers()
+    {
+        // Arrange
+        var loggerFactory = LoggerFactory.Create(builder => builder
+            .AddProvider(new XUnitLoggerProvider(outputHelper, xunitLoggerOptions))
+            .SetMinimumLevel(LogLevel.Trace));
+
+        var logger = loggerFactory.CreateLogger<Calculator>();
+
+        var calculator = new Calculator(logger);
+
+        // Act
+        int actual = calculator.Sum(1, 2);
+
+        // Assert
+        Assert.AreEqual(3, actual);
+    }
+}
+
+public sealed class Calculator(ILogger<Calculator> logger)
+{
+    public int Sum(int x, int y)
+    {
+        int sum = x + y;
+
+        logger.LogInformation("The sum of {x} and {y} is {sum}.", x, y, sum);
+
+        return sum;
+    }
+}
+```
+
 
 See below for links to more examples:
 
