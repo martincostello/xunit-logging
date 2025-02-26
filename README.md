@@ -40,6 +40,7 @@ dotnet add package MartinCostello.Logging.XUnit.v3
 ### Usage
 
 #### Dependency Injection
+
 ```csharp
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -83,6 +84,7 @@ public sealed class Calculator(ILogger<Calculator> logger)
 ```
 
 #### Standalone Logging Components
+
 ```csharp
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -125,7 +127,6 @@ public sealed class Calculator(ILogger<Calculator> logger)
     }
 }
 ```
-
 
 See below for links to more examples:
 
