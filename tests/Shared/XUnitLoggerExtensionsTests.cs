@@ -147,7 +147,12 @@ public static class XUnitLoggerExtensionsTests
         // Assert
         var serviceProvider = services.BuildServiceProvider();
         serviceProvider.GetService<ILoggerProvider>().ShouldBeOfType<XUnitLoggerProvider>();
+
+#if XUNIT_V3
+        serviceProvider.GetService<ITestOutputHelperAccessor>().ShouldBeOfType<CompositeTestOutputHelperAccessor>();
+#else
         serviceProvider.GetService<ITestOutputHelperAccessor>().ShouldBeOfType<AmbientTestOutputHelperAccessor>();
+#endif
     }
 
     [Fact]

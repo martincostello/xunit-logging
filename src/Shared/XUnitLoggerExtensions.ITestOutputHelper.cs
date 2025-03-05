@@ -34,7 +34,13 @@ public static partial class XUnitLoggerExtensions
         }
 #endif
 
-        return builder.AddXUnit(new AmbientTestOutputHelperAccessor(), static (_) => { });
+#if XUNIT_V3
+        var accessor = CompositeTestOutputHelperAccessor.Instance;
+#else
+        var accessor = AmbientTestOutputHelperAccessor.Instance;
+#endif
+
+        return builder.AddXUnit(accessor, static (_) => { });
     }
 
     /// <summary>

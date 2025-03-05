@@ -10,6 +10,11 @@ namespace MartinCostello.Logging.XUnit;
 internal sealed class AmbientTestOutputHelperAccessor : ITestOutputHelperAccessor
 {
     /// <summary>
+    /// The singleton instance of <see cref="AmbientTestOutputHelperAccessor"/>. This field is read-only.
+    /// </summary>
+    internal static readonly AmbientTestOutputHelperAccessor Instance = new();
+
+    /// <summary>
     /// A backing field for the <see cref="ITestOutputHelper"/> for the current thread.
     /// </summary>
     private static readonly AsyncLocal<ITestOutputHelper?> _current = new();

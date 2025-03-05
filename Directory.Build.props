@@ -7,9 +7,9 @@
     <PackageTags>xunit;logging</PackageTags>
     <UseArtifactsOutput>true</UseArtifactsOutput>
     <UseDefaultAssemblyOriginatorKeyFile>true</UseDefaultAssemblyOriginatorKeyFile>
-    <AssemblyVersion>0.5.0.0</AssemblyVersion>
-    <PackageValidationBaselineVersion>0.5.0</PackageValidationBaselineVersion>
-    <VersionPrefix>0.5.2</VersionPrefix>
+    <AssemblyVersion>0.6.0.0</AssemblyVersion>
+    <PackageValidationBaselineVersion>0.5.1</PackageValidationBaselineVersion>
+    <VersionPrefix>0.6.0</VersionPrefix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(EnableReferenceTrimmer)' != 'false' and '$(GenerateDocumentationFile)' != 'true' ">
     <GenerateDocumentationFile>true</GenerateDocumentationFile>

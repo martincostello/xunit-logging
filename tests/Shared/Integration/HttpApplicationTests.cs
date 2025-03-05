@@ -13,7 +13,9 @@ public sealed class HttpApplicationTests : IDisposable
     public HttpApplicationTests(HttpServerFixture fixture, ITestOutputHelper outputHelper)
     {
         Fixture = fixture;
+#if !XUNIT_V3
         Fixture.OutputHelper = outputHelper;
+#endif
     }
 
     private HttpServerFixture Fixture { get; }
