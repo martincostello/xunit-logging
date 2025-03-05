@@ -17,9 +17,5 @@ public sealed class HttpServerFixture : WebApplicationFactory<SampleApp.Program>
 
     /// <inheritdoc />
     protected override void ConfigureWebHost(IWebHostBuilder builder)
-#if XUNIT_V3
-        => builder.ConfigureLogging((p) => p.AddXUnit());
-#else
         => builder.ConfigureLogging((p) => p.AddXUnit(this));
-#endif
 }
