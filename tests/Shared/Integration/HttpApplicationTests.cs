@@ -12,8 +12,12 @@ public sealed class HttpApplicationTests : IDisposable
 {
     public HttpApplicationTests(HttpServerFixture fixture, ITestOutputHelper outputHelper)
     {
+#if XUNIT_V3
+        Fixture = fixture.WithOutputHelperFromTestContext();
+#else
         Fixture = fixture;
         Fixture.OutputHelper = outputHelper;
+#endif
     }
 
     private HttpServerFixture Fixture { get; }
@@ -108,4 +112,22 @@ public sealed class HttpApplicationTests : IDisposable
         // Assert
         response.IsSuccessStatusCode.ShouldBeTrue();
     }
+
+#if XUNIT_V3
+    [Fact]
+    public async Task Http_Get_Many_With_OutputHelper_From_Current_Test_Method_Context()
+    {
+        // Arrange
+        using var fixture = new HttpServerFixture();
+        fixture.WithOutputHelperFromTestContext();
+
+        using var httpClient = fixture.CreateClient();
+
+        // Act
+        using var response = await httpClient.GetAsync("api/values", TestContext.Current.CancellationToken);
+
+        // Assert
+        response.IsSuccessStatusCode.ShouldBeTrue();
+    }
+#endif
 }

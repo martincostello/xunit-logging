@@ -21,7 +21,7 @@ public static partial class XUnitLoggerExtensions
     /// The instance of <see cref="ILoggingBuilder"/> specified by <paramref name="builder"/>.
     /// </returns>
     /// <exception cref="ArgumentNullException">
-    /// <paramref name="builder"/>  is <see langword="null"/>.
+    /// <paramref name="builder"/> is <see langword="null"/>.
     /// </exception>
     public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder)
     {
