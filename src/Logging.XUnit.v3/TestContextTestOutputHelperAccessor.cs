@@ -22,7 +22,7 @@ internal sealed class TestContextTestOutputHelperAccessor : ITestOutputHelperAcc
     /// </exception>
     public ITestOutputHelper? OutputHelper
     {
-        get => TestContext.Current?.TestOutputHelper;
+        get => TestContext.Current.TestOutputHelper;
         set => throw new NotSupportedException($"Setting this property is not supported when xunit's {nameof(TestContext)} is used as the source of the current {nameof(ITestOutputHelper)}.");
     }
 }
