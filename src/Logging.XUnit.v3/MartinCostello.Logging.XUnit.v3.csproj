@@ -8,14 +8,9 @@
     <IsPackable>true</IsPackable>
     <OutputType>Library</OutputType>
     <PackageId>MartinCostello.Logging.XUnit.v3</PackageId>
-    <PackageValidationBaselineVersion>0.5.0</PackageValidationBaselineVersion>
     <RootNamespace>MartinCostello.Logging.XUnit</RootNamespace>
-    <Summary>$(Description)</Summary>
     <TargetFrameworks>net8.0;net472</TargetFrameworks>
     <Title>xunit v3 Logging Extensions</Title>
-  </PropertyGroup>
-  <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">
-    <IsAotCompatible>true</IsAotCompatible>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\Shared\**\*.cs" Link="%(Link)" />
