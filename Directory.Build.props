@@ -1,17 +1,12 @@
 <Project>
-  <ItemGroup>
-    <AssemblyAttribute Include="System.CLSCompliant">
-      <_Parameter1>false</_Parameter1>
-      <_Parameter1_IsLiteral>true</_Parameter1_IsLiteral>
-    </AssemblyAttribute>
-  </ItemGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Logging.XUnit.snk</AssemblyOriginatorKeyFile>
+    <AssemblyIsCLSCompliant>false</AssemblyIsCLSCompliant>
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)Logging.XUnit.ruleset</CodeAnalysisRuleSet>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <NuGetAuditMode>direct</NuGetAuditMode>
     <PackageTags>xunit;logging</PackageTags>
     <UseArtifactsOutput>true</UseArtifactsOutput>
+    <UseDefaultAssemblyOriginatorKeyFile>true</UseDefaultAssemblyOriginatorKeyFile>
     <AssemblyVersion>0.5.0.0</AssemblyVersion>
     <PackageValidationBaselineVersion>0.5.0</PackageValidationBaselineVersion>
     <VersionPrefix>0.5.2</VersionPrefix>
