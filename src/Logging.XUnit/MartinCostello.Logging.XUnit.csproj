@@ -15,6 +15,7 @@
     <Compile Include="..\Shared\**\*.cs" Link="%(Link)" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Extensions.Logging" />
     <PackageReference Include="xunit.abstractions" />
     <PackageReference Include="xunit.extensibility.execution" />
