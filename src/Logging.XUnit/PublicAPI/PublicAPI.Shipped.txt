@@ -1,0 +1,70 @@
+#nullable enable
+MartinCostello.Logging.XUnit.IMessageSinkAccessor
+MartinCostello.Logging.XUnit.IMessageSinkAccessor.MessageSink.get -> Xunit.Abstractions.IMessageSink?
+MartinCostello.Logging.XUnit.IMessageSinkAccessor.MessageSink.set -> void
+MartinCostello.Logging.XUnit.ITestOutputHelperAccessor
+MartinCostello.Logging.XUnit.ITestOutputHelperAccessor.OutputHelper.get -> Xunit.Abstractions.ITestOutputHelper?
+MartinCostello.Logging.XUnit.ITestOutputHelperAccessor.OutputHelper.set -> void
+MartinCostello.Logging.XUnit.XUnitLogger
+MartinCostello.Logging.XUnit.XUnitLogger.BeginScope<TState>(TState state) -> System.IDisposable?
+MartinCostello.Logging.XUnit.XUnitLogger.Filter.get -> System.Func<string?, Microsoft.Extensions.Logging.LogLevel, bool>!
+MartinCostello.Logging.XUnit.XUnitLogger.Filter.set -> void
+MartinCostello.Logging.XUnit.XUnitLogger.IncludeScopes.get -> bool
+MartinCostello.Logging.XUnit.XUnitLogger.IncludeScopes.set -> void
+MartinCostello.Logging.XUnit.XUnitLogger.IsEnabled(Microsoft.Extensions.Logging.LogLevel logLevel) -> bool
+MartinCostello.Logging.XUnit.XUnitLogger.Log<TState>(Microsoft.Extensions.Logging.LogLevel logLevel, Microsoft.Extensions.Logging.EventId eventId, TState state, System.Exception? exception, System.Func<TState, System.Exception?, string!>! formatter) -> void
+MartinCostello.Logging.XUnit.XUnitLogger.MessageSinkMessageFactory.get -> System.Func<string!, Xunit.Abstractions.IMessageSinkMessage!>!
+MartinCostello.Logging.XUnit.XUnitLogger.MessageSinkMessageFactory.set -> void
+MartinCostello.Logging.XUnit.XUnitLogger.Name.get -> string!
+MartinCostello.Logging.XUnit.XUnitLogger.XUnitLogger(string! name, MartinCostello.Logging.XUnit.IMessageSinkAccessor! accessor, MartinCostello.Logging.XUnit.XUnitLoggerOptions? options) -> void
+MartinCostello.Logging.XUnit.XUnitLogger.XUnitLogger(string! name, MartinCostello.Logging.XUnit.ITestOutputHelperAccessor! accessor, MartinCostello.Logging.XUnit.XUnitLoggerOptions? options) -> void
+MartinCostello.Logging.XUnit.XUnitLogger.XUnitLogger(string! name, Xunit.Abstractions.IMessageSink! messageSink, MartinCostello.Logging.XUnit.XUnitLoggerOptions? options) -> void
+MartinCostello.Logging.XUnit.XUnitLogger.XUnitLogger(string! name, Xunit.Abstractions.ITestOutputHelper! outputHelper, MartinCostello.Logging.XUnit.XUnitLoggerOptions? options) -> void
+MartinCostello.Logging.XUnit.XUnitLoggerOptions
+MartinCostello.Logging.XUnit.XUnitLoggerOptions.Filter.get -> System.Func<string?, Microsoft.Extensions.Logging.LogLevel, bool>!
+MartinCostello.Logging.XUnit.XUnitLoggerOptions.Filter.set -> void
+MartinCostello.Logging.XUnit.XUnitLoggerOptions.IncludeScopes.get -> bool
+MartinCostello.Logging.XUnit.XUnitLoggerOptions.IncludeScopes.set -> void
+MartinCostello.Logging.XUnit.XUnitLoggerOptions.MessageSinkMessageFactory.get -> System.Func<string!, Xunit.Abstractions.IMessageSinkMessage!>!
+MartinCostello.Logging.XUnit.XUnitLoggerOptions.MessageSinkMessageFactory.set -> void
+MartinCostello.Logging.XUnit.XUnitLoggerOptions.TimestampFormat.get -> string?
+MartinCostello.Logging.XUnit.XUnitLoggerOptions.TimestampFormat.set -> void
+MartinCostello.Logging.XUnit.XUnitLoggerOptions.XUnitLoggerOptions() -> void
+MartinCostello.Logging.XUnit.XUnitLoggerProvider
+MartinCostello.Logging.XUnit.XUnitLoggerProvider.Dispose() -> void
+MartinCostello.Logging.XUnit.XUnitLoggerProvider.XUnitLoggerProvider(MartinCostello.Logging.XUnit.IMessageSinkAccessor! accessor, MartinCostello.Logging.XUnit.XUnitLoggerOptions! options) -> void
+MartinCostello.Logging.XUnit.XUnitLoggerProvider.XUnitLoggerProvider(MartinCostello.Logging.XUnit.ITestOutputHelperAccessor! accessor, MartinCostello.Logging.XUnit.XUnitLoggerOptions! options) -> void
+MartinCostello.Logging.XUnit.XUnitLoggerProvider.XUnitLoggerProvider(Xunit.Abstractions.IMessageSink! messageSink, MartinCostello.Logging.XUnit.XUnitLoggerOptions! options) -> void
+MartinCostello.Logging.XUnit.XUnitLoggerProvider.XUnitLoggerProvider(Xunit.Abstractions.ITestOutputHelper! outputHelper, MartinCostello.Logging.XUnit.XUnitLoggerOptions! options) -> void
+MartinCostello.Logging.XUnit.XUnitLoggerProvider.~XUnitLoggerProvider() -> void
+Microsoft.Extensions.Logging.XUnitLoggerExtensions
+static Microsoft.Extensions.Logging.XUnitLoggerExtensions.AddXUnit(this Microsoft.Extensions.Logging.ILoggerFactory! factory, Xunit.Abstractions.IMessageSink! messageSink) -> Microsoft.Extensions.Logging.ILoggerFactory!
+static Microsoft.Extensions.Logging.XUnitLoggerExtensions.AddXUnit(this Microsoft.Extensions.Logging.ILoggerFactory! factory, Xunit.Abstractions.IMessageSink! messageSink, MartinCostello.Logging.XUnit.XUnitLoggerOptions! options) -> Microsoft.Extensions.Logging.ILoggerFactory!
+static Microsoft.Extensions.Logging.XUnitLoggerExtensions.AddXUnit(this Microsoft.Extensions.Logging.ILoggerFactory! factory, Xunit.Abstractions.IMessageSink! messageSink, Microsoft.Extensions.Logging.LogLevel minLevel) -> Microsoft.Extensions.Logging.ILoggerFactory!
+static Microsoft.Extensions.Logging.XUnitLoggerExtensions.AddXUnit(this Microsoft.Extensions.Logging.ILoggerFactory! factory, Xunit.Abstractions.IMessageSink! messageSink, System.Action<MartinCostello.Logging.XUnit.XUnitLoggerOptions!>! configure) -> Microsoft.Extensions.Logging.ILoggerFactory!
+static Microsoft.Extensions.Logging.XUnitLoggerExtensions.AddXUnit(this Microsoft.Extensions.Logging.ILoggerFactory! factory, Xunit.Abstractions.IMessageSink! messageSink, System.Func<MartinCostello.Logging.XUnit.XUnitLoggerOptions!>! configure) -> Microsoft.Extensions.Logging.ILoggerFactory!
+static Microsoft.Extensions.Logging.XUnitLoggerExtensions.AddXUnit(this Microsoft.Extensions.Logging.ILoggerFactory! factory, Xunit.Abstractions.IMessageSink! messageSink, System.Func<string?, Microsoft.Extensions.Logging.LogLevel, bool>! filter) -> Microsoft.Extensions.Logging.ILoggerFactory!
+static Microsoft.Extensions.Logging.XUnitLoggerExtensions.AddXUnit(this Microsoft.Extensions.Logging.ILoggerFactory! factory, Xunit.Abstractions.ITestOutputHelper! outputHelper) -> Microsoft.Extensions.Logging.ILoggerFactory!
+static Microsoft.Extensions.Logging.XUnitLoggerExtensions.AddXUnit(this Microsoft.Extensions.Logging.ILoggerFactory! factory, Xunit.Abstractions.ITestOutputHelper! outputHelper, MartinCostello.Logging.XUnit.XUnitLoggerOptions! options) -> Microsoft.Extensions.Logging.ILoggerFactory!
+static Microsoft.Extensions.Logging.XUnitLoggerExtensions.AddXUnit(this Microsoft.Extensions.Logging.ILoggerFactory! factory, Xunit.Abstractions.ITestOutputHelper! outputHelper, Microsoft.Extensions.Logging.LogLevel minLevel) -> Microsoft.Extensions.Logging.ILoggerFactory!
+static Microsoft.Extensions.Logging.XUnitLoggerExtensions.AddXUnit(this Microsoft.Extensions.Logging.ILoggerFactory! factory, Xunit.Abstractions.ITestOutputHelper! outputHelper, System.Action<MartinCostello.Logging.XUnit.XUnitLoggerOptions!>! configure) -> Microsoft.Extensions.Logging.ILoggerFactory!
+static Microsoft.Extensions.Logging.XUnitLoggerExtensions.AddXUnit(this Microsoft.Extensions.Logging.ILoggerFactory! factory, Xunit.Abstractions.ITestOutputHelper! outputHelper, System.Func<MartinCostello.Logging.XUnit.XUnitLoggerOptions!>! configure) -> Microsoft.Extensions.Logging.ILoggerFactory!
+static Microsoft.Extensions.Logging.XUnitLoggerExtensions.AddXUnit(this Microsoft.Extensions.Logging.ILoggerFactory! factory, Xunit.Abstractions.ITestOutputHelper! outputHelper, System.Func<string?, Microsoft.Extensions.Logging.LogLevel, bool>! filter) -> Microsoft.Extensions.Logging.ILoggerFactory!
+static Microsoft.Extensions.Logging.XUnitLoggerExtensions.AddXUnit(this Microsoft.Extensions.Logging.ILoggingBuilder! builder) -> Microsoft.Extensions.Logging.ILoggingBuilder!
+static Microsoft.Extensions.Logging.XUnitLoggerExtensions.AddXUnit(this Microsoft.Extensions.Logging.ILoggingBuilder! builder, MartinCostello.Logging.XUnit.IMessageSinkAccessor! accessor) -> Microsoft.Extensions.Logging.ILoggingBuilder!
+static Microsoft.Extensions.Logging.XUnitLoggerExtensions.AddXUnit(this Microsoft.Extensions.Logging.ILoggingBuilder! builder, MartinCostello.Logging.XUnit.IMessageSinkAccessor! accessor, System.Action<MartinCostello.Logging.XUnit.XUnitLoggerOptions!>! configure) -> Microsoft.Extensions.Logging.ILoggingBuilder!
+static Microsoft.Extensions.Logging.XUnitLoggerExtensions.AddXUnit(this Microsoft.Extensions.Logging.ILoggingBuilder! builder, MartinCostello.Logging.XUnit.ITestOutputHelperAccessor! accessor) -> Microsoft.Extensions.Logging.ILoggingBuilder!
+static Microsoft.Extensions.Logging.XUnitLoggerExtensions.AddXUnit(this Microsoft.Extensions.Logging.ILoggingBuilder! builder, MartinCostello.Logging.XUnit.ITestOutputHelperAccessor! accessor, System.Action<MartinCostello.Logging.XUnit.XUnitLoggerOptions!>! configure) -> Microsoft.Extensions.Logging.ILoggingBuilder!
+static Microsoft.Extensions.Logging.XUnitLoggerExtensions.AddXUnit(this Microsoft.Extensions.Logging.ILoggingBuilder! builder, Xunit.Abstractions.IMessageSink! messageSink) -> Microsoft.Extensions.Logging.ILoggingBuilder!
+static Microsoft.Extensions.Logging.XUnitLoggerExtensions.AddXUnit(this Microsoft.Extensions.Logging.ILoggingBuilder! builder, Xunit.Abstractions.IMessageSink! messageSink, System.Action<MartinCostello.Logging.XUnit.XUnitLoggerOptions!>! configure) -> Microsoft.Extensions.Logging.ILoggingBuilder!
+static Microsoft.Extensions.Logging.XUnitLoggerExtensions.AddXUnit(this Microsoft.Extensions.Logging.ILoggingBuilder! builder, Xunit.Abstractions.ITestOutputHelper! outputHelper) -> Microsoft.Extensions.Logging.ILoggingBuilder!
+static Microsoft.Extensions.Logging.XUnitLoggerExtensions.AddXUnit(this Microsoft.Extensions.Logging.ILoggingBuilder! builder, Xunit.Abstractions.ITestOutputHelper! outputHelper, System.Action<MartinCostello.Logging.XUnit.XUnitLoggerOptions!>! configure) -> Microsoft.Extensions.Logging.ILoggingBuilder!
+static Xunit.Abstractions.IMessageSinkExtensions.ToLogger<T>(this Xunit.Abstractions.IMessageSink! messageSink) -> Microsoft.Extensions.Logging.ILogger<T>!
+static Xunit.Abstractions.IMessageSinkExtensions.ToLoggerFactory(this Xunit.Abstractions.IMessageSink! messageSink) -> Microsoft.Extensions.Logging.ILoggerFactory!
+static Xunit.Abstractions.ITestOutputHelperExtensions.ToLogger<T>(this Xunit.Abstractions.ITestOutputHelper! outputHelper) -> Microsoft.Extensions.Logging.ILogger<T>!
+static Xunit.Abstractions.ITestOutputHelperExtensions.ToLoggerFactory(this Xunit.Abstractions.ITestOutputHelper! outputHelper) -> Microsoft.Extensions.Logging.ILoggerFactory!
+virtual MartinCostello.Logging.XUnit.XUnitLogger.WriteMessage(Microsoft.Extensions.Logging.LogLevel logLevel, int eventId, string? message, System.Exception? exception) -> void
+virtual MartinCostello.Logging.XUnit.XUnitLoggerProvider.CreateLogger(string! categoryName) -> Microsoft.Extensions.Logging.ILogger!
+virtual MartinCostello.Logging.XUnit.XUnitLoggerProvider.Dispose(bool disposing) -> void
+Xunit.Abstractions.IMessageSinkExtensions
+Xunit.Abstractions.ITestOutputHelperExtensions
