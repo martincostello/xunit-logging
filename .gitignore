@@ -25,6 +25,7 @@ UpgradeLog*.XML
 *.GhostDoc.xml
 *.log
 *.nupkg
+!.packages/*.nupkg
 *.opensdf
 *.[Pp]ublish.xml
 *.publishproj
