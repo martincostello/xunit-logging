@@ -1,1 +1,3 @@
 #nullable enable
+MartinCostello.Logging.XUnit.ITestOutputHelperAccessorExtensions
+static MartinCostello.Logging.XUnit.ITestOutputHelperAccessorExtensions.WithOutputHelperFromTestContext<T>(this T accessor) -> T
