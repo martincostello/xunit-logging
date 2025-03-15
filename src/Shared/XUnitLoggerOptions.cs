@@ -38,4 +38,9 @@ public class XUnitLoggerOptions
     /// </summary>
     [StringSyntax(StringSyntaxAttribute.DateTimeFormat)]
     public string? TimestampFormat { get; set; }
+
+    /// <summary>
+    /// Gets or sets an optional method to override the writing of log messages.
+    /// </summary>
+    public Action<XUnitLogger, ITestOutputHelper?, IMessageSink?, LogLevel, int, string?, Exception?>? WriteMessageOverride { get; set; }
 }
