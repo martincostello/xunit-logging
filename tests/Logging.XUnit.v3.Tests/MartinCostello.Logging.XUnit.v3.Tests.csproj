@@ -6,7 +6,7 @@
     <NoWarn>$(NoWarn);CA2234;SA1602</NoWarn>
     <OutputType>Exe</OutputType>
     <RootNamespace>MartinCostello.Logging.XUnit</RootNamespace>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\Shared\**\*.cs" Link="%(Link)" />
