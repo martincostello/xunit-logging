@@ -2,9 +2,9 @@
   <PropertyGroup>
     <Description>Tests for MartinCostello.Logging.XUnit.</Description>
     <MSBuildTreatWarningsAsErrors>false</MSBuildTreatWarningsAsErrors>
-    <NoWarn>$(NoWarn);CA2234;SA1602</NoWarn>
     <RootNamespace>MartinCostello.Logging.XUnit</RootNamespace>
     <TargetFramework>net9.0</TargetFramework>
+    <UseDefaultCodeAnalysisRuleSet>true</UseDefaultCodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\Shared\**\*.cs" Link="%(Link)" />
