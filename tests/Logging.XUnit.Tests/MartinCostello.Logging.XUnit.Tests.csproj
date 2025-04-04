@@ -3,7 +3,7 @@
     <Description>Tests for MartinCostello.Logging.XUnit.</Description>
     <MSBuildTreatWarningsAsErrors>false</MSBuildTreatWarningsAsErrors>
     <RootNamespace>MartinCostello.Logging.XUnit</RootNamespace>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <UseDefaultCodeAnalysisRuleSet>true</UseDefaultCodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
