@@ -19,11 +19,6 @@ $libraryProjects = @(
     (Join-Path $solutionPath "src" "Logging.XUnit.v3" "MartinCostello.Logging.XUnit.v3.csproj")
 )
 
-$testProjects = @(
-    (Join-Path $solutionPath "tests" "Logging.XUnit.Tests" "MartinCostello.Logging.XUnit.Tests.csproj")
-    (Join-Path $solutionPath "tests" "Logging.XUnit.v3.Tests" "MartinCostello.Logging.XUnit.v3.Tests.csproj")
-)
-
 $dotnetVersion = (Get-Content $sdkFile | Out-String | ConvertFrom-Json).sdk.version
 
 $installDotNetSdk = $false;
@@ -90,7 +85,7 @@ function DotNetPack {
 }
 
 function DotNetTest {
-    param([string]$Project)
+    param()
 
     $additionalArgs = @()
 
@@ -99,7 +94,7 @@ function DotNetTest {
         $additionalArgs += "GitHubActions;report-warnings=false"
     }
 
-    & $dotnet test $Project --configuration "Release" $additionalArgs
+    & $dotnet test --configuration "Release" $additionalArgs
 
     if ($LASTEXITCODE -ne 0) {
         throw "dotnet test failed with exit code $LASTEXITCODE"
@@ -113,7 +108,5 @@ ForEach ($libraryProject in $libraryProjects) {
 
 if (-Not $SkipTests) {
     Write-Information "Running tests..."
-    ForEach ($testProject in $testProjects) {
-        DotNetTest $testProject
-    }
+    DotNetTest
 }
