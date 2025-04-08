@@ -43,7 +43,7 @@ else {
 
 if ($installDotNetSdk) {
 
-    ${env:DOTNET_INSTALL_DIR} = Join-Path $solutionPath ".dotnetcli"
+    ${env:DOTNET_INSTALL_DIR} = Join-Path $solutionPath ".dotnet"
     $sdkPath = Join-Path ${env:DOTNET_INSTALL_DIR} "sdk" $dotnetVersion
 
     if (!(Test-Path $sdkPath)) {
