@@ -40,6 +40,11 @@ public partial class XUnitLogger : ILogger
     private readonly string _timestampFormat;
 
     /// <summary>
+    /// Gets or sets an optional method to override the writing of log messages.
+    /// </summary>
+    private readonly Action<XUnitLogger, ITestOutputHelper?, IMessageSink?, LogLevel, int, string?, Exception?>? _writeMessageOverride;
+
+    /// <summary>
     /// Gets or sets the filter to use.
     /// </summary>
     private Func<string?, LogLevel, bool> _filter;
@@ -57,6 +62,7 @@ public partial class XUnitLogger : ILogger
         _messageSinkMessageFactory = options?.MessageSinkMessageFactory ?? (static (message) => new DiagnosticMessage(message));
         _timestampFormat = options?.TimestampFormat ?? "u";
         IncludeScopes = options?.IncludeScopes ?? false;
+        _writeMessageOverride = options?.WriteMessageOverride;
     }
 
     /// <summary>
@@ -134,7 +140,21 @@ public partial class XUnitLogger : ILogger
 
         if (!string.IsNullOrEmpty(message) || exception != null)
         {
-            WriteMessage(logLevel, eventId.Id, message, exception);
+            if (_writeMessageOverride != null)
+            {
+                _writeMessageOverride(
+                    this,
+                    _outputHelperAccessor?.OutputHelper,
+                    _messageSinkAccessor?.MessageSink,
+                    logLevel,
+                    eventId.Id,
+                    message,
+                    exception);
+            }
+            else
+            {
+                WriteMessage(logLevel, eventId.Id, message, exception);
+            }
         }
     }
 
