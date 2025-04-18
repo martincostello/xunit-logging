@@ -13,6 +13,7 @@ bin
 Bin
 coverage
 coverage.*
+junit.xml
 MSBuild_Logs/
 obj
 packages
