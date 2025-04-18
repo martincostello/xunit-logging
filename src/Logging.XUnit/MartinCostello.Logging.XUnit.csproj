@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <PackageId>MartinCostello.Logging.XUnit</PackageId>
     <RootNamespace>MartinCostello.Logging.XUnit</RootNamespace>
-    <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net8.0;net10.0</TargetFrameworks>
     <Title>xunit Logging Extensions</Title>
   </PropertyGroup>
   <ItemGroup>
@@ -16,12 +16,12 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="Microsoft.Extensions.Logging" VersionOverride="8.0.1" />
     <PackageReference Include="xunit.abstractions" />
     <PackageReference Include="xunit.extensibility.execution" />
   </ItemGroup>
-  <ItemGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))">
-    <PackageReference Update="Microsoft.Extensions.Logging" VersionOverride="8.0.1" />
+  <ItemGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net10.0'))">
+    <PackageReference Update="Microsoft.Extensions.Logging" VersionOverride="10.0.0-preview.3.25171.5" />
   </ItemGroup>
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.InteropServices.GuidAttribute">
