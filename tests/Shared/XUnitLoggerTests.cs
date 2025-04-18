@@ -255,6 +255,7 @@ public static class XUnitLoggerTests
         // Arrange
         string name = "MyName";
         var accessor = Substitute.For<ITestOutputHelperAccessor>();
+        accessor.OutputHelper.Returns(default(ITestOutputHelper));
 
         var options = new XUnitLoggerOptions()
         {
@@ -659,6 +660,122 @@ public static class XUnitLoggerTests
         outputHelper.Received(1).WriteLine(expected);
     }
 
+    [Fact]
+    public static void XUnitLogger_Log_Emits_Output_Helper_Message_If_Override_Method_Provided()
+    {
+        // Arrange
+        var outputHelper = Substitute.For<ITestOutputHelper>();
+        string name = "MyName";
+        LogLevel inputLogLevel = LogLevel.Information;
+        int inputEventId = 1;
+        string? inputMessage = "log message";
+
+        string expectedOutput = $"[{inputLogLevel}] {name} {inputEventId} {inputMessage}";
+
+        static void WriteMessageOverride(XUnitLogger xUnitLogger, ITestOutputHelper? helper, IMessageSink? sink, LogLevel level, int eventId, string? message, Exception? exception)
+        {
+            string formattedMessage = $"[{level}] {xUnitLogger.Name} {eventId} {message}";
+            helper?.WriteLine(formattedMessage);
+        }
+
+        var options = new XUnitLoggerOptions()
+        {
+            Filter = FilterTrue,
+            WriteMessageOverride = WriteMessageOverride,
+        };
+
+        var logger = new XUnitLogger(name, outputHelper, options);
+
+        logger.Log(inputLogLevel, inputEventId, inputMessage, null, FormatterStateAsString);
+
+        // Assert
+        outputHelper.Received(1).WriteLine(expectedOutput);
+    }
+
+    [Fact]
+    public static void XUnitLogger_Log_Emits_Message_Sink_Message_If_Override_Method_Provided()
+    {
+        // Arrange
+        var messageSink = Substitute.For<IMessageSink>();
+        string name = "MyName";
+        LogLevel inputLogLevel = LogLevel.Information;
+        int inputEventId = 1;
+        string? inputMessage = "message";
+
+        string expectedOutput = $"[{inputLogLevel}] {name} {inputEventId} {inputMessage}";
+
+        static void WriteMessageOverride(XUnitLogger xUnitLogger, ITestOutputHelper? helper, IMessageSink? sink, LogLevel level, int eventId, string? message, Exception? exception)
+        {
+            string formattedMessage = $"[{level}] {xUnitLogger.Name} {eventId} {message}";
+            sink?.OnMessage(new DiagnosticMessage(formattedMessage));
+        }
+
+        var options = new XUnitLoggerOptions()
+        {
+            Filter = FilterTrue,
+            WriteMessageOverride = WriteMessageOverride,
+        };
+
+        var logger = new XUnitLogger(name, messageSink, options);
+
+        logger.Log(inputLogLevel, inputEventId, inputMessage, null, FormatterStateAsString);
+
+        // Assert
+        messageSink.Received(1).OnMessage(Arg.Is<IDiagnosticMessage>(message => string.Equals(message.Message, expectedOutput, StringComparison.Ordinal)));
+    }
+
+    [Fact]
+    public static void XUnitLogger_Does_Nothing_If_Noop_Override_Method_Provided()
+    {
+        // Arrange
+        var outputHelper = Substitute.For<ITestOutputHelper>();
+
+        static void WriteMessageOverride(XUnitLogger xUnitLogger, ITestOutputHelper? helper, IMessageSink? sink, LogLevel level, int eventId, string? message, Exception? exception)
+        {
+        }
+
+        var options = new XUnitLoggerOptions()
+        {
+            WriteMessageOverride = WriteMessageOverride,
+        };
+
+        var logger = new XUnitLogger("MyName", outputHelper, options);
+
+        logger.Log(LogLevel.Information, 1, string.Empty, null, FormatterStateAsString);
+
+        // Assert
+        outputHelper.DidNotReceiveWithAnyArgs().WriteLine(string.Empty);
+    }
+
+    [Fact]
+    public static void XUnitLogger_Logs_Message_If_Null_Override_Message_Provided()
+    {
+        // Arrange
+        var outputHelper = Substitute.For<ITestOutputHelper>();
+        string name = "MyName";
+
+        var options = new XUnitLoggerOptions()
+        {
+            WriteMessageOverride = null,
+        };
+
+        string expected = string.Join(
+            Environment.NewLine,
+            $"[2018-08-19 16:12:16Z] info: MyName[1]",
+            "      state");
+
+        var logger = new XUnitLogger(name, outputHelper, options)
+        {
+            Clock = StaticClock,
+        };
+
+        // Act
+        logger.Log(LogLevel.Information, 1, "state", null, FormatterStateAsString);
+
+        // Assert
+        outputHelper.Received(1).WriteLine(Arg.Is<string>(expected));
+    }
+
     private static DateTimeOffset StaticClock() => new(2018, 08, 19, 17, 12, 16, TimeSpan.FromHours(1));
 
     private static DiagnosticMessage DiagnosticMessageFactory(string message) => new(message);
@@ -678,4 +795,8 @@ public static class XUnitLoggerTests
     private static string FormatterLong<TState>(TState? state, Exception? exception) => new('a', 2048);
 
     private static string FormatterNull<TState>(TState? state, Exception? exception) => null!;
+
+#pragma warning disable IDE0060 // Remove unused parameter
+    private static string FormatterStateAsString<TState>(TState? state, Exception? exception) => state?.ToString() ?? string.Empty;
+#pragma warning restore IDE0060 // Remove unused parameter
 }
