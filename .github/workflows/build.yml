@@ -181,8 +181,9 @@ jobs:
       shell: bash
       env:
         API_KEY: ${{ secrets.FEEDZ_IO_TOKEN }}
+        PACKAGE_VERSION: ${{ needs.build.outputs.package-version }}
         SOURCE: "https://f.feedz.io/${{ github.repository }}/nuget/index.json"
-      run: dotnet nuget push "*.nupkg" --api-key "${API_KEY}" --skip-duplicate --source "${SOURCE}"
+      run: dotnet nuget push "*.nupkg" --api-key "${API_KEY}" --skip-duplicate --source "${SOURCE}" && echo "::notice title=feedz.io::Published version ${PACKAGE_VERSION} to feedz.io."
 
   publish-nuget:
     needs: [ build, validate-packages ]
@@ -211,8 +212,9 @@ jobs:
       shell: bash
       env:
         API_KEY: ${{ secrets.NUGET_TOKEN }}
+        PACKAGE_VERSION: ${{ needs.build.outputs.package-version }}
         SOURCE: https://api.nuget.org/v3/index.json
-      run: dotnet nuget push "*.nupkg" --api-key "${API_KEY}" --skip-duplicate --source "${SOURCE}"
+      run: dotnet nuget push "*.nupkg" --api-key "${API_KEY}" --skip-duplicate --source "${SOURCE}" && echo "::notice title=nuget.org::Published version ${PACKAGE_VERSION} to NuGet.org."
 
     - name: Publish nuget_packages_published
       uses: peter-evans/repository-dispatch@ff45666b9427631e3450c54a1bcbee4d9ff4d7c0 # v3.0.0
