@@ -13,7 +13,7 @@ body:
   attributes:
     label: Version
     description: Which version of the library are you experiencing the issue with?
-    placeholder: 1.0.0
+    placeholder: 0.5.1
   validations:
     required: true
 - type: textarea
