@@ -9,6 +9,17 @@ body:
       Please check for an existing issue and the [README](https://github.com/martincostello/xunit-logging/blob/main/README.md) before submitting a bug report.
 
       If you're not using the latest release, please try upgrading to the latest version first to see if the issue resolves itself.
+- type: dropdown
+  id: version
+  attributes:
+    label: NuGet Package(s)
+    multiple: true
+    description: What NuGet packages(s) are you using?
+    options:
+      - MartinCostello.Logging.XUnit
+      - MartinCostello.Logging.XUnit.v3
+  validations:
+    required: true
 - type: input
   attributes:
     label: Version
