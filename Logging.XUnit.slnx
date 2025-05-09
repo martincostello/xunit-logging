@@ -31,7 +31,7 @@
   <Folder Name="/Solution Items/.github/workflows/">
     <File Path=".github/workflows/build.yml" />
     <File Path=".github/workflows/bump-version.yml" />
-    <File Path=".github/workflows/codeql-analysis.yml" />
+    <File Path=".github/workflows/codeql.yml" />
     <File Path=".github/workflows/dependency-review.yml" />
     <File Path=".github/workflows/lint.yml" />
     <File Path=".github/workflows/ossf-scorecard.yml" />
