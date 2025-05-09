@@ -133,6 +133,42 @@ See below for links to more examples:
 - [Unit tests][example-unit-tests]
 - [Integration tests for an ASP.NET Core HTTP application][example-integration-tests]
 
+## Example Output
+
+If your tests (and the system under test) are correctly configured, then you should see output from the
+tests in the same places you would expected to see [output from xunit tests][xunit-output].
+
+See below for some examples from the [`Http_Get_Many`][example-test] test in this repository.
+
+<!-- markdownlint-disable MD033 -->
+
+### Visual Studio
+
+<details>
+<summary>Click to expand</summary>
+
+![Visual Studio Output][output-vs]
+
+</details>
+
+### Visual Studio Code
+
+<details>
+<summary>Click to expand</summary>
+
+![Visual Studio Code Output][output-vscode]
+
+</details>
+
+### Windows Terminal and .NET CLI
+
+<details>
+<summary>Click to expand</summary>
+
+![Windows Terminal Output][output-windows-terminal]
+
+</details>
+
 ## Migrating to xunit v3
 
 [Xunit v3][xunit-v3-whats-new] contains many major architectural changes which means the same package
@@ -182,9 +218,13 @@ cd xunit-logging
 [scorecard-report]: https://securityscorecards.dev/viewer/?uri=github.com/martincostello/xunit-logging "OpenSSF Scorecard for this project"
 [dotnet-sdk]: https://dot.net/download "Download the .NET SDK"
 [example-integration-tests]: https://github.com/martincostello/xunit-logging/blob/main/tests/Shared/Integration/HttpApplicationTests.cs "Integration test examples"
+[example-test]: https://github.com/martincostello/xunit-logging/blob/8951660a4667cfa5b07e2558b741b335a31d1e59/tests/Shared/Integration/HttpApplicationTests.cs#L26-L58 "Http_Get_Many"
 [example-unit-tests]: https://github.com/martincostello/xunit-logging/blob/main/tests/Shared/Examples.cs "Unit test examples"
 [issues]: https://github.com/martincostello/xunit-logging/issues "Issues for this project on GitHub.com"
 [license]: https://www.apache.org/licenses/LICENSE-2.0.txt "The Apache 2.0 license"
+[output-vs]: ./docs/images/output-vs.png "xunit Output in Visual Studio"
+[output-vscode]: ./docs/images/output-vscode.png "xunit Output in Visual Studio Code"
+[output-windows-terminal]: ./docs/images/output-terminal.png "xunit Output in Windows Terminal with the .NET CLI"
 [package-badge-downloads-v2]: https://img.shields.io/nuget/dt/MartinCostello.Logging.XUnit?logo=nuget&label=Downloads&color=blue
 [package-badge-downloads-v3]: https://img.shields.io/nuget/dt/MartinCostello.Logging.XUnit.v3?logo=nuget&label=Downloads&color=blue
 [package-badge-version-v2]: https://img.shields.io/nuget/v/MartinCostello.Logging.XUnit?logo=nuget&label=Latest&color=blue
@@ -194,5 +234,6 @@ cd xunit-logging
 [repo]: https://github.com/martincostello/xunit-logging "This project on GitHub.com"
 [serilog]: https://serilog.net/ "Serilog website"
 [serilog-sinks-xunit]: https://github.com/trbenning/serilog-sinks-xunit "Serilog.Sinks.XUnit on GitHub"
+[xunit-output]: https://xunit.net/docs/capturing-output "Capturing Output - xUnit.net Documentation"
 [xunit-v3-migration]: https://xunit.net/docs/getting-started/v3/migration "Migrating from xunit v2 to v3"
 [xunit-v3-whats-new]: https://xunit.net/docs/getting-started/v3/whats-new "What's New in v3"
