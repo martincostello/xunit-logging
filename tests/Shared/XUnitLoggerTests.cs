@@ -659,6 +659,41 @@ public static class XUnitLoggerTests
         outputHelper.Received(1).WriteLine(expected);
     }
 
+#if NET8_0_OR_GREATER
+
+    [Fact]
+    public static void XUnitLogger_Log_Logs_Message_With_TimeProvider()
+    {
+        // Arrange
+        var outputHelper = Substitute.For<ITestOutputHelper>();
+        string name = "MyName";
+
+        var timeProvider = Substitute.For<TimeProvider>();
+        timeProvider.LocalTimeZone.Returns(TimeZoneInfo.FindSystemTimeZoneById("Europe/London"));
+        timeProvider.GetUtcNow().Returns(new DateTimeOffset(2019, 05, 12, 13, 47, 41, 123, 456, TimeSpan.Zero));
+
+        var options = new XUnitLoggerOptions()
+        {
+            Filter = FilterTrue,
+            TimeProvider = timeProvider,
+        };
+
+        var logger = new XUnitLogger(name, outputHelper, options);
+
+        string expected = string.Join(
+            Environment.NewLine,
+            "[2019-05-12 13:47:41Z] info: MyName[85]",
+            "      Message|True|False");
+
+        // Act
+        logger.Log(LogLevel.Information, new EventId(85), "Martin", null, Formatter);
+
+        // Assert
+        outputHelper.Received(1).WriteLine(expected);
+    }
+
+#endif
+
     private static DateTimeOffset StaticClock() => new(2018, 08, 19, 17, 12, 16, TimeSpan.FromHours(1));
 
     private static DiagnosticMessage DiagnosticMessageFactory(string message) => new(message);
