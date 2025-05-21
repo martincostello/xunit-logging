@@ -38,4 +38,13 @@ public class XUnitLoggerOptions
     /// </summary>
     [StringSyntax(StringSyntaxAttribute.DateTimeFormat)]
     public string? TimestampFormat { get; set; }
+
+#if NET8_0_OR_GREATER
+
+    /// <summary>
+    /// Gets or sets the time provider used in log messages. Defaults to <see cref="TimeProvider.System"/>.
+    /// </summary>
+    public TimeProvider TimeProvider { get; set; } = TimeProvider.System;
+
+#endif
 }

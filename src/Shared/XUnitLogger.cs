@@ -39,6 +39,15 @@ public partial class XUnitLogger : ILogger
     /// </summary>
     private readonly string _timestampFormat;
 
+#if NET8_0_OR_GREATER
+
+    /// <summary>
+    /// The time provider used in log messages.
+    /// </summary>
+    private readonly TimeProvider _timeProvider;
+
+#endif
+
     /// <summary>
     /// Gets or sets the filter to use.
     /// </summary>
@@ -57,6 +66,12 @@ public partial class XUnitLogger : ILogger
         _messageSinkMessageFactory = options?.MessageSinkMessageFactory ?? (static (message) => new DiagnosticMessage(message));
         _timestampFormat = options?.TimestampFormat ?? "u";
         IncludeScopes = options?.IncludeScopes ?? false;
+#if NET8_0_OR_GREATER
+        _timeProvider = options?.TimeProvider ?? TimeProvider.System;
+        Clock = () => _timeProvider.GetLocalNow();
+#else
+        Clock = static () => DateTimeOffset.Now;
+#endif
     }
 
     /// <summary>
@@ -84,7 +99,7 @@ public partial class XUnitLogger : ILogger
     /// <summary>
     /// Gets or sets a delegate representing the system clock.
     /// </summary>
-    internal Func<DateTimeOffset> Clock { get; set; } = static () => DateTimeOffset.Now;
+    internal Func<DateTimeOffset> Clock { get; set; }
 
     /// <inheritdoc />
     public IDisposable? BeginScope<TState>(TState state)
