@@ -1,21 +1,9 @@
 version: 2
 updates:
-- package-ecosystem: "github-actions"
-  directory: "/"
-  schedule:
-    interval: daily
-    time: "05:30"
-    timezone: Europe/London
 - package-ecosystem: nuget
   directory: "/"
-  groups:
-    xunit:
-      patterns:
-        - xunit.runner.visualstudio
-        - xunit.v3
   schedule:
-    interval: daily
-    time: "05:30"
+    interval: yearly
     timezone: Europe/London
   open-pull-requests-limit: 99
   ignore:
