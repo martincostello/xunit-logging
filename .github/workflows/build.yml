@@ -82,11 +82,12 @@ jobs:
 
     - name: Generate SBOM
       uses: anchore/sbom-action@9246b90769f852b3a8921f330c59e0b3f439d6e9 # v0.20.1
+      if: runner.os == 'Windows'
       with:
-        artifact-name: build-${{ matrix.os-name }}.spdx.json
-        output-file: ./artifacts/build.spdx.json
+        artifact-name: xunit-logging.spdx.json
+        output-file: ./artifacts/xunit-logging.spdx.json
         path: ./artifacts/bin
-        upload-release-assets: ${{ runner.os == 'Windows' }}
+        upload-release-assets: true
 
     - name: Attest artifacts
       uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2.4.0
