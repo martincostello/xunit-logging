@@ -19,7 +19,9 @@ permissions:
 
 env:
   FORCE_COLOR: 3
+  # renovate: datasource=github-releases depName=powershell-yaml packageName=cloudbase/powershell-yaml
   POWERSHELL_YAML_VERSION: '0.4.12'
+  # renovate: datasource=github-releases depName=PSScriptAnalyzer packageName=PowerShell/PSScriptAnalyzer
   PSSCRIPTANALYZER_VERSION: '1.24.0'
   TERM: xterm
 
