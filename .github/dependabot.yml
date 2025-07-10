@@ -1,13 +1,7 @@
 version: 2
 updates:
-- package-ecosystem: nuget
+- package-ecosystem: github-actions
   directory: "/"
   schedule:
     interval: yearly
     timezone: Europe/London
-  open-pull-requests-limit: 99
-  ignore:
-  - dependency-name: Microsoft.Extensions.Logging
-  - dependency-name: xunit.abstractions
-  - dependency-name: xunit.extensibility.execution
-  - dependency-name: xunit.v3.extensibility.core
