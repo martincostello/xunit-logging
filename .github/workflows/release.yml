@@ -64,7 +64,7 @@ jobs:
               .filter((line) => !line.includes(' @costellobot '))
               .filter((line) => !line.includes(' @dependabot '))
               .filter((line) => !line.includes(' @github-actions '))
-              .filter((line) => !line.includes(' @renovate '))
+              .filter((line) => !line.includes(' @renovate[bot] '))
               .join('\n');
 
             const { data: release } = await github.rest.repos.createRelease({
