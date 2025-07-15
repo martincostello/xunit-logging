@@ -2,6 +2,7 @@
   <PropertyGroup>
     <Description>Tests for MartinCostello.Logging.XUnit.</Description>
     <MSBuildTreatWarningsAsErrors>false</MSBuildTreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);CA1873</NoWarn>
     <RootNamespace>MartinCostello.Logging.XUnit</RootNamespace>
     <TargetFramework>net9.0</TargetFramework>
     <UseDefaultCodeAnalysisRuleSet>true</UseDefaultCodeAnalysisRuleSet>
