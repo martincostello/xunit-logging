@@ -3,6 +3,7 @@
     <DefineConstants>$(DefineConstants);XUNIT_V3</DefineConstants>
     <Description>Tests for MartinCostello.Logging.XUnit.v3.</Description>
     <MSBuildTreatWarningsAsErrors>false</MSBuildTreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);CA1873</NoWarn>
     <OutputType>Exe</OutputType>
     <RootNamespace>MartinCostello.Logging.XUnit</RootNamespace>
     <TargetFramework>net9.0</TargetFramework>
