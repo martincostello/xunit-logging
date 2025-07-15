@@ -6,6 +6,8 @@ using Microsoft.Extensions.Logging;
 
 namespace MartinCostello.Logging.XUnit;
 
+#pragma warning disable CA1873
+
 public class Examples(ITestOutputHelper outputHelper)
 {
     [Fact]

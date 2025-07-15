@@ -3,6 +3,8 @@
     <AssemblyIsCLSCompliant>false</AssemblyIsCLSCompliant>
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)Logging.XUnit.ruleset</CodeAnalysisRuleSet>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <!-- TODO Remove when .NET 10 is stable -->
+    <NoWarn>$(NoWarn);NU5104</NoWarn>
     <NuGetAuditMode>direct</NuGetAuditMode>
     <PackageTags>xunit;logging</PackageTags>
     <UseArtifactsOutput>true</UseArtifactsOutput>
