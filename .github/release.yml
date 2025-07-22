@@ -1,0 +1,8 @@
+changelog:
+  exclude:
+    authors:
+      - dependabot[bot]
+      - costellobot
+      - costellobot[bot]
+      - github-actions[bot]
+      - renovate[bot]
