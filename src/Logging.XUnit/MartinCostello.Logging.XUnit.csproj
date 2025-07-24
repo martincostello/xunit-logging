@@ -23,7 +23,6 @@
     <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Text.RegularExpressions" />
     <AssemblyAttribute Include="System.Runtime.InteropServices.GuidAttribute">
       <_Parameter1>af808007-f06a-410b-886d-152b3f39c43f</_Parameter1>
     </AssemblyAttribute>
