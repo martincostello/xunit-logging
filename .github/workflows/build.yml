@@ -19,8 +19,7 @@ env:
   NUGET_XMLDOC_MODE: skip
   TERM: xterm
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   build:

@@ -7,12 +7,14 @@ on:
       - dotnet-vnext
       - dotnet-nightly
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   dependency-review:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
 
     steps:
 
