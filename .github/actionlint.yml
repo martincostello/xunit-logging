@@ -1,0 +1,5 @@
+paths:
+  # Workaround for https://github.com/rhysd/actionlint/issues/548
+  .github/workflows/moderation.yml:
+    ignore:
+      - 'unknown permission scope \"models\"'
