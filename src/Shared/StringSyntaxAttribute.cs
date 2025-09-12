@@ -3,7 +3,7 @@
 
 //// Based on https://github.com/dotnet/runtime/blob/65067052e433eda400c5e7cc9f7b21c84640f901/src/libraries/System.Private.CoreLib/src/System/Diagnostics/CodeAnalysis/StringSyntaxAttribute.cs
 
-#if NETSTANDARD || !NETCOREAPP
+#if NETFRAMEWORK || NETSTANDARD
 
 #pragma warning disable IDE0130
 #pragma warning disable SA1600
