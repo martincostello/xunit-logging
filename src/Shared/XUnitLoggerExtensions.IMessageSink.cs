@@ -24,20 +24,8 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, IMessageSinkAccessor accessor)
     {
-#if NET
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(accessor);
-#else
-        if (builder == null)
-        {
-            throw new ArgumentNullException(nameof(builder));
-        }
-
-        if (accessor == null)
-        {
-            throw new ArgumentNullException(nameof(accessor));
-        }
-#endif
 
         return builder.AddXUnit(accessor, static (_) => { });
     }
@@ -56,26 +44,9 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, IMessageSinkAccessor accessor, Action<XUnitLoggerOptions> configure)
     {
-#if NET
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(accessor);
         ArgumentNullException.ThrowIfNull(configure);
-#else
-        if (builder == null)
-        {
-            throw new ArgumentNullException(nameof(builder));
-        }
-
-        if (accessor == null)
-        {
-            throw new ArgumentNullException(nameof(accessor));
-        }
-
-        if (configure == null)
-        {
-            throw new ArgumentNullException(nameof(configure));
-        }
-#endif
 
         var options = new XUnitLoggerOptions();
 
@@ -103,20 +74,8 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, IMessageSink messageSink)
     {
-#if NET
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(messageSink);
-#else
-        if (builder == null)
-        {
-            throw new ArgumentNullException(nameof(builder));
-        }
-
-        if (messageSink == null)
-        {
-            throw new ArgumentNullException(nameof(messageSink));
-        }
-#endif
 
         return builder.AddXUnit(messageSink, static (_) => { });
     }
@@ -135,26 +94,9 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, IMessageSink messageSink, Action<XUnitLoggerOptions> configure)
     {
-#if NET
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(messageSink);
         ArgumentNullException.ThrowIfNull(configure);
-#else
-        if (builder == null)
-        {
-            throw new ArgumentNullException(nameof(builder));
-        }
-
-        if (messageSink == null)
-        {
-            throw new ArgumentNullException(nameof(messageSink));
-        }
-
-        if (configure == null)
-        {
-            throw new ArgumentNullException(nameof(configure));
-        }
-#endif
 
         var options = new XUnitLoggerOptions();
 
@@ -179,20 +121,8 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, IMessageSink messageSink, LogLevel minLevel)
     {
-#if NET
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(messageSink);
-#else
-        if (factory == null)
-        {
-            throw new ArgumentNullException(nameof(factory));
-        }
-
-        if (messageSink == null)
-        {
-            throw new ArgumentNullException(nameof(messageSink));
-        }
-#endif
 
         return factory.AddXUnit(messageSink, (_, level) => level >= minLevel);
     }
@@ -211,26 +141,9 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, IMessageSink messageSink, Func<string?, LogLevel, bool> filter)
     {
-#if NET
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(messageSink);
         ArgumentNullException.ThrowIfNull(filter);
-#else
-        if (factory == null)
-        {
-            throw new ArgumentNullException(nameof(factory));
-        }
-
-        if (messageSink == null)
-        {
-            throw new ArgumentNullException(nameof(messageSink));
-        }
-
-        if (filter == null)
-        {
-            throw new ArgumentNullException(nameof(filter));
-        }
-#endif
 
         return factory.AddXUnit(messageSink, (options) => options.Filter = filter);
     }
@@ -248,20 +161,8 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, IMessageSink messageSink)
     {
-#if NET
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(messageSink);
-#else
-        if (factory == null)
-        {
-            throw new ArgumentNullException(nameof(factory));
-        }
-
-        if (messageSink == null)
-        {
-            throw new ArgumentNullException(nameof(messageSink));
-        }
-#endif
 
         return factory.AddXUnit(messageSink, static (_) => { });
     }
@@ -280,26 +181,9 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, IMessageSink messageSink, XUnitLoggerOptions options)
     {
-#if NET
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(messageSink);
         ArgumentNullException.ThrowIfNull(options);
-#else
-        if (factory == null)
-        {
-            throw new ArgumentNullException(nameof(factory));
-        }
-
-        if (messageSink == null)
-        {
-            throw new ArgumentNullException(nameof(messageSink));
-        }
-
-        if (options == null)
-        {
-            throw new ArgumentNullException(nameof(options));
-        }
-#endif
 
         return factory.AddXUnit(messageSink, () => options);
     }
@@ -318,26 +202,9 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, IMessageSink messageSink, Action<XUnitLoggerOptions> configure)
     {
-#if NET
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(messageSink);
         ArgumentNullException.ThrowIfNull(configure);
-#else
-        if (factory == null)
-        {
-            throw new ArgumentNullException(nameof(factory));
-        }
-
-        if (messageSink == null)
-        {
-            throw new ArgumentNullException(nameof(messageSink));
-        }
-
-        if (configure == null)
-        {
-            throw new ArgumentNullException(nameof(configure));
-        }
-#endif
 
         return factory.AddXUnit(messageSink, () =>
         {
@@ -361,26 +228,9 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, IMessageSink messageSink, Func<XUnitLoggerOptions> configure)
     {
-#if NET
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(messageSink);
         ArgumentNullException.ThrowIfNull(configure);
-#else
-        if (factory == null)
-        {
-            throw new ArgumentNullException(nameof(factory));
-        }
-
-        if (messageSink == null)
-        {
-            throw new ArgumentNullException(nameof(messageSink));
-        }
-
-        if (configure == null)
-        {
-            throw new ArgumentNullException(nameof(configure));
-        }
-#endif
 
         var options = configure();
 
