@@ -29,14 +29,7 @@ public static class ITestOutputHelperExtensions
     /// </exception>
     public static ILoggerFactory ToLoggerFactory(this ITestOutputHelper outputHelper)
     {
-#if NET
         ArgumentNullException.ThrowIfNull(outputHelper);
-#else
-        if (outputHelper == null)
-        {
-            throw new ArgumentNullException(nameof(outputHelper));
-        }
-#endif
 
         return new LoggerFactory().AddXUnit(outputHelper);
     }
