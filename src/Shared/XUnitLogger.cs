@@ -105,14 +105,7 @@ public partial class XUnitLogger : ILogger
     public IDisposable? BeginScope<TState>(TState state)
          where TState : notnull
     {
-#if NET
         ArgumentNullException.ThrowIfNull(state);
-#else
-        if (state == null)
-        {
-            throw new ArgumentNullException(nameof(state));
-        }
-#endif
 
         return XUnitLogScope.Push(state);
     }
@@ -136,14 +129,7 @@ public partial class XUnitLogger : ILogger
             return;
         }
 
-#if NET
         ArgumentNullException.ThrowIfNull(formatter);
-#else
-        if (formatter == null)
-        {
-            throw new ArgumentNullException(nameof(formatter));
-        }
-#endif
 
         string? message = formatter(state, exception);
 
