@@ -7,6 +7,11 @@
     <TargetFramework>net9.0</TargetFramework>
     <UseDefaultCodeAnalysisRuleSet>true</UseDefaultCodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <PublicSign>false</PublicSign>
+    <SignAssembly>false</SignAssembly>
+    <StrongNamePublicKey></StrongNamePublicKey>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\Shared\**\*.cs" Link="%(Link)" />
     <Content Include="..\Shared\xunit.runner.json" Link="%(Link)" CopyToOutputDirectory="PreserveNewest" />
