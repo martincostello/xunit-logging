@@ -24,7 +24,7 @@ env:
   PSSCRIPTANALYZER_VERSION: '1.24.0'
   TERM: xterm
   # renovate: datasource=github-releases depName=zizmor packageName=zizmorcore/zizmor
-  ZIZMOR_VERSION: '1.14.2'
+  ZIZMOR_VERSION: '1.15.1'
 
 jobs:
   lint:
