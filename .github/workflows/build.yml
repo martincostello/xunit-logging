@@ -82,7 +82,7 @@ jobs:
         token: ${{ secrets.CODECOV_TOKEN }}
 
     - name: Generate SBOM
-      uses: anchore/sbom-action@f8bdd1d8ac5e901a77a92f111440fdb1b593736b # v0.20.6
+      uses: anchore/sbom-action@d8a2c0130026bf585de5c176ab8f7ce62d75bf04 # v0.20.7
       if: runner.os == 'Windows'
       with:
         artifact-name: xunit-logging.spdx.json
