@@ -50,20 +50,8 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, ITestOutputHelperAccessor accessor)
     {
-#if NET
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(accessor);
-#else
-        if (builder == null)
-        {
-            throw new ArgumentNullException(nameof(builder));
-        }
-
-        if (accessor == null)
-        {
-            throw new ArgumentNullException(nameof(accessor));
-        }
-#endif
 
         return builder.AddXUnit(accessor, static (_) => { });
     }
@@ -82,26 +70,9 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, ITestOutputHelperAccessor accessor, Action<XUnitLoggerOptions> configure)
     {
-#if NET
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(accessor);
         ArgumentNullException.ThrowIfNull(configure);
-#else
-        if (builder == null)
-        {
-            throw new ArgumentNullException(nameof(builder));
-        }
-
-        if (accessor == null)
-        {
-            throw new ArgumentNullException(nameof(accessor));
-        }
-
-        if (configure == null)
-        {
-            throw new ArgumentNullException(nameof(configure));
-        }
-#endif
 
         var options = new XUnitLoggerOptions();
 
@@ -129,20 +100,8 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, ITestOutputHelper outputHelper)
     {
-#if NET
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(outputHelper);
-#else
-        if (builder == null)
-        {
-            throw new ArgumentNullException(nameof(builder));
-        }
-
-        if (outputHelper == null)
-        {
-            throw new ArgumentNullException(nameof(outputHelper));
-        }
-#endif
 
         return builder.AddXUnit(outputHelper, static (_) => { });
     }
@@ -161,26 +120,9 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggingBuilder AddXUnit(this ILoggingBuilder builder, ITestOutputHelper outputHelper, Action<XUnitLoggerOptions> configure)
     {
-#if NET
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(outputHelper);
         ArgumentNullException.ThrowIfNull(configure);
-#else
-        if (builder == null)
-        {
-            throw new ArgumentNullException(nameof(builder));
-        }
-
-        if (outputHelper == null)
-        {
-            throw new ArgumentNullException(nameof(outputHelper));
-        }
-
-        if (configure == null)
-        {
-            throw new ArgumentNullException(nameof(configure));
-        }
-#endif
 
         var options = new XUnitLoggerOptions();
 
@@ -205,20 +147,8 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, ITestOutputHelper outputHelper, LogLevel minLevel)
     {
-#if NET
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(outputHelper);
-#else
-        if (factory == null)
-        {
-            throw new ArgumentNullException(nameof(factory));
-        }
-
-        if (outputHelper == null)
-        {
-            throw new ArgumentNullException(nameof(outputHelper));
-        }
-#endif
 
         return factory.AddXUnit(outputHelper, (_, level) => level >= minLevel);
     }
@@ -237,26 +167,9 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, ITestOutputHelper outputHelper, Func<string?, LogLevel, bool> filter)
     {
-#if NET
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(outputHelper);
         ArgumentNullException.ThrowIfNull(filter);
-#else
-        if (factory == null)
-        {
-            throw new ArgumentNullException(nameof(factory));
-        }
-
-        if (outputHelper == null)
-        {
-            throw new ArgumentNullException(nameof(outputHelper));
-        }
-
-        if (filter == null)
-        {
-            throw new ArgumentNullException(nameof(filter));
-        }
-#endif
 
         return factory.AddXUnit(outputHelper, (options) => options.Filter = filter);
     }
@@ -274,20 +187,8 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, ITestOutputHelper outputHelper)
     {
-#if NET
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(outputHelper);
-#else
-        if (factory == null)
-        {
-            throw new ArgumentNullException(nameof(factory));
-        }
-
-        if (outputHelper == null)
-        {
-            throw new ArgumentNullException(nameof(outputHelper));
-        }
-#endif
 
         return factory.AddXUnit(outputHelper, static (_) => { });
     }
@@ -306,26 +207,9 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, ITestOutputHelper outputHelper, XUnitLoggerOptions options)
     {
-#if NET
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(outputHelper);
         ArgumentNullException.ThrowIfNull(options);
-#else
-        if (factory == null)
-        {
-            throw new ArgumentNullException(nameof(factory));
-        }
-
-        if (outputHelper == null)
-        {
-            throw new ArgumentNullException(nameof(outputHelper));
-        }
-
-        if (options == null)
-        {
-            throw new ArgumentNullException(nameof(options));
-        }
-#endif
 
         return factory.AddXUnit(outputHelper, () => options);
     }
@@ -344,26 +228,9 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, ITestOutputHelper outputHelper, Action<XUnitLoggerOptions> configure)
     {
-#if NET
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(outputHelper);
         ArgumentNullException.ThrowIfNull(configure);
-#else
-        if (factory == null)
-        {
-            throw new ArgumentNullException(nameof(factory));
-        }
-
-        if (outputHelper == null)
-        {
-            throw new ArgumentNullException(nameof(outputHelper));
-        }
-
-        if (configure == null)
-        {
-            throw new ArgumentNullException(nameof(configure));
-        }
-#endif
 
         return factory.AddXUnit(outputHelper, () =>
         {
@@ -387,26 +254,9 @@ public static partial class XUnitLoggerExtensions
     /// </exception>
     public static ILoggerFactory AddXUnit(this ILoggerFactory factory, ITestOutputHelper outputHelper, Func<XUnitLoggerOptions> configure)
     {
-#if NET
         ArgumentNullException.ThrowIfNull(factory);
         ArgumentNullException.ThrowIfNull(outputHelper);
         ArgumentNullException.ThrowIfNull(configure);
-#else
-        if (factory == null)
-        {
-            throw new ArgumentNullException(nameof(factory));
-        }
-
-        if (outputHelper == null)
-        {
-            throw new ArgumentNullException(nameof(outputHelper));
-        }
-
-        if (configure == null)
-        {
-            throw new ArgumentNullException(nameof(configure));
-        }
-#endif
 
         var options = configure();
 
