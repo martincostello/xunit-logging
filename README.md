@@ -4,9 +4,9 @@
 [![codecov][coverage-badge]][coverage-report]
 [![OpenSSF Scorecard][scorecard-badge]][scorecard-report]
 
-| **xunit version** | **Package** | **NuGet Version** |
-|:------------------|:------------|:------------------|
-| xunit v2          | [MartinCostello.Logging.XUnit][package-download-v2] | [![NuGet][package-badge-version-v2]][package-download-v2] [![NuGet Downloads][package-badge-downloads-v2]][package-download-v2] |
+| **xunit version** | **Package**                                            | **NuGet Version**                                                                                                               |
+|:------------------|:-------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------|
+| xunit v2          | [MartinCostello.Logging.XUnit][package-download-v2]    | [![NuGet][package-badge-version-v2]][package-download-v2] [![NuGet Downloads][package-badge-downloads-v2]][package-download-v2] |
 | xunit v3          | [MartinCostello.Logging.XUnit.v3][package-download-v3] | [![NuGet][package-badge-version-v3]][package-download-v3] [![NuGet Downloads][package-badge-downloads-v3]][package-download-v3] |
 
 ## Introduction
