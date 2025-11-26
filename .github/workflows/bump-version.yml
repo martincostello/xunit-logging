@@ -28,6 +28,7 @@ jobs:
         with:
           filter: 'tree:0'
           persist-credentials: true # zizmor: ignore[artipacked] Needed to push commits
+          ref: ${{ github.event.release.tag_name || github.event.repository.default_branch }}
           show-progress: false
           token: ${{ secrets.COSTELLOBOT_TOKEN }}
 
@@ -36,6 +37,7 @@ jobs:
         shell: pwsh
         env:
           NEXT_VERSION: ${{ inputs.version }}
+          RELEASED_VERSION: ${{ github.event.release.tag_name }}
         run: |
           $properties = Join-Path "." "Directory.Build.props"
 
@@ -45,6 +47,12 @@ jobs:
 
           if (-Not [string]::IsNullOrEmpty(${env:NEXT_VERSION})) {
             $version = [System.Version]::new(${env:NEXT_VERSION})
+            $assemblyVersionProperty = $xml.SelectSingleNode('Project/PropertyGroup/AssemblyVersion')
+            $assemblyVersion = [System.Version]::new($version.Major, ($version.Major -eq 0 ? $version.Minor : 0), 0, 0)
+            $assemblyVersionProperty.InnerText = $assemblyVersion.ToString()
+          } elseif (-Not [string]::IsNullOrEmpty(${env:RELEASED_VERSION})) {
+            $version = [System.Version]::new(${env:RELEASED_VERSION}.TrimStart('v'))
+            $version = [System.Version]::new($version.Major, $version.Minor, $version.Build + 1)
             $assemblyVersionProperty = $xml.SelectSingleNode('Project/PropertyGroup/AssemblyVersion')
             $assemblyVersion = [System.Version]::new($version.Major, ($version.Major -eq 0 ? $version.Minor : 0), 0, 0)
             $assemblyVersionProperty.InnerText = $assemblyVersion.ToString()
@@ -76,12 +84,46 @@ jobs:
 
           "version=${updatedVersion}" >> ${env:GITHUB_OUTPUT}
 
+
+      - name: Import GPG private key
+        shell: bash
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.COSTELLOBOT_GPG_PRIVATE_KEY }}
+        run: |
+          echo "${GPG_PRIVATE_KEY}" | gpg --batch --import
+
+      - name: Set up GPG script
+        id: create-gpg-script
+        shell: bash
+        run: |
+          gpg_script="${RUNNER_TEMP}/${GITHUB_REPOSITORY_OWNER_ID}-${GITHUB_REPOSITORY_ID}-gpg.sh"
+          echo '#!/bin/bash' > "${gpg_script}"
+          # shellcheck disable=SC2016
+          echo 'gpg --batch --pinentry-mode=loopback --passphrase "${GPG_PASSPHRASE}" "$@"' >> "${gpg_script}"
+          chmod +x "${gpg_script}"
+          echo "gpg-script=${gpg_script}" >> "${GITHUB_OUTPUT}"
+
+      - name: Configure Git
+        shell: bash
+        env:
+          GIT_COMMIT_USER_EMAIL: ${{ vars.GIT_COMMIT_USER_EMAIL }}
+          GIT_COMMIT_USER_NAME: ${{ vars.GIT_COMMIT_USER_NAME }}
+          GPG_KEY_ID: ${{ secrets.COSTELLOBOT_GPG_KEY_ID }}
+          GPG_SCRIPT: ${{ steps.create-gpg-script.outputs.gpg-script }}
+        run: |
+          git config commit.gpgsign true
+          git config gpg.program "${GPG_SCRIPT}"
+          git config user.email "${GIT_COMMIT_USER_EMAIL}"
+          git config user.name "${GIT_COMMIT_USER_NAME}"
+          git config user.signingkey "${GPG_KEY_ID}"
+
       - name: Push changes to GitHub
         id: push-changes
         shell: pwsh
         env:
           GIT_COMMIT_USER_EMAIL: ${{ vars.GIT_COMMIT_USER_EMAIL }}
           GIT_COMMIT_USER_NAME: ${{ vars.GIT_COMMIT_USER_NAME }}
+          GPG_PASSPHRASE: ${{ secrets.COSTELLOBOT_GPG_PASSPHRASE }}
           NEXT_VERSION: ${{ steps.bump-version.outputs.version }}
         run: |
           $gitStatus = (git status --porcelain)
@@ -95,8 +137,6 @@ jobs:
 
           $branchName = "bump-version-${env:NEXT_VERSION}"
 
-          git config user.email ${env:GIT_COMMIT_USER_EMAIL} | Out-Null
-          git config user.name ${env:GIT_COMMIT_USER_NAME} | Out-Null
           git fetch origin --no-tags | Out-Null
           git rev-parse --verify --quiet "remotes/origin/${branchName}" | Out-Null
 

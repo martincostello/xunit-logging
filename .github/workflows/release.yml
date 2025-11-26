@@ -3,11 +3,16 @@ name: release
 on:
   workflow_dispatch:
     inputs:
-      publish:
-        description: 'If true, does not create the release as a draft.'
+      branch:
+        description: 'The branch to create the release from'
         required: false
-        type: boolean
-        default: false
+        type: string
+        default: ''
+      version:
+        description: 'The version to tag the release as'
+        required: false
+        type: string
+        default: ''
 
 permissions: {}
 
@@ -24,44 +29,64 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
         with:
-          filter: 'tree:0'
+          fetch-depth: 0
           persist-credentials: true # zizmor: ignore[artipacked] Needed to push commits
+          ref: ${{ github.event.inputs.branch || github.event.repository.default_branch }}
           show-progress: false
           token: ${{ secrets.COSTELLOBOT_TOKEN }}
 
       - name: Get version
         id: get-version
         shell: pwsh
+        env:
+          VERSION: ${{ github.event.inputs.version }}
         run: |
-          $properties = Join-Path "." "Directory.Build.props"
-          $xml = [xml](Get-Content $properties)
-          $version = $xml.SelectSingleNode('Project/PropertyGroup/VersionPrefix').InnerText
+          $version = ${env:VERSION}
+          if ([string]::IsNullOrEmpty($version)) {
+            $properties = Join-Path "." "Directory.Build.props"
+            $xml = [xml](Get-Content $properties)
+            $version = $xml.SelectSingleNode('Project/PropertyGroup/VersionPrefix').InnerText
+          }
           "version=${version}" >> ${env:GITHUB_OUTPUT}
 
-      - name: Create release
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+      - name: Import GPG private key
+        shell: bash
         env:
-          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
-          DRAFT: ${{ inputs.publish != true }}
+          GPG_PRIVATE_KEY: ${{ secrets.COSTELLOBOT_GPG_PRIVATE_KEY }}
+        run: |
+          echo "${GPG_PRIVATE_KEY}" | gpg --batch --import
+
+      - name: Set up GPG script
+        id: create-gpg-script
+        shell: bash
+        run: |
+          gpg_script="${RUNNER_TEMP}/${GITHUB_REPOSITORY_OWNER_ID}-${GITHUB_REPOSITORY_ID}-gpg.sh"
+          echo '#!/bin/bash' > "${gpg_script}"
+          # shellcheck disable=SC2016
+          echo 'gpg --batch --pinentry-mode=loopback --passphrase "${GPG_PASSPHRASE}" "$@"' >> "${gpg_script}"
+          chmod +x "${gpg_script}"
+          echo "gpg-script=${gpg_script}" >> "${GITHUB_OUTPUT}"
+
+      - name: Configure Git
+        shell: bash
+        env:
+          GIT_COMMIT_USER_EMAIL: ${{ vars.GIT_COMMIT_USER_EMAIL }}
+          GIT_COMMIT_USER_NAME: ${{ vars.GIT_COMMIT_USER_NAME }}
+          GPG_KEY_ID: ${{ secrets.COSTELLOBOT_GPG_KEY_ID }}
+          GPG_SCRIPT: ${{ steps.create-gpg-script.outputs.gpg-script }}
+        run: |
+          git config commit.gpgsign true
+          git config gpg.program "${GPG_SCRIPT}"
+          git config tag.gpgsign true
+          git config user.email "${GIT_COMMIT_USER_EMAIL}"
+          git config user.name "${GIT_COMMIT_USER_NAME}"
+          git config user.signingkey "${GPG_KEY_ID}"
+
+      - name: Create and push release tag
+        shell: bash
+        env:
+          GPG_PASSPHRASE: ${{ secrets.COSTELLOBOT_GPG_PASSPHRASE }}
           VERSION: ${{ steps.get-version.outputs.version }}
-        with:
-          github-token: ${{ secrets.COSTELLOBOT_TOKEN }}
-          script: |
-            const { repo, owner } = context.repo;
-            const draft = process.env.DRAFT === 'true';
-            const version = process.env.VERSION;
-            const tag_name = `v${version}`;
-            const target_commitish = process.env.DEFAULT_BRANCH;
-            const name = tag_name;
-
-            const { data: release } = await github.rest.repos.createRelease({
-              owner,
-              repo,
-              tag_name,
-              target_commitish,
-              name,
-              draft,
-              generate_release_notes: true,
-            });
-
-            core.notice(`Created release ${release.name}: ${release.html_url}`);
+        run: |
+          TAG="v${VERSION}"
+          git tag "${TAG}" -m "Release ${TAG}" && git push origin "refs/tags/$TAG"
