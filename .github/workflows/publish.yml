@@ -38,6 +38,7 @@ jobs:
       url: https://www.nuget.org/packages/MartinCostello.Logging.XUnit
 
     permissions:
+      attestations: read
       id-token: write
 
     steps:
@@ -55,11 +56,15 @@ jobs:
         gh api "/users/${GITHUB_REPOSITORY_OWNER}/gpg_keys" --jq ".[].raw_key" | gpg --import
 
     - name: Verify release assets
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         sha256sum "./checksums.txt" --check || exit 1
         for pkg in *.*nupkg; do
-          echo "Verifying ${pkg}"
+          echo "Verifying signature for ${pkg}"
           gpg --verify "${pkg}.sig" "${pkg}" || exit 1
+          echo "Verifying attestation for ${pkg}"
+          gh attestation verify --repo "${GITHUB_REPOSITORY}" "${pkg}" || exit 1
         done
 
     - name: Get .NET SDK version
