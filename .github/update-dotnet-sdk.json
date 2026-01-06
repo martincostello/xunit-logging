@@ -1,4 +1,4 @@
 {
   "$schema": "https://raw.githubusercontent.com/martincostello/github-automation/main/.github/update-dotnet-sdk-schema.json",
-  "include-nuget-packages": "Microsoft.Extensions.Logging"
+  "exclude-nuget-packages": "Microsoft.Extensions.Logging"
 }
