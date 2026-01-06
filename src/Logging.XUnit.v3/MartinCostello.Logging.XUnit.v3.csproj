@@ -20,7 +20,7 @@
     <PackageReference Include="xunit.v3.extensibility.core" VersionOverride="[2.0.1,)" />
   </ItemGroup>
   <ItemGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net10.0'))">
-    <PackageReference Update="Microsoft.Extensions.Logging" VersionOverride="10.0.1" />
+    <PackageReference Update="Microsoft.Extensions.Logging" VersionOverride="[10.0.0,)" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="All" />
