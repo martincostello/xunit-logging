@@ -1,7 +1,7 @@
 <Project>
   <ItemGroup>
     <GlobalPackageReference Include="MartinCostello.BuildKit" Version="0.8.5" />
-    <GlobalPackageReference Include="ReferenceTrimmer" Version="3.3.12" PrivateAssets="All" />
+    <GlobalPackageReference Include="ReferenceTrimmer" Version="3.4.0" PrivateAssets="All" />
     <GlobalPackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
