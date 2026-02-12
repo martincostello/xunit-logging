@@ -1,1 +1,3 @@
 #nullable enable
+MartinCostello.Logging.XUnit.XUnitLoggerOptions.TimeProvider.get -> System.TimeProvider!
+MartinCostello.Logging.XUnit.XUnitLoggerOptions.TimeProvider.set -> void
