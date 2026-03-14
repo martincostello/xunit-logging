@@ -4,22 +4,22 @@ This file provides guidance to coding agents when working with code in this repo
 
 ## Build, test, and lint commands
 
-- Preferred entry point: run `.\build.ps1` from the repository root. This script bootstraps the pinned SDK from `global.json` if needed, packs both library projects, and then runs the test suite in `Release`.
-- Package without tests: run `.\build.ps1 -SkipTests`.
+- Preferred entry point: run `./build.ps1` from the repository root. This script bootstraps the pinned SDK from `global.json` if needed, packs both library projects, and then runs the test suite in `Release`.
+- Package without tests: run `./build.ps1 -SkipTests`.
 - Run all tests directly: `dotnet test --configuration Release`.
-- Run the xUnit v2 test project only: `dotnet test tests\Logging.XUnit.Tests\MartinCostello.Logging.XUnit.Tests.csproj --configuration Release`.
-- Run the xUnit v3 test project only: `dotnet test tests\Logging.XUnit.v3.Tests\MartinCostello.Logging.XUnit.v3.Tests.csproj --configuration Release`.
-- Run a single test in the v2 suite: `dotnet test tests\Logging.XUnit.Tests\MartinCostello.Logging.XUnit.Tests.csproj --configuration Release --filter "FullyQualifiedName~HttpApplicationTests.Http_Get_Many"`.
-- Run a single test in the v3 suite: `dotnet test tests\Logging.XUnit.v3.Tests\MartinCostello.Logging.XUnit.v3.Tests.csproj --configuration Release --filter "FullyQualifiedName~HttpApplicationTests.Http_Get_Many"`.
+- Run the xUnit v2 test project only: `dotnet test tests/Logging.XUnit.Tests/MartinCostello.Logging.XUnit.Tests.csproj --configuration Release`.
+- Run the xUnit v3 test project only: `dotnet test tests/Logging.XUnit.v3.Tests/MartinCostello.Logging.XUnit.v3.Tests.csproj --configuration Release`.
+- Run a single test in the v2 suite: `dotnet test tests/Logging.XUnit.Tests/MartinCostello.Logging.XUnit.Tests.csproj --configuration Release --filter "FullyQualifiedName~HttpApplicationTests.Http_Get_Many"`.
+- Run a single test in the v3 suite: `dotnet test tests/Logging.XUnit.v3.Tests/MartinCostello.Logging.XUnit.v3.Tests.csproj --configuration Release --filter "FullyQualifiedName~HttpApplicationTests.Http_Get_Many"`.
 - Local linting mirrors GitHub Actions:
   - PowerShell: `pwsh -NoProfile -Command "$settings = @{ IncludeDefaultRules = $true; Severity = @('Error', 'Warning') }; Invoke-ScriptAnalyzer -Path . -Recurse -ReportSummary -Settings $settings"`
   - Markdown: `markdownlint-cli2 "**/*.md"` if `markdownlint-cli2` is installed.
-  - Workflow files: `actionlint` and `zizmor` are enforced in CI if those tools are available locally.
+  - Workflow files: CI enforces `actionlint` and `zizmor`; run them locally if installed.
 
 ## High-level architecture
 
-- The repository ships two NuGet packages: `src\Logging.XUnit` for xUnit v2 and `src\Logging.XUnit.v3` for xUnit v3.
-- The implementation is intentionally shared. Both package projects link `src\Shared\**\*.cs` instead of maintaining separate source trees. Most behavioral changes belong in `src\Shared`, not in the per-package project folders.
+- The repository ships two NuGet packages: `src/Logging.XUnit` for xUnit v2 and `src/Logging.XUnit.v3` for xUnit v3.
+- The implementation is intentionally shared. Both package projects link `src/Shared/**/*.cs` instead of maintaining separate source trees. Most behavioral changes belong in `src/Shared`, not in the per-package project folders.
 - The v3 project sets the `XUNIT_V3` compilation constant. Shared files use `#if XUNIT_V3` only for the API differences between xUnit v2 and v3, such as `ITestOutputHelper` namespace changes and v3-specific test cancellation APIs.
 - The main extension surface lives in shared partial types:
   - `XUnitLoggerExtensions.*` adds `AddXUnit(...)` overloads for `ILoggingBuilder` and `ILoggerFactory`.
@@ -27,8 +27,8 @@ This file provides guidance to coding agents when working with code in this repo
   - `XUnitLogger.*` formats log output, applies filters, adds scopes, and writes to the current output helper or message sink.
   - `XUnitLoggerOptions` carries the configurable filter, scope, timestamp, and message factory behavior.
   - `AmbientTestOutputHelperAccessor`, `TestOutputHelperAccessor`, and `MessageSinkAccessor` are the bridge objects used to hand xUnit output infrastructure into the logger.
-- Tests follow the same shared-source pattern as production code. `tests\Logging.XUnit.Tests` and `tests\Logging.XUnit.v3.Tests` both link `tests\Shared\**\*.cs`, so most test edits should be made once in `tests\Shared`.
-- `tests\SampleApp` is a small ASP.NET Core app used by the shared integration tests under `tests\Shared\Integration`. If a change affects end-to-end logging behavior, check those integration tests, not just the unit-style logger tests.
+- Tests follow the same shared-source pattern as production code. `tests/Logging.XUnit.Tests` and `tests/Logging.XUnit.v3.Tests` both link `tests/Shared/**/*.cs`, so most test edits should be made once in `tests/Shared`.
+- `tests/SampleApp` is a small ASP.NET Core app used by the shared integration tests under `tests/Shared/Integration`. If a change affects end-to-end logging behavior, check those integration tests, not just the unit-style logger tests.
 
 ## Key conventions
 
