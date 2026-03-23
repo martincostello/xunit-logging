@@ -17,7 +17,7 @@ env:
   # renovate: datasource=github-releases depName=powershell-yaml packageName=cloudbase/powershell-yaml
   POWERSHELL_YAML_VERSION: '0.4.12'
   # renovate: datasource=github-releases depName=PSScriptAnalyzer packageName=PowerShell/PSScriptAnalyzer
-  PSSCRIPTANALYZER_VERSION: '1.24.0'
+  PSSCRIPTANALYZER_VERSION: '1.25.0'
   TERM: xterm
   # renovate: datasource=github-releases depName=zizmor packageName=zizmorcore/zizmor
   ZIZMOR_VERSION: '1.23.1'
