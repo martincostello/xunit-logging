@@ -12,7 +12,7 @@ permissions: {}
 
 jobs:
   analysis:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     permissions:
       actions: read
@@ -47,7 +47,7 @@ jobs:
   codeql:
     if: ${{ !cancelled() }}
     needs: [ analysis ]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
     - name: Report status
