@@ -39,10 +39,13 @@ jobs:
       matrix:
         include:
           - os-name: macos
+            # renovate: datasource=github-runners depName=macos depType=github-runner
             runner: macos-26
           - os-name: linux
+            # renovate: datasource=github-runners depName=ubuntu depType=github-runner
             runner: ubuntu-24.04
           - os-name: windows
+            # renovate: datasource=github-runners depName=windows depType=github-runner
             runner: windows-2025
 
     steps:
