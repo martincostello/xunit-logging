@@ -43,7 +43,7 @@ jobs:
             runner: macos-26
           - os-name: linux
             # renovate: datasource=github-runners depType=github-runner
-            runner: ubuntu-22.04
+            runner: ubuntu-24.04
           - os-name: windows
             # renovate: datasource=github-runners depType=github-runner
             runner: windows-2025
