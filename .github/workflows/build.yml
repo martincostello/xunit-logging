@@ -46,7 +46,7 @@ jobs:
             runner: ubuntu-22.04
           - os-name: windows
             # renovate: datasource=github-runners depType=github-runner
-            runner: windows-2022
+            runner: windows-2025
 
     steps:
 
