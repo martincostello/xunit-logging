@@ -16,12 +16,27 @@ permissions: {}
 jobs:
   bump-version:
     runs-on: [ ubuntu-24.04 ]
+    if: github.event.repository.fork == false
 
     concurrency:
       group: '${{ github.workflow }}-bump'
       cancel-in-progress: false
 
+    environment:
+      name: release
+      deployment: false
+
+    permissions:
+      id-token: write
+
     steps:
+
+      - name: Get GitHub token
+        id: get-github-token
+        # zizmor: ignore[ref-version-mismatch] False positive
+        uses: martincostello/github-automation/actions/get-github-token@16711f5c6f94e59ee14b83697acb675be1528856 # get-github-token/v4.1.0
+        with:
+          profile-name: write
 
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -30,7 +45,7 @@ jobs:
           persist-credentials: true # zizmor: ignore[artipacked] Needed to push commits
           ref: ${{ github.event.release.tag_name || github.event.repository.default_branch }}
           show-progress: false
-          token: ${{ secrets.COSTELLOBOT_TOKEN }}
+          token: ${{ steps.get-github-token.outputs.token }}
 
       - name: Bump version
         id: bump-version
@@ -162,7 +177,7 @@ jobs:
           HEAD_BRANCH: ${{ steps.push-changes.outputs.branch-name }}
           NEXT_VERSION: ${{ steps.push-changes.outputs.version }}
         with:
-          github-token: ${{ secrets.COSTELLOBOT_TOKEN }}
+          github-token: ${{ steps.get-github-token.outputs.token }}
           script: |
             const nextVersion = process.env.NEXT_VERSION;
             const { repo, owner } = context.repo;
@@ -221,6 +236,9 @@ jobs:
       group: '${{ github.workflow }}-milestone'
       cancel-in-progress: false
 
+    permissions:
+      issues: write
+
     steps:
 
       - name: Close milestone
@@ -229,7 +247,7 @@ jobs:
           RELEASE_DATE: ${{ github.event.release.published_at }}
           RELEASE_VERSION: ${{ github.event.release.tag_name }}
         with:
-          github-token: ${{ secrets.COSTELLOBOT_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const { repo, owner } = context.repo;
 
