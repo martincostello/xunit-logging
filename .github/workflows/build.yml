@@ -70,7 +70,6 @@ jobs:
       uses: codecov/codecov-action@e79a6962e0d4c0c17b229090214935d2e33f8354 # v6.0.1
       with:
         flags: ${{ matrix.os-name }}
-        token: ${{ secrets.CODECOV_TOKEN }}
 
     - name: Upload test results to Codecov
       uses: codecov/codecov-action@e79a6962e0d4c0c17b229090214935d2e33f8354 # v6.0.1
@@ -78,7 +77,6 @@ jobs:
       with:
         flags: ${{ matrix.os-name }}
         report_type: test_results
-        token: ${{ secrets.CODECOV_TOKEN }}
 
     - name: Generate SBOM
       uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610 # v0.24.0
@@ -215,6 +213,14 @@ jobs:
       github.event.repository.fork == false &&
       startsWith(github.ref, 'refs/tags/v')
 
+    environment:
+      name: release
+      deployment: false
+
+    permissions:
+      contents: read
+      id-token: write
+
     steps:
 
     - name: Download packages
@@ -246,7 +252,7 @@ jobs:
         ASSETS_PATH: ./dist
         GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
         GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-        GH_TOKEN: ${{ secrets.COSTELLOBOT_TOKEN }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       shell: bash
       run: |
         gh api "/users/${GITHUB_REPOSITORY_OWNER}/gpg_keys" --jq ".[].raw_key" | gpg --import
@@ -260,10 +266,17 @@ jobs:
           gpg --verify "${fname}.sig" "${fname}"
         done
 
+    - name: Get GitHub token for release
+      id: get-release-token
+      # zizmor: ignore[ref-version-mismatch] False positive
+      uses: martincostello/github-automation/actions/get-github-token@16711f5c6f94e59ee14b83697acb675be1528856 # get-github-token/v4.1.0
+      with:
+        profile-name: release
+
     - name: Draft release
       uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
       with:
-        github-token: ${{ secrets.COSTELLOBOT_TOKEN }}
+        github-token: ${{ steps.get-release-token.outputs.token }}
         script: |
           const { repo, owner } = context.repo;
           const tag_name = process.env.GITHUB_REF_NAME;
@@ -284,6 +297,6 @@ jobs:
     - name: Attach files to the release
       shell: bash
       env:
-        GH_TOKEN: ${{ secrets.COSTELLOBOT_TOKEN }}
+        GH_TOKEN: ${{ steps.get-release-token.outputs.token }}
       run: |
         gh release upload "${GITHUB_REF_NAME}" "dist/*" --clobber --repo "${GITHUB_REPOSITORY}"
