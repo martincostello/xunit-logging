@@ -106,7 +106,7 @@ jobs:
     - name: Get GitHub token
       id: get-github-token
       # zizmor: ignore[ref-version-mismatch] False positive
-      uses: martincostello/github-automation/actions/get-github-token@16711f5c6f94e59ee14b83697acb675be1528856 # get-github-token/v4.1.0
+      uses: martincostello/github-automation/actions/get-github-token@d7d5bbb507c1f4b8fe3aff4f0199f9e24fff2ba5 # get-github-token/v4.1.1
       with:
         profile-name: publish
 
