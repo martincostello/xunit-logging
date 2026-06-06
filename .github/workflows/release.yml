@@ -18,7 +18,7 @@ permissions: {}
 
 jobs:
   release:
-    runs-on: [ ubuntu-24.04 ]
+    runs-on: ubuntu-24.04
     if: github.event.repository.fork == false
 
     concurrency:
@@ -36,16 +36,15 @@ jobs:
 
       - name: Get GitHub token
         id: get-github-token
-        # zizmor: ignore[ref-version-mismatch] False positive
         uses: martincostello/github-automation/actions/get-github-token@567bf2ea7958064af7863e6004a545a799f57982 # get-github-token/v4.2.0
         with:
-          profile-name: write
+          profile-name: tag
 
       - name: Checkout code
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 0
-          persist-credentials: true # zizmor: ignore[artipacked] Needed to push commits
+          persist-credentials: true # zizmor: ignore[artipacked] Needed to push tag
           ref: ${{ github.event.inputs.branch || github.event.repository.default_branch }}
           show-progress: false
           token: ${{ steps.get-github-token.outputs.token }}

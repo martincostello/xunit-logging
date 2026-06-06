@@ -15,7 +15,7 @@ permissions: {}
 
 jobs:
   bump-version:
-    runs-on: [ ubuntu-24.04 ]
+    runs-on: ubuntu-24.04
     if: github.event.repository.fork == false
 
     concurrency:
@@ -27,25 +27,18 @@ jobs:
       deployment: false
 
     permissions:
+      contents: read
       id-token: write
 
     steps:
 
-      - name: Get GitHub token
-        id: get-github-token
-        # zizmor: ignore[ref-version-mismatch] False positive
-        uses: martincostello/github-automation/actions/get-github-token@567bf2ea7958064af7863e6004a545a799f57982 # get-github-token/v4.2.0
-        with:
-          profile-name: write
-
       - name: Checkout code
+        id: checkout-code
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
-          filter: 'tree:0'
-          persist-credentials: true # zizmor: ignore[artipacked] Needed to push commits
+          persist-credentials: false
           ref: ${{ github.event.release.tag_name || github.event.repository.default_branch }}
           show-progress: false
-          token: ${{ steps.get-github-token.outputs.token }}
 
       - name: Bump version
         id: bump-version
@@ -99,73 +92,132 @@ jobs:
 
           "version=${updatedVersion}" >> ${env:GITHUB_OUTPUT}
 
-
-      - name: Import GPG private key
-        shell: bash
-        env:
-          GPG_PRIVATE_KEY: ${{ secrets.COSTELLOBOT_GPG_PRIVATE_KEY }}
-        run: |
-          echo "${GPG_PRIVATE_KEY}" | gpg --batch --import
-
-      - name: Set up GPG script
-        id: create-gpg-script
-        shell: bash
-        run: |
-          gpg_script="${RUNNER_TEMP}/${GITHUB_REPOSITORY_OWNER_ID}-${GITHUB_REPOSITORY_ID}-gpg.sh"
-          echo '#!/bin/bash' > "${gpg_script}"
-          # shellcheck disable=SC2016
-          echo 'gpg --batch --pinentry-mode=loopback --passphrase "${GPG_PASSPHRASE}" "$@"' >> "${gpg_script}"
-          chmod +x "${gpg_script}"
-          echo "gpg-script=${gpg_script}" >> "${GITHUB_OUTPUT}"
-
-      - name: Configure Git
-        shell: bash
-        env:
-          GIT_COMMIT_USER_EMAIL: ${{ vars.GIT_COMMIT_USER_EMAIL }}
-          GIT_COMMIT_USER_NAME: ${{ vars.GIT_COMMIT_USER_NAME }}
-          GPG_KEY_ID: ${{ secrets.COSTELLOBOT_GPG_KEY_ID }}
-          GPG_SCRIPT: ${{ steps.create-gpg-script.outputs.gpg-script }}
-        run: |
-          git config commit.gpgsign true
-          git config gpg.program "${GPG_SCRIPT}"
-          git config user.email "${GIT_COMMIT_USER_EMAIL}"
-          git config user.name "${GIT_COMMIT_USER_NAME}"
-          git config user.signingkey "${GPG_KEY_ID}"
+      - name: Get GitHub token
+        id: get-github-token
+        uses: martincostello/github-automation/actions/get-github-token@567bf2ea7958064af7863e6004a545a799f57982 # get-github-token/v4.2.0
+        with:
+          profile-name: write
 
       - name: Push changes to GitHub
         id: push-changes
         shell: pwsh
         env:
-          GIT_COMMIT_USER_EMAIL: ${{ vars.GIT_COMMIT_USER_EMAIL }}
-          GIT_COMMIT_USER_NAME: ${{ vars.GIT_COMMIT_USER_NAME }}
-          GPG_PASSPHRASE: ${{ secrets.COSTELLOBOT_GPG_PASSPHRASE }}
+          APP_SLUG: ${{ steps.get-github-token.outputs.app-slug }}
+          CHECKOUT_COMMIT: ${{ steps.checkout-code.outputs.commit }}
+          GH_TOKEN: ${{ steps.get-github-token.outputs.token }}
           NEXT_VERSION: ${{ steps.bump-version.outputs.version }}
+          TOKEN_TYPE: ${{ steps.get-github-token.outputs.token-type }}
         run: |
-          $gitStatus = (git status --porcelain)
-
-          if ([string]::IsNullOrEmpty($gitStatus)) {
-            throw "No changes to commit."
-          }
-
-          git config color.diff always
-          git --no-pager diff
-
           $branchName = "bump-version-${env:NEXT_VERSION}"
 
-          git fetch origin --no-tags | Out-Null
-          git rev-parse --verify --quiet "remotes/origin/${branchName}" | Out-Null
+          $branchProbe = gh api "repos/${env:GITHUB_REPOSITORY}/git/ref/heads/${branchName}" 2>&1
 
           if ($LASTEXITCODE -eq 0) {
-            Write-Output "Branch ${branchName} already exists."
+            Write-Output "::notice::Branch ${branchName} already exists."
+            "updated-version=false" >> ${env:GITHUB_OUTPUT}
             exit 0
           }
 
-          git checkout -b $branchName
-          git add .
-          git commit -m "Bump version`n`nBump version to ${env:NEXT_VERSION} for the next release." -s
-          git push -u origin $branchName
+          if ((($branchProbe | Out-String) -notmatch 'HTTP 404')) {
+            throw "Failed to check whether branch '${branchName}' exists."
+          }
+
+          if (${env:TOKEN_TYPE} -eq "app") {
+            $gitUserName = "${env:APP_SLUG}[bot]"
+            $gitUserId = gh api "users/${gitUserName}" --jq '.id'
+            if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($gitUserId)) {
+              throw "Failed to resolve user ID for GitHub app ${gitUserName}."
+            }
+            $gitUserEmail = "${gitUserId}+${gitUserName}@users.noreply.github.com"
+          } else {
+            $identity = gh api "user" | ConvertFrom-Json
+            $gitUserName = $identity.login
+            $gitUserEmail = if ([string]::IsNullOrEmpty($identity.email)) {
+              "$($identity.id)+$($identity.login)@users.noreply.github.com"
+            } else {
+              $identity.email
+            }
+          }
+
+          $baseSha = ${env:CHECKOUT_COMMIT}
+
+          $filePath = "Directory.Build.props"
+          $fileFullPath = Join-Path ${env:GITHUB_WORKSPACE} $filePath
+          $currentFile = gh api "repos/${env:GITHUB_REPOSITORY}/contents/${filePath}?ref=${baseSha}" | ConvertFrom-Json
+          $currentContent = $currentFile.content.Replace("`r", "").Replace("`n", "")
+          $localContent = [System.Convert]::ToBase64String(
+            [System.IO.File]::ReadAllBytes($fileFullPath))
+
+          if ($currentContent -eq $localContent) {
+            Write-Output "::error::No changes to commit."
+            exit 1
+          }
+
+          @{
+            ref = "refs/heads/${branchName}"
+            sha = $baseSha
+          } | ConvertTo-Json -Compress | gh api --method POST "repos/${env:GITHUB_REPOSITORY}/git/refs" --input -
+
+          $query = @'
+          mutation($input: CreateCommitOnBranchInput!) {
+            createCommitOnBranch(input: $input) {
+              commit {
+                oid
+              }
+            }
+          }
+          '@
+
+          $title = "Bump version"
+          $body = @(
+            "Bump version to ${env:NEXT_VERSION} for the next release.",
+            "",
+            "Signed-off-by: ${gitUserName} <${gitUserEmail}>"
+          ) -join "`n"
+
+          $payload = @{
+            query = $query
+            variables = @{
+              input = @{
+                branch = @{
+                  repositoryNameWithOwner = ${env:GITHUB_REPOSITORY}
+                  branchName = $branchName
+                }
+                expectedHeadOid = $baseSha
+                message = @{
+                  headline = $title
+                  body = $body
+                }
+                fileChanges = @{
+                  additions = @(
+                    @{
+                      path = $filePath
+                      contents = $localContent
+                    }
+                  )
+                }
+              }
+            }
+          } | ConvertTo-Json -Depth 20 -Compress
+
+          $headers = @{
+            Authorization = "Bearer ${env:GH_TOKEN}"
+            Accept = "application/vnd.github+json"
+          }
+
+          $result = Invoke-RestMethod `
+            -Method POST `
+            -Uri ${env:GITHUB_GRAPHQL_URL} `
+            -Headers $headers `
+            -ContentType "application/json" `
+            -Body $payload
+
+          if ($null -ne $result.errors) {
+            throw ($result.errors | ConvertTo-Json -Depth 20 -Compress)
+          }
 
           "branch-name=${branchName}" >> ${env:GITHUB_OUTPUT}
+          "title=${title}" >> ${env:GITHUB_OUTPUT}
           "updated-version=true" >> ${env:GITHUB_OUTPUT}
           "version=${env:NEXT_VERSION}" >> ${env:GITHUB_OUTPUT}
 
@@ -176,6 +228,7 @@ jobs:
           BASE_BRANCH: ${{ github.event.repository.default_branch }}
           HEAD_BRANCH: ${{ steps.push-changes.outputs.branch-name }}
           NEXT_VERSION: ${{ steps.push-changes.outputs.version }}
+          PR_TITLE: ${{ steps.push-changes.outputs.title }}
         with:
           github-token: ${{ steps.get-github-token.outputs.token }}
           script: |
@@ -184,7 +237,7 @@ jobs:
             const workflowUrl = `${process.env.GITHUB_SERVER_URL}/${owner}/${repo}/actions/runs/${process.env.GITHUB_RUN_ID}`;
 
             const { data: pr } = await github.rest.pulls.create({
-              title: 'Bump version',
+              title: process.env.PR_TITLE,
               owner,
               repo,
               head: process.env.HEAD_BRANCH,
@@ -229,7 +282,7 @@ jobs:
             }
 
   close-milestone:
-    runs-on: [ ubuntu-24.04 ]
+    runs-on: ubuntu-24.04
     if: github.event_name == 'release'
 
     concurrency:
