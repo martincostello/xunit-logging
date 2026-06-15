@@ -105,7 +105,7 @@ jobs:
 
     - name: Get GitHub token
       id: get-github-token
-      uses: martincostello/github-automation/actions/get-github-token@36f156b090e9259937ebf5151c165ddb1fcf6eac # get-github-token/v4.3.0
+      uses: martincostello/github-automation/actions/get-github-token@18237c275f9a773966e3e52dcabe5e7e559a9786 # get-github-token/v4.3.1
       with:
         profile-name: publish
 
