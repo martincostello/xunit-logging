@@ -207,11 +207,11 @@ jobs:
     - name: Push NuGet packages to feedz.io
       shell: bash
       env:
-        API_KEY: ${{ secrets.FEEDZ_IO_TOKEN }}
+        NUGET_API_KEY: ${{ secrets.FEEDZ_IO_TOKEN }}
         PACKAGE_VERSION: ${{ needs.build.outputs.package-version }}
         SOURCE: "https://f.feedz.io/${{ github.repository }}/nuget/index.json"
       run: |
-        dotnet nuget push "*.nupkg" --api-key "${API_KEY}" --skip-duplicate --source "${SOURCE}" && echo "::notice title=feedz.io::Published version ${PACKAGE_VERSION} to feedz.io."
+        dotnet nuget push "*.nupkg" --skip-duplicate --source "${SOURCE}" && echo "::notice title=feedz.io::Published version ${PACKAGE_VERSION} to feedz.io."
 
 
   draft-release:
