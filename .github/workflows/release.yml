@@ -36,7 +36,7 @@ jobs:
 
       - name: Get GitHub token
         id: get-github-token
-        uses: martincostello/github-automation/actions/get-github-token@8fc3770bb86da77b360a2470cc1f0c5a9f7c9689 # get-github-token/v4.3.2
+        uses: martincostello/github-automation/actions/get-github-token@279f5d3cc244dfdd9bb1197d2ab6996c37cb4486 # get-github-token/v4.3.3
         with:
           profile-name: tag
 
