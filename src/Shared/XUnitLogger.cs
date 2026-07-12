@@ -135,6 +135,11 @@ public partial class XUnitLogger : ILogger
 
         if (!string.IsNullOrEmpty(message) || exception != null)
         {
+            if (IncludeScopes && state is not null)
+            {
+                message = AddStateToMessage(message, state);
+            }
+
             WriteMessage(logLevel, eventId.Id, message, exception);
         }
     }
@@ -273,7 +278,7 @@ public partial class XUnitLogger : ILogger
         while (stack.Count > 0)
         {
             var elem = stack.Pop();
-            foreach (var property in StringifyScope(elem))
+            foreach (var property in StringifyState(elem.State))
             {
                 builder.Append(MessagePadding)
                        .Append(DepthPadding(depth))
@@ -287,20 +292,54 @@ public partial class XUnitLogger : ILogger
     }
 
     /// <summary>
-    /// Returns one or more stringified properties from the log scope.
+    /// Adds one or more stringified properties from the log state to the message.
     /// </summary>
-    /// <param name="scope">The <see cref="XUnitLogScope"/> to stringify.</param>
-    /// <returns>An enumeration of scope properties from the current scope.</returns>
-    private static IEnumerable<string?> StringifyScope(XUnitLogScope scope)
+    /// <param name="message">The formatted log message.</param>
+    /// <param name="state">The log state to add.</param>
+    /// <returns>The formatted message including the log state.</returns>
+    private static string? AddStateToMessage(string? message, object state)
     {
-        if (scope.State is IEnumerable<KeyValuePair<string, object>> pairs)
+        var builder = new StringBuilder();
+
+        foreach (var property in StringifyState(state))
+        {
+            if (builder.Length > 0)
+            {
+                builder.AppendLine();
+            }
+
+            builder.Append("=> ");
+            builder.Append(property);
+        }
+
+        if (!string.IsNullOrEmpty(message))
+        {
+            if (builder.Length > 0)
+            {
+                builder.AppendLine();
+            }
+
+            builder.Append(message);
+        }
+
+        return builder.Length > 0 ? builder.ToString() : message;
+    }
+
+    /// <summary>
+    /// Returns one or more stringified properties from the specified state.
+    /// </summary>
+    /// <param name="state">The state to stringify.</param>
+    /// <returns>An enumeration of properties from the specified state.</returns>
+    private static IEnumerable<string?> StringifyState(object state)
+    {
+        if (state is IEnumerable<KeyValuePair<string, object>> pairs)
         {
             foreach (var pair in pairs)
             {
                 yield return $"{pair.Key}: {pair.Value}";
             }
         }
-        else if (scope.State is IEnumerable<string> entries)
+        else if (state is IEnumerable<string> entries)
         {
             foreach (var entry in entries)
             {
@@ -309,7 +348,7 @@ public partial class XUnitLogger : ILogger
         }
         else
         {
-            yield return scope.ToString();
+            yield return state.ToString();
         }
     }
 }

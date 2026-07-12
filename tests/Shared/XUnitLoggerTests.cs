@@ -446,6 +446,53 @@ public static class XUnitLoggerTests
     }
 
     [Fact]
+    public static void XUnitLogger_Log_Logs_State_If_Scopes_Included()
+    {
+        // Arrange
+        var outputHelper = Substitute.For<ITestOutputHelper>();
+        string name = "MyName";
+
+        var options = new XUnitLoggerOptions()
+        {
+            Filter = FilterTrue,
+            IncludeScopes = true,
+        };
+
+        var logger = new XUnitLogger(name, outputHelper, options)
+        {
+            Clock = StaticClock,
+        };
+
+        string expected = string.Join(
+            Environment.NewLine,
+            "[2018-08-19 16:12:16Z] info: MyName[0]",
+            "      => ScopeKey: ScopeValue",
+            "      => StateKey: StateValue",
+            "      => {OriginalFormat}: Message from {StateKey}",
+            "      Message|True|False");
+
+        using (logger.BeginScope(new[]
+        {
+            new KeyValuePair<string, object>("ScopeKey", "ScopeValue"),
+        }))
+        {
+            logger.Log(
+                LogLevel.Information,
+                0,
+                new[]
+                {
+                    new KeyValuePair<string, object>("StateKey", "StateValue"),
+                    new KeyValuePair<string, object>("{OriginalFormat}", "Message from {StateKey}"),
+                },
+                null,
+                Formatter);
+        }
+
+        // Assert
+        outputHelper.Received(1).WriteLine(expected);
+    }
+
+    [Fact]
     public static void XUnitLogger_Log_Logs_Message_If_Scopes_Included_And_There_Are_Scopes()
     {
         // Arrange
