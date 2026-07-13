@@ -493,6 +493,39 @@ public static class XUnitLoggerTests
     }
 
     [Fact]
+    public static void XUnitLogger_Log_Logs_Non_Structured_State_If_Scopes_Included()
+    {
+        // Arrange
+        var outputHelper = Substitute.For<ITestOutputHelper>();
+        string name = "MyName";
+
+        var options = new XUnitLoggerOptions()
+        {
+            Filter = FilterTrue,
+            IncludeScopes = true,
+        };
+
+        var logger = new XUnitLogger(name, outputHelper, options)
+        {
+            Clock = StaticClock,
+        };
+
+        var exception = new InvalidOperationException("Invalid");
+
+        string expected = string.Join(
+            Environment.NewLine,
+            "[2018-08-19 16:12:16Z] info: MyName[0]",
+            "      => state",
+            "System.InvalidOperationException: Invalid");
+
+        // Act
+        logger.Log(LogLevel.Information, 0, "state", exception, FormatterEmpty);
+
+        // Assert
+        outputHelper.Received(1).WriteLine(expected);
+    }
+
+    [Fact]
     public static void XUnitLogger_Log_Logs_Message_If_Scopes_Included_And_There_Are_Scopes()
     {
         // Arrange

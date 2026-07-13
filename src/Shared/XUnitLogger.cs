@@ -278,7 +278,7 @@ public partial class XUnitLogger : ILogger
         while (stack.Count > 0)
         {
             var elem = stack.Pop();
-            foreach (var property in StringifyState(elem.State))
+            foreach (var property in StringifyScope(elem))
             {
                 builder.Append(MessagePadding)
                        .Append(DepthPadding(depth))
@@ -288,6 +288,33 @@ public partial class XUnitLogger : ILogger
             }
 
             depth++;
+        }
+    }
+
+    /// <summary>
+    /// Returns one or more stringified properties from the log scope.
+    /// </summary>
+    /// <param name="scope">The <see cref="XUnitLogScope"/> to stringify.</param>
+    /// <returns>An enumeration of scope properties from the current scope.</returns>
+    private static IEnumerable<string?> StringifyScope(XUnitLogScope scope)
+    {
+        if (scope.State is IEnumerable<KeyValuePair<string, object>> pairs)
+        {
+            foreach (var pair in pairs)
+            {
+                yield return $"{pair.Key}: {pair.Value}";
+            }
+        }
+        else if (scope.State is IEnumerable<string> entries)
+        {
+            foreach (var entry in entries)
+            {
+                yield return entry;
+            }
+        }
+        else
+        {
+            yield return scope.ToString();
         }
     }
 
