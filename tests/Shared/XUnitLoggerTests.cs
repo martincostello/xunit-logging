@@ -412,7 +412,7 @@ public static class XUnitLoggerTests
         logger.Log(LogLevel.Information, 1, "state", null, FormatterLong);
 
         // Assert
-        outputHelper.Received(1).WriteLine(Arg.Is<string>((r) => r.Length > 1024));
+        outputHelper.Received(1).WriteLine(Arg.Is<string>((r) => r != null && r.Length > 1024));
     }
 
     [Fact]
