@@ -135,6 +135,11 @@ public partial class XUnitLogger : ILogger
 
         if (!string.IsNullOrEmpty(message) || exception != null)
         {
+            if (IncludeScopes && state is not null)
+            {
+                message = AddStateToMessage(message, state);
+            }
+
             WriteMessage(logLevel, eventId.Id, message, exception);
         }
     }
@@ -310,6 +315,67 @@ public partial class XUnitLogger : ILogger
         else
         {
             yield return scope.ToString();
+        }
+    }
+
+    /// <summary>
+    /// Adds one or more stringified properties from the log state to the message.
+    /// </summary>
+    /// <param name="message">The formatted log message.</param>
+    /// <param name="state">The log state to add.</param>
+    /// <returns>The formatted message including the log state.</returns>
+    private static string? AddStateToMessage(string? message, object state)
+    {
+        var builder = new StringBuilder();
+
+        foreach (var property in StringifyState(state))
+        {
+            if (builder.Length > 0)
+            {
+                builder.AppendLine();
+            }
+
+            builder.Append("=> ");
+            builder.Append(property);
+        }
+
+        if (!string.IsNullOrEmpty(message))
+        {
+            if (builder.Length > 0)
+            {
+                builder.AppendLine();
+            }
+
+            builder.Append(message);
+        }
+
+        return builder.Length > 0 ? builder.ToString() : message;
+    }
+
+    /// <summary>
+    /// Returns one or more stringified properties from the specified state.
+    /// </summary>
+    /// <param name="state">The state to stringify.</param>
+    /// <returns>An enumeration of properties from the specified state.</returns>
+    private static IEnumerable<string?> StringifyState(object state)
+    {
+        if (state is IEnumerable<KeyValuePair<string, object>> pairs)
+        {
+            foreach (var pair in pairs)
+            {
+                yield return $"{pair.Key}: {pair.Value}";
+            }
+        }
+        else if (state is IEnumerable<string> entries)
+        {
+            foreach (var entry in entries)
+            {
+                yield return entry;
+            }
+        }
+        else
+        {
+            yield return state.ToString();
         }
     }
 }
