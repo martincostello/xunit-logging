@@ -200,7 +200,7 @@ This project is licensed under the [Apache 2.0][license] license.
 
 ## Building and Testing
 
-Compiling the solution yourself requires Git and the [.NET SDK][dotnet-sdk] to be installed (version `9.0.100` or later).
+Compiling the solution yourself requires Git and the [.NET SDK][dotnet-sdk] to be installed (version `9.0.100` or later). test
 
 To build and test the solution locally from a terminal/command-line, run the following set of commands:
 
