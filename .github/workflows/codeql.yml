@@ -12,7 +12,7 @@ permissions: {}
 
 jobs:
   analysis:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     permissions:
       actions: read
@@ -33,21 +33,21 @@ jobs:
         show-progress: false
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@cdf488f595d80d6e07e03d4674febd5ab45fa938 # v4.37.9
+      uses: github/codeql-action/init@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
       with:
         build-mode: none
         languages: ${{ matrix.language }}
         queries: security-and-quality
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@cdf488f595d80d6e07e03d4674febd5ab45fa938 # v4.37.9
+      uses: github/codeql-action/analyze@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
       with:
         category: '/language:${{ matrix.language }}'
 
   codeql:
     if: ${{ !cancelled() }}
     needs: [ analysis ]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     steps:
     - name: Report status
