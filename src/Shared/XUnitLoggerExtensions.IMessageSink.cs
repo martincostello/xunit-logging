@@ -6,9 +6,9 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Microsoft.Extensions.Logging;
 
-/// <summary>
+/// <content>
 /// A class containing extension methods for configuring logging to xunit. This class cannot be inherited.
-/// </summary>
+/// </content>
 public static partial class XUnitLoggerExtensions
 {
     /// <summary>

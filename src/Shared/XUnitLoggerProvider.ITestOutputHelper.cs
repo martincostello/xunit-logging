@@ -5,9 +5,9 @@ using Microsoft.Extensions.Logging;
 
 namespace MartinCostello.Logging.XUnit;
 
-/// <summary>
+/// <content>
 /// A class representing an <see cref="ILoggerProvider"/> to use with xunit.
-/// </summary>
+/// </content>
 public partial class XUnitLoggerProvider
 {
     /// <summary>
