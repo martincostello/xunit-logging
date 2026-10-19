@@ -34,9 +34,9 @@ public partial class XUnitLoggerProvider : ILoggerProvider
     public virtual ILogger CreateLogger(string categoryName)
     {
         return _loggers.GetOrAdd(categoryName, (name) =>
-            _outputHelperAccessor is not null ?
-                new(name, _outputHelperAccessor, _options) :
-                new(name, _messageSinkAccessor!, _options));
+            _outputHelperAccessor is not null
+                ? new(name, _outputHelperAccessor, _options)
+                : new(name, _messageSinkAccessor!, _options));
     }
 
     /// <inheritdoc />
